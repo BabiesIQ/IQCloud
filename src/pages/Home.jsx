@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import '@/cloud-motion.css';
 import ApperIcon from '@/components/ApperIcon';
-import { quoteServer, formatMoney } from '@/components/cloud/CloudUI';
+
 
 export const route = { path: '/', layout: 'public', access: 'public' };
 
@@ -60,7 +60,7 @@ export default function Home() {
             ))}
           </div>
           <div className="mt-5 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-5">
-            <div><div className="text-xs text-muted-foreground">Estimated monthly price</div><div className="mt-1 text-2xl font-semibold">{formatMoney(quoteServer({cpu:2,ram:4,storage:50,region:'ap-southeast',term:'monthly'}))}<span className="ml-2 text-sm font-normal text-muted-foreground">/ month</span></div></div>
+            <div><div className="text-xs text-muted-foreground">Illustrative compute price (4 GB / 2 vCPU)</div><div className="mt-1 text-2xl font-semibold">₹185<span className="ml-2 text-sm font-normal text-muted-foreground">/ month</span></div></div>
             <Link to="/configure" className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium hover:bg-accent">Customize <ApperIcon name="ArrowRight" size={16}/></Link>
           </div>
         </div>
