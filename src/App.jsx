@@ -6,6 +6,7 @@ import { getPreferences, updatePreferences } from '@/config/runtime.config';
 import { apiRequest } from '@/services/apiClient';
 import CloudPreferences from '@/components/CloudPreferences';
 import Home from '@/pages/Home';
+import PasswordRecovery from '@/pages/auth/PasswordRecovery';
 
 function Header() {
   const [account,setAccount] = useState(null);
@@ -83,8 +84,8 @@ function Shell() {
     <Route path="/" element={<Home/>}/>
     <Route path="/login" element={<Auth key="login"/>}/>
     <Route path="/signup" element={<Auth key="signup" signup/>}/>
-    <Route path="/forgot-password" element={<StatusPage title="Password recovery"/>}/>
-    <Route path="/reset-password" element={<StatusPage title="Reset password"/>}/>
+    <Route path="/forgot-password" element={<PasswordRecovery/>}/>
+    <Route path="/reset-password" element={<PasswordRecovery reset/>}/>
     <Route path="/verify-email" element={<StatusPage title="Verify email"/>}/>
     <Route path="/settings" element={<main className="mx-auto max-w-xl px-5 py-12"><CloudPreferences/></main>}/>
     <Route path="/pricing" element={<StatusPage title="Pricing"/>}/>
