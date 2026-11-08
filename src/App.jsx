@@ -7,6 +7,7 @@ import { getPreferences, updatePreferences } from '@/config/runtime.config';
 import { apiRequest } from '@/services/apiClient';
 import CloudPreferences from '@/components/CloudPreferences';
 import PasswordSettings from '@/components/PasswordSettings';
+import PasswordField from '@/components/PasswordField';
 import Home from '@/pages/Home';
 import PasswordRecovery from '@/pages/auth/PasswordRecovery';
 import SecurityCenter from '@/pages/SecurityCenter';
@@ -150,7 +151,7 @@ function Auth({ signup = false }) {
       {(!signup || !verificationPending) && <>
       {signup && <div className="grid grid-cols-2 gap-3">{['firstName','lastName'].map(k=><label key={k} className="text-sm">{k === 'firstName' ? 'First name' : 'Last name'}<input className="mt-1 w-full rounded-xl border bg-background p-3" required value={form[k]} onChange={e=>setForm({...form,[k]:e.target.value})}/></label>)}</div>}
       <label className="block text-sm">Email<input type="email" required autoComplete="email" className="mt-1 w-full rounded-xl border bg-background p-3" value={form.email} onChange={e=>setForm({...form,email:e.target.value})}/></label>
-      <label className="block text-sm">Password<input type="password" minLength={12} required autoComplete={signup ? 'new-password' : 'current-password'} className="mt-1 w-full rounded-xl border bg-background p-3" value={form.password} onChange={e=>setForm({...form,password:e.target.value})}/></label>
+      <PasswordField label="Password" minLength={signup ? 12 : undefined} autoComplete={signup ? 'new-password' : 'current-password'} value={form.password} onChange={e=>setForm({...form,password:e.target.value})}/>
       </>}
       {error && <p role="alert" className="text-sm text-amber-600">{error}</p>}
       <button disabled={busy} className="w-full rounded-xl bg-primary p-3 font-medium text-primary-foreground">{signup ? (verificationPending ? 'Verify email' : 'Send verification code') : 'Sign in'}</button>
