@@ -31,24 +31,38 @@ function Auth({ signup = false }) {
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [verificationPending, setVerificationPending] = useState(false);
+  const [code, setCode] = useState('');
   async function submit(e) {
     e.preventDefault(); setBusy(true); setError('');
     try {
-      // Do not use the legacy register endpoint: it lacks email verification.
-      if (signup) { setError('Secure email verification is being configured. Registration is temporarily unavailable.'); return; }
+      if (signup) {
+        if (verificationPending) {
+          const result = await apiRequest('/api/v1/auth/signup/verify', { method: 'POST', body: { email: form.email, code } });
+          if (result.ok) { navigate('/login'); return; }
+        } else {
+          await apiRequest('/api/v1/auth/signup/start', { method: 'POST', body: form });
+          setVerificationPending(true);
+        }
+        return;
+      }
       setError('Secure sign-in is being configured. Please check back shortly.');
-    } finally { setBusy(false); }
+    } catch (e) { setError(e.message || 'Request failed'); } finally { setBusy(false); }
   }
   return <main className="mx-auto max-w-md px-5 py-20">
     <button onClick={() => navigate(-1)} className="mb-8 text-sm text-muted-foreground">← Back</button>
     <h1 className="text-3xl font-semibold">{signup ? 'Create your cloud account' : 'Welcome back'}</h1>
     <p className="mt-2 text-muted-foreground">BabiesIQ Cloud account security</p>
     <form onSubmit={submit} className="mt-8 space-y-4">
+      {verificationPending && <p className="rounded-xl border p-3 text-sm">Enter the 6-digit verification code sent to your email. It expires in 5 minutes.</p>}
+      {verificationPending && <label className="block text-sm">Verification code<input inputMode="numeric" pattern="[0-9]{6}" maxLength={6} required className="mt-1 w-full rounded-xl border bg-background p-3" value={code} onChange={e=>setCode(e.target.value.replace(/\\D/g,''))}/></label>}
+      {!verificationPending && <>
       {signup && <div className="grid grid-cols-2 gap-3">{['firstName','lastName'].map(k=><label key={k} className="text-sm">{k === 'firstName' ? 'First name' : 'Last name'}<input className="mt-1 w-full rounded-xl border bg-background p-3" required value={form[k]} onChange={e=>setForm({...form,[k]:e.target.value})}/></label>)}</div>}
       <label className="block text-sm">Email<input type="email" required autoComplete="email" className="mt-1 w-full rounded-xl border bg-background p-3" value={form.email} onChange={e=>setForm({...form,email:e.target.value})}/></label>
       <label className="block text-sm">Password<input type="password" minLength={12} required autoComplete={signup ? 'new-password' : 'current-password'} className="mt-1 w-full rounded-xl border bg-background p-3" value={form.password} onChange={e=>setForm({...form,password:e.target.value})}/></label>
+      </>}
       {error && <p role="alert" className="text-sm text-amber-600">{error}</p>}
-      <button disabled={busy} className="w-full rounded-xl bg-primary p-3 font-medium text-primary-foreground">{signup ? 'Create account' : 'Sign in'}</button>
+      <button disabled={busy} className="w-full rounded-xl bg-primary p-3 font-medium text-primary-foreground">{signup ? (verificationPending ? 'Verify email' : 'Send verification code') : 'Sign in'}</button>
     </form>
     <div className="mt-5 flex justify-between text-sm"><Link to={signup?'/login':'/signup'}>{signup?'Sign in instead':'Create account'}</Link><Link to="/forgot-password">Forgot password?</Link></div>
     <p className="mt-8 text-xs text-muted-foreground">Google sign-in and email verification will be enabled after secure backend configuration.</p>
