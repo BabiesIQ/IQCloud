@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 import { getPreferences, updatePreferences } from '@/config/runtime.config';
 import { apiRequest } from '@/services/apiClient';
 import CloudPreferences from '@/components/CloudPreferences';
+import PasswordSettings from '@/components/PasswordSettings';
 import Home from '@/pages/Home';
 import PasswordRecovery from '@/pages/auth/PasswordRecovery';
 import SecurityCenter from '@/pages/SecurityCenter';
@@ -178,7 +179,7 @@ function Shell() {
     <Route path="/verify-email" element={<StatusPage title="Verify email"/>}/>
     <Route path="/security" element={<SecurityCenter/>}/>
     <Route path="/notifications" element={<Notifications/>}/>
-    <Route path="/settings" element={<main className="mx-auto max-w-xl px-5 py-12"><CloudPreferences/></main>}/>
+    <Route path="/settings" element={<main className="mx-auto max-w-xl space-y-5 px-5 py-12"><div><p className="text-xs font-semibold uppercase tracking-widest text-emerald-500">Account settings</p><h1 className="mt-2 text-3xl font-semibold">Preferences</h1><p className="mt-2 text-sm text-muted-foreground">Customize your experience and manage account security.</p></div><CloudPreferences/><PasswordSettings/></main>}/>
     <Route path="/pricing" element={<StatusPage title="Pricing"/>}/>
     <Route path="/configure" element={<StatusPage title="Create server"/>}/>
     <Route path="/docs" element={<StatusPage title="Documentation"/>}/>
