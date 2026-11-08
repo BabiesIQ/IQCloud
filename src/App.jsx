@@ -9,6 +9,7 @@ import CloudPreferences from '@/components/CloudPreferences';
 import PasswordSettings from '@/components/PasswordSettings';
 import PasswordField from '@/components/PasswordField';
 import Home from '@/pages/Home';
+import Dashboard from '@/pages/Dashboard';
 import PasswordRecovery from '@/pages/auth/PasswordRecovery';
 import SecurityCenter from '@/pages/SecurityCenter';
 import Notifications from '@/pages/Notifications';
@@ -184,7 +185,7 @@ function Shell() {
     <Route path="/pricing" element={<StatusPage title="Pricing"/>}/>
     <Route path="/configure" element={<StatusPage title="Create server"/>}/>
     <Route path="/docs" element={<StatusPage title="Documentation"/>}/>
-    <Route path="/dashboard" element={<StatusPage title="Cloud dashboard"/>}/>
+    <Route path="/dashboard" element={<Dashboard/>}/>
     <Route path="*" element={<StatusPage title="Page not found"/>}/>
   </Routes><footer className="border-t px-5 py-8 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} BabiesIQ Cloud</footer><Toaster position="top-right" richColors/></div>;
 }
