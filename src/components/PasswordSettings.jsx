@@ -40,6 +40,6 @@ export default function PasswordSettings() {
    {error&&<p role="alert" className="rounded-xl bg-red-500/10 p-3 text-sm text-red-500">{error}</p>}
    <button type="submit" disabled={busy} className="w-full rounded-xl bg-primary px-4 py-3 font-semibold text-primary-foreground disabled:opacity-50">{busy?'Updating…':'Update password'}</button>
   </form>}
-  <div className="mt-5 flex items-center justify-between gap-3 border-t pt-4"><div className="flex items-center gap-2 text-xs text-muted-foreground"><ShieldCheck size={16}/> Secure account recovery</div><Link to="/forgot-password" className="text-xs font-medium text-emerald-600 hover:underline">Forgot password?</Link></div>
+  <div className="mt-5 flex items-center justify-between gap-3 border-t pt-4"><div className="flex items-center gap-2 text-xs text-muted-foreground"><ShieldCheck size={16}/> Secure account recovery</div><Link to="/forgot-password" state={{ returnTo: "/settings" }} className="text-xs font-medium text-emerald-600 hover:underline">Forgot password?</Link></div>
  </section>;
 }
