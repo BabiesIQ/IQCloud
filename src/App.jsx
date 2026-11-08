@@ -10,26 +10,87 @@ import PasswordRecovery from '@/pages/auth/PasswordRecovery';
 import SecurityCenter from '@/pages/SecurityCenter';
 
 function Header() {
-  const [account,setAccount] = useState(null);
-  useEffect(()=>{let active=true;const refresh=()=>apiRequest('/api/v1/auth/me').then(u=>{if(active)setAccount(u)}).catch(()=>{if(active)setAccount(null)});refresh();window.addEventListener('iqcloud:auth-changed',refresh);return ()=>{active=false;window.removeEventListener('iqcloud:auth-changed',refresh)}},[]);
-  async function signOut(){try{await apiRequest('/api/v1/auth/logout',{method:'POST'});}finally{setAccount(null);window.dispatchEvent(new Event('iqcloud:auth-changed'));}}
+  const [account, setAccount] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
   const [theme, setTheme] = useState(getPreferences().theme);
-  const toggle = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    let active = true;
+    const refresh = () => apiRequest('/api/v1/auth/me')
+      .then(user => { if (active) setAccount(user); })
+      .catch(() => { if (active) setAccount(null); });
+    refresh();
+    window.addEventListener('iqcloud:auth-changed', refresh);
+    return () => { active = false; window.removeEventListener('iqcloud:auth-changed', refresh); };
+  }, []);
+  useEffect(() => {
+    const sync = () => setTheme(getPreferences().theme);
+    window.addEventListener('iqcloud:preferences', sync);
+    return () => window.removeEventListener('iqcloud:preferences', sync);
+  }, []);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const closeOnEscape = event => { if (event.key === 'Escape') setMenuOpen(false); };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [menuOpen]);
+  const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
-    updatePreferences({ theme: next }); setTheme(next);
-    document.documentElement.classList.toggle('dark', next === 'dark');
-    // ThemeProvider also watches the storage key; reload is not needed.
+    updatePreferences({ theme: next });
+    setTheme(next);
   };
-  return <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
-    <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-      <Link className="font-semibold tracking-tight text-lg" to="/">☁ BabiesIQ Cloud</Link>
-      <div className="flex items-center gap-3 text-sm">
-        <button type="button" onClick={toggle} aria-label="Toggle dark mode" className="rounded-xl border px-3 py-2">{theme === 'dark' ? '☀' : '☾'}</button>
-        <Link to="/pricing" className="hidden sm:block">Pricing</Link>
-        {account ? <><Link to="/dashboard" className="rounded-xl border px-3 py-2">Dashboard</Link><Link to="/security" className="hidden sm:block">Security</Link><button onClick={signOut} className="rounded-xl border px-3 py-2">Log out</button></> : <Link to="/login" className="rounded-xl border px-3 py-2">Log in</Link>}
-      </div>
-    </nav>
-  </header>;
+  async function signOut() {
+    setLoggingOut(true);
+    try {
+      await apiRequest('/api/v1/auth/logout', { method: 'POST' });
+      setAccount(null);
+      setMenuOpen(false);
+      window.dispatchEvent(new Event('iqcloud:auth-changed'));
+      navigate('/login', { replace: true });
+    } catch (error) {
+      alert(error.message || 'Could not sign out. Please retry.');
+    } finally { setLoggingOut(false); }
+  }
+  const menuItems = [
+    { to: '/', label: 'Home', icon: '⌂' },
+    ...(account ? [{ to: '/dashboard', label: 'Dashboard', icon: '▦' }, { to: '/security', label: 'Security Center', icon: '♢' }] : []),
+    { to: '/pricing', label: 'Pricing', icon: '◇' },
+    ...(account ? [{ to: '/settings', label: 'Preferences', icon: '⚙' }] : []),
+    { to: '/docs', label: 'Documentation', icon: '◫' }
+  ];
+  return <>
+    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
+        <div className="flex min-w-0 items-center gap-3">
+          <button type="button" onClick={() => setMenuOpen(true)} aria-label="Open navigation menu" aria-expanded={menuOpen} aria-controls="cloud-navigation" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" >
+            <span className="flex flex-col gap-1"><span className="block h-0.5 w-5 rounded bg-current"/><span className="block h-0.5 w-5 rounded bg-current"/><span className="block h-0.5 w-5 rounded bg-current"/></span>
+          </button>
+          <Link className="truncate text-base font-semibold tracking-tight sm:text-lg" to="/">☁ BabiesIQ Cloud</Link>
+        </div>
+        <div className="flex shrink-0 items-center gap-2 text-sm">
+          <button type="button" onClick={toggleTheme} aria-label="Toggle dark mode" className="flex h-10 w-10 items-center justify-center rounded-xl border">{theme === 'dark' ? '☀' : '☾'}</button>
+          {!account && <Link to="/login" className="rounded-xl border px-3 py-2">Log in</Link>}
+        </div>
+      </nav>
+    </header>
+    {menuOpen && <div className="fixed inset-0 z-50">
+      <button type="button" className="absolute inset-0 h-full w-full bg-black/60" aria-label="Close navigation menu" onClick={() => setMenuOpen(false)} />
+      <aside id="cloud-navigation" role="dialog" aria-modal="true" aria-label="Navigation" className="absolute inset-y-0 left-0 flex w-[min(86vw,340px)] flex-col border-r bg-background shadow-2xl">
+        <div className="flex items-center justify-between border-b px-5 py-5">
+          <div><p className="font-semibold">☁ BabiesIQ Cloud</p><p className="mt-1 text-xs text-muted-foreground">{account ? (account.email || 'My account') : 'Cloud hosting platform'}</p></div>
+          <button type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu" className="rounded-lg border px-3 py-2">✕</button>
+        </div>
+        <div className="flex-1 space-y-1 overflow-y-auto p-3">
+          {menuItems.map(item => <Link key={item.to} to={item.to} onClick={() => setMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium hover:bg-muted focus-visible:bg-muted"><span aria-hidden="true" className="w-6 text-center text-lg">{item.icon}</span>{item.label}</Link>)}
+        </div>
+        <div className="border-t p-3">
+          {account ? <button type="button" onClick={signOut} disabled={loggingOut} className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium text-red-500 hover:bg-red-500/10 disabled:opacity-50"><span aria-hidden="true" className="w-6 text-center">⇥</span>{loggingOut ? 'Logging out…' : 'Log out'}</button> :
+          <Link to="/login" onClick={() => setMenuOpen(false)} className="block rounded-xl bg-primary px-4 py-3 text-center text-sm font-medium text-primary-foreground">Log in</Link>}
+        </div>
+      </aside>
+    </div>}
+  </>;
 }
 function Auth({ signup = false }) {
   const navigate = useNavigate();
