@@ -1,0 +1,268 @@
+{
+  "_meta": {
+    "_table": {
+      "label": "Domain",
+      "plural": "Domains",
+      "icon": "Globe"
+    },
+    "Name": {
+      "type": "Text",
+      "label": "Name",
+      "required": true
+    },
+    "hostname_c": {
+      "type": "Text",
+      "label": "Hostname"
+    },
+    "target_c": {
+      "type": "Text",
+      "label": "CNAME target"
+    },
+    "status_c": {
+      "type": "Picklist",
+      "label": "Verification status",
+      "values": "Unverified,Pending,Verified"
+    },
+    "record_type_c": {
+      "type": "Picklist",
+      "label": "Record type",
+      "values": "CNAME,TXT"
+    },
+    "instance_name_c": {
+      "type": "Text",
+      "label": "Linked instance name"
+    }
+  },
+  "records": [
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a21-920000000021",
+      "Name": "studio.example.com",
+      "hostname_c": "studio.example.com",
+      "target_c": "verify-1.cloud.babiesiq.example",
+      "status_c": "Verified",
+      "record_type_c": "CNAME",
+      "instance_name_c": "studio-web-01",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-11-04T08:30:00.000Z",
+      "ModifiedOn": "2026-11-06T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a22-920000000022",
+      "Name": "api.example.net",
+      "hostname_c": "api.example.net",
+      "target_c": "verify-2.cloud.babiesiq.example",
+      "status_c": "Unverified",
+      "record_type_c": "CNAME",
+      "instance_name_c": "pixel-api-prod",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-11-03T08:30:00.000Z",
+      "ModifiedOn": "2026-11-05T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a23-920000000023",
+      "Name": "store.example.org",
+      "hostname_c": "store.example.org",
+      "target_c": "verify-3.cloud.babiesiq.example",
+      "status_c": "Pending",
+      "record_type_c": "CNAME",
+      "instance_name_c": "northwind-staging",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-11-02T08:30:00.000Z",
+      "ModifiedOn": "2026-11-04T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a24-920000000024",
+      "Name": "portal.example.com",
+      "hostname_c": "portal.example.com",
+      "target_c": "verify-4.cloud.babiesiq.example",
+      "status_c": "Verified",
+      "record_type_c": "CNAME",
+      "instance_name_c": "kairo-worker",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-11-01T08:30:00.000Z",
+      "ModifiedOn": "2026-11-03T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a25-920000000025",
+      "Name": "docs.example.net",
+      "hostname_c": "docs.example.net",
+      "target_c": "verify-5.cloud.babiesiq.example",
+      "status_c": "Unverified",
+      "record_type_c": "CNAME",
+      "instance_name_c": "shopfront-test",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-31T08:30:00.000Z",
+      "ModifiedOn": "2026-11-02T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a26-920000000026",
+      "Name": "blog.example.org",
+      "hostname_c": "blog.example.org",
+      "target_c": "verify-6.cloud.babiesiq.example",
+      "status_c": "Pending",
+      "record_type_c": "CNAME",
+      "instance_name_c": "synapse-node",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-30T08:30:00.000Z",
+      "ModifiedOn": "2026-11-01T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a27-920000000027",
+      "Name": "stage.example.com",
+      "hostname_c": "stage.example.com",
+      "target_c": "verify-7.cloud.babiesiq.example",
+      "status_c": "Verified",
+      "record_type_c": "CNAME",
+      "instance_name_c": "orbit-sandbox",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-10-29T08:30:00.000Z",
+      "ModifiedOn": "2026-10-31T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a28-920000000028",
+      "Name": "media.example.net",
+      "hostname_c": "media.example.net",
+      "target_c": "verify-8.cloud.babiesiq.example",
+      "status_c": "Unverified",
+      "record_type_c": "CNAME",
+      "instance_name_c": "atlas-site",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-28T08:30:00.000Z",
+      "ModifiedOn": "2026-10-30T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a29-920000000029",
+      "Name": "beta.example.org",
+      "hostname_c": "beta.example.org",
+      "target_c": "verify-9.cloud.babiesiq.example",
+      "status_c": "Pending",
+      "record_type_c": "CNAME",
+      "instance_name_c": "meridian-app",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-27T08:30:00.000Z",
+      "ModifiedOn": "2026-10-29T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a30-920000000030",
+      "Name": "app.example.com",
+      "hostname_c": "app.example.com",
+      "target_c": "verify-10.cloud.babiesiq.example",
+      "status_c": "Verified",
+      "record_type_c": "CNAME",
+      "instance_name_c": "delta-lab",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-10-26T08:30:00.000Z",
+      "ModifiedOn": "2026-10-28T08:30:00.000Z"
+    }
+  ]
+}

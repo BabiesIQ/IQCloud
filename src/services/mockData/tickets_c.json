@@ -1,0 +1,233 @@
+{
+  "_meta": {
+    "_table": {
+      "label": "Ticket",
+      "plural": "Tickets",
+      "icon": "LifeBuoy"
+    },
+    "Name": {
+      "type": "Text",
+      "label": "Name",
+      "required": true
+    },
+    "topic_c": {
+      "type": "Picklist",
+      "label": "Category",
+      "values": "Networking,Domains,Storage,Billing,SSH,Compute,Regions,API"
+    },
+    "status_c": {
+      "type": "Picklist",
+      "label": "Status",
+      "values": "Open,Pending,Resolved"
+    },
+    "priority_c": {
+      "type": "Picklist",
+      "label": "Priority",
+      "values": "High,Medium,Low"
+    },
+    "message_c": {
+      "type": "MultilineText",
+      "label": "Description"
+    }
+  },
+  "records": [
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a61-920000000061",
+      "Name": "Port routing question",
+      "topic_c": "Networking",
+      "status_c": "Open",
+      "priority_c": "High",
+      "message_c": "Demo support inquiry. Production support tickets will be managed securely and linked to the account.",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-11-04T08:30:00.000Z",
+      "ModifiedOn": "2026-11-06T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a62-920000000062",
+      "Name": "Custom hostname setup",
+      "topic_c": "Domains",
+      "status_c": "Resolved",
+      "priority_c": "Low",
+      "message_c": "Demo support inquiry. Production support tickets will be managed securely and linked to the account.",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-11-03T08:30:00.000Z",
+      "ModifiedOn": "2026-11-05T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a63-920000000063",
+      "Name": "Understanding disk limit",
+      "topic_c": "Storage",
+      "status_c": "Open",
+      "priority_c": "Medium",
+      "message_c": "Demo support inquiry. Production support tickets will be managed securely and linked to the account.",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-11-02T08:30:00.000Z",
+      "ModifiedOn": "2026-11-04T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a64-920000000064",
+      "Name": "Billing preview question",
+      "topic_c": "Billing",
+      "status_c": "Pending",
+      "priority_c": "High",
+      "message_c": "Demo support inquiry. Production support tickets will be managed securely and linked to the account.",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-11-01T08:30:00.000Z",
+      "ModifiedOn": "2026-11-03T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a65-920000000065",
+      "Name": "SSH access roadmap",
+      "topic_c": "SSH",
+      "status_c": "Resolved",
+      "priority_c": "Low",
+      "message_c": "Demo support inquiry. Production support tickets will be managed securely and linked to the account.",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-31T08:30:00.000Z",
+      "ModifiedOn": "2026-11-02T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a66-920000000066",
+      "Name": "OS image requirements",
+      "topic_c": "Compute",
+      "status_c": "Open",
+      "priority_c": "Medium",
+      "message_c": "Demo support inquiry. Production support tickets will be managed securely and linked to the account.",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-30T08:30:00.000Z",
+      "ModifiedOn": "2026-11-01T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a67-920000000067",
+      "Name": "Region comparison",
+      "topic_c": "Regions",
+      "status_c": "Pending",
+      "priority_c": "High",
+      "message_c": "Demo support inquiry. Production support tickets will be managed securely and linked to the account.",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-10-29T08:30:00.000Z",
+      "ModifiedOn": "2026-10-31T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a68-920000000068",
+      "Name": "Persistent volume advice",
+      "topic_c": "Storage",
+      "status_c": "Resolved",
+      "priority_c": "Low",
+      "message_c": "Demo support inquiry. Production support tickets will be managed securely and linked to the account.",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-28T08:30:00.000Z",
+      "ModifiedOn": "2026-10-30T08:30:00.000Z"
+    },
+    {
+      "Id": "b4b1b3a1-3f7a-4e9e-8a69-920000000069",
+      "Name": "API usage request",
+      "topic_c": "API",
+      "status_c": "Open",
+      "priority_c": "Medium",
+      "message_c": "Demo support inquiry. Production support tickets will be managed securely and linked to the account.",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-27T08:30:00.000Z",
+      "ModifiedOn": "2026-10-29T08:30:00.000Z"
+    }
+  ]
+}

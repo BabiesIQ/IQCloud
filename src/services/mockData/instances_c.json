@@ -1,0 +1,327 @@
+{
+  "_meta": {
+    "_table": {
+      "label": "Instance",
+      "plural": "Instances",
+      "icon": "Server"
+    },
+    "Name": {
+      "type": "Text",
+      "label": "Name",
+      "required": true
+    },
+    "region_c": {
+      "type": "Picklist",
+      "label": "Region",
+      "values": "ap-southeast,us-west,eu-west,us-east"
+    },
+    "os_c": {
+      "type": "Picklist",
+      "label": "Operating system",
+      "values": "Ubuntu 24.04 LTS,Debian 12,Alpine Linux"
+    },
+    "cpu_c": {
+      "type": "Number",
+      "label": "vCPU"
+    },
+    "ram_c": {
+      "type": "Number",
+      "label": "RAM (GB)"
+    },
+    "storage_c": {
+      "type": "Number",
+      "label": "Disk request (GB)"
+    },
+    "status_c": {
+      "type": "Picklist",
+      "label": "State",
+      "values": "Running,Provisioning,Stopped,Pending"
+    },
+    "price_c": {
+      "type": "Decimal",
+      "label": "Monthly price (INR)",
+      "precision": 2
+    },
+    "term_c": {
+      "type": "Picklist",
+      "label": "Billing cycle",
+      "values": "Monthly,Yearly"
+    },
+    "endpoint_c": {
+      "type": "Text",
+      "label": "SSH endpoint"
+    }
+  },
+  "records": [
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f01-700000000001",
+      "Name": "studio-web-01",
+      "region_c": "ap-southeast",
+      "os_c": "Ubuntu 24.04 LTS",
+      "cpu_c": 1,
+      "ram_c": 2,
+      "storage_c": 20,
+      "status_c": "Running",
+      "price_c": 499,
+      "term_c": "Yearly",
+      "endpoint_c": "Not assigned",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-11-04T08:30:00.000Z",
+      "ModifiedOn": "2026-11-06T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f02-700000000002",
+      "Name": "pixel-api-prod",
+      "region_c": "us-west",
+      "os_c": "Debian 12",
+      "cpu_c": 2,
+      "ram_c": 4,
+      "storage_c": 50,
+      "status_c": "Running",
+      "price_c": 1299,
+      "term_c": "Monthly",
+      "endpoint_c": "Pending allocation",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-11-03T08:30:00.000Z",
+      "ModifiedOn": "2026-11-05T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f03-700000000003",
+      "Name": "northwind-staging",
+      "region_c": "eu-west",
+      "os_c": "Alpine Linux",
+      "cpu_c": 4,
+      "ram_c": 8,
+      "storage_c": 100,
+      "status_c": "Provisioning",
+      "price_c": 2399,
+      "term_c": "Monthly",
+      "endpoint_c": "Pending allocation",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-11-02T08:30:00.000Z",
+      "ModifiedOn": "2026-11-04T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f04-700000000004",
+      "Name": "kairo-worker",
+      "region_c": "us-east",
+      "os_c": "Ubuntu 24.04 LTS",
+      "cpu_c": 2,
+      "ram_c": 4,
+      "storage_c": 50,
+      "status_c": "Stopped",
+      "price_c": 1250,
+      "term_c": "Monthly",
+      "endpoint_c": "Pending allocation",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-11-01T08:30:00.000Z",
+      "ModifiedOn": "2026-11-03T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f05-700000000005",
+      "Name": "shopfront-test",
+      "region_c": "ap-southeast",
+      "os_c": "Debian 12",
+      "cpu_c": 2,
+      "ram_c": 4,
+      "storage_c": 40,
+      "status_c": "Running",
+      "price_c": 1150,
+      "term_c": "Yearly",
+      "endpoint_c": "Not assigned",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-31T08:30:00.000Z",
+      "ModifiedOn": "2026-11-02T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f06-700000000006",
+      "Name": "synapse-node",
+      "region_c": "us-west",
+      "os_c": "Alpine Linux",
+      "cpu_c": 1,
+      "ram_c": 1,
+      "storage_c": 20,
+      "status_c": "Pending",
+      "price_c": 390,
+      "term_c": "Monthly",
+      "endpoint_c": "Pending allocation",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-30T08:30:00.000Z",
+      "ModifiedOn": "2026-11-01T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f07-700000000007",
+      "Name": "orbit-sandbox",
+      "region_c": "eu-west",
+      "os_c": "Ubuntu 24.04 LTS",
+      "cpu_c": 4,
+      "ram_c": 8,
+      "storage_c": 100,
+      "status_c": "Stopped",
+      "price_c": 2499,
+      "term_c": "Monthly",
+      "endpoint_c": "Pending allocation",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-10-29T08:30:00.000Z",
+      "ModifiedOn": "2026-10-31T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f08-700000000008",
+      "Name": "atlas-site",
+      "region_c": "us-east",
+      "os_c": "Debian 12",
+      "cpu_c": 2,
+      "ram_c": 2,
+      "storage_c": 40,
+      "status_c": "Running",
+      "price_c": 890,
+      "term_c": "Monthly",
+      "endpoint_c": "Pending allocation",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-28T08:30:00.000Z",
+      "ModifiedOn": "2026-10-30T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f09-700000000009",
+      "Name": "meridian-app",
+      "region_c": "ap-southeast",
+      "os_c": "Alpine Linux",
+      "cpu_c": 1,
+      "ram_c": 1,
+      "storage_c": 20,
+      "status_c": "Provisioning",
+      "price_c": 490,
+      "term_c": "Yearly",
+      "endpoint_c": "Not assigned",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-27T08:30:00.000Z",
+      "ModifiedOn": "2026-10-29T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f10-700000000010",
+      "Name": "delta-lab",
+      "region_c": "us-west",
+      "os_c": "Ubuntu 24.04 LTS",
+      "cpu_c": 4,
+      "ram_c": 8,
+      "storage_c": 120,
+      "status_c": "Pending",
+      "price_c": 2800,
+      "term_c": "Monthly",
+      "endpoint_c": "Pending allocation",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-10-26T08:30:00.000Z",
+      "ModifiedOn": "2026-10-28T08:30:00.000Z"
+    }
+  ]
+}

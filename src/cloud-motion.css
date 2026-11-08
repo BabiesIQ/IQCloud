@@ -1,0 +1,7 @@
+@keyframes cloudFloatA {0%,100% {transform:translateY(0) rotate(-3deg) rotateY(-10deg)} 50% {transform:translateY(-12px) rotate(0deg) rotateY(-6deg)}}
+@keyframes cloudFloatB {0%,100% {transform:translateY(0) rotate(3deg) rotateY(8deg)} 50% {transform:translateY(10px) rotate(0deg) rotateY(4deg)}}
+@keyframes themeIconEnter {from {opacity:0;transform:rotate(-80deg) scale(.6)} to {opacity:1;transform:rotate(0) scale(1)}}
+.cloud-float-a {animation:cloudFloatA 6s ease-in-out infinite;}
+.cloud-float-b {animation:cloudFloatB 7s ease-in-out infinite;}
+.theme-icon-enter {animation:themeIconEnter .45s ease-out both;}
+@media (prefers-reduced-motion:reduce) {.cloud-float-a,.cloud-float-b,.theme-icon-enter {animation:none;}}

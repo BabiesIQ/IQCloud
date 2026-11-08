@@ -1,0 +1,34 @@
+import { Link } from 'react-router-dom';
+import { BackLink } from '@/components/cloud/CloudUI';
+
+export const route = { path: '/terms', layout: 'public', access: 'public' };
+
+const clauses=[
+  ['1. Service description','BabiesIQ Cloud is currently a demonstration of a proposed managed hosting platform. No production VPS, virtual machine, public address, storage allocation or commercial hosting service is being supplied through this preview.'],
+  ['2. Eligibility and use','Future users must be legally eligible to enter binding contracts and may use the service only for lawful purposes. Spam, malware, unauthorized intrusion, abusive scraping, illicit content and other prohibited activity would not be allowed.'],
+  ['3. Resource allocation','Selected vCPU, memory and disk are requests and estimates until accepted and fulfilled. Containerized environments may share a host kernel, and no guarantee of dedicated hardware, arbitrary root capabilities or static public IPv4 is made.'],
+  ['4. Availability and changes','Regions, supported operating-system images, prices, uptime, network ingress, quotas and volume limits will depend on provider capacity, service plan and applicable terms. They may change before sale.'],
+  ['5. Payment and renewal','All prices in the preview are illustrative. A future checkout must disclose applicable taxes, subscription period, renewal terms, cancellation deadlines and total charges before payment authorization. No money is collected now.'],
+  ['6. Customer content and security','Future customers would be responsible for their uploaded content, domain ownership, access keys and lawful operations. BabiesIQ Cloud would need authentication, tenant isolation, operational monitoring and backup policies before launch.'],
+  ['7. Custom domain routing','A domain would require customer DNS control and registration against the correct hosting service. Propagation times vary; verification is not guaranteed. The system will not claim domain ownership merely because DNS is entered.'],
+  ['8. Suspension and misuse','A future service may suspend access for abuse, payment failure or infrastructure security threats, subject to a published notice, review and appeal policy.'],
+  ['9. Liability and support','The preview is provided without service-level guarantees. A production agreement must separately define uptime commitments, support response targets, data retention and limits of liability, as permitted by applicable law.'],
+  ['10. Updates and contact','This is a draft policy for product design, not finalized legal advice. Before accepting customers, publish the legal business name, registered address, official support channel, effective date and jurisdiction-specific consumer terms.'],
+];
+
+export default function Terms() {
+  return (
+    <div className="mx-auto max-w-4xl px-6 py-16">
+      <BackLink to="/" label="Back to home"/>
+      <p className="font-heading text-xs uppercase tracking-widest text-primary">Legal / Draft preview</p>
+      <h1 className="mt-4 font-heading text-4xl font-bold">Terms of service</h1>
+      <p className="mt-4 border-b border-border pb-8 text-sm leading-7 text-muted-foreground">Draft dated 6 November 2026. These conditions explain the proposed service model; they are not a substitute for a legally reviewed agreement.</p>
+      <div className="mt-9 space-y-9">
+        {clauses.map(([title,description])=>(
+          <section key={title}><h2 className="font-heading text-base font-bold">{title}</h2><p className="mt-3 text-sm leading-8 text-muted-foreground">{description}</p></section>
+        ))}
+      </div>
+      <div className="mt-12 border-t border-border pt-7 text-sm text-muted-foreground">Also see the <Link className="font-semibold text-primary" to="/privacy">Privacy policy</Link> and <Link className="font-semibold text-primary" to="/refund-policy">Refund policy</Link>.</div>
+    </div>
+  );
+}

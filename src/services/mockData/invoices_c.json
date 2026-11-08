@@ -1,0 +1,254 @@
+{
+  "_meta": {
+    "_table": {
+      "label": "Invoice",
+      "plural": "Invoices",
+      "icon": "ReceiptText"
+    },
+    "Name": {
+      "type": "Text",
+      "label": "Name",
+      "required": true
+    },
+    "amount_c": {
+      "type": "Decimal",
+      "label": "Amount (INR)",
+      "precision": 2
+    },
+    "status_c": {
+      "type": "Picklist",
+      "label": "Payment status",
+      "values": "Paid,Pending,Overdue"
+    },
+    "due_c": {
+      "type": "Date",
+      "label": "Due date"
+    },
+    "description_c": {
+      "type": "Text",
+      "label": "Description"
+    }
+  },
+  "records": [
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f45-700000000045",
+      "Name": "BIC-2026-1110",
+      "amount_c": 1299,
+      "status_c": "Paid",
+      "due_c": "2026-11-08",
+      "description_c": "Illustrative subscription for demo instance 1 — no payment due",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-11-04T08:30:00.000Z",
+      "ModifiedOn": "2026-11-06T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f46-700000000046",
+      "Name": "BIC-2026-1111",
+      "amount_c": 499,
+      "status_c": "Paid",
+      "due_c": "2026-11-09",
+      "description_c": "Illustrative subscription for demo instance 2 — no payment due",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-11-03T08:30:00.000Z",
+      "ModifiedOn": "2026-11-05T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f47-700000000047",
+      "Name": "BIC-2026-1112",
+      "amount_c": 2399,
+      "status_c": "Pending",
+      "due_c": "2026-11-10",
+      "description_c": "Illustrative subscription for demo instance 3 — no payment due",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-11-02T08:30:00.000Z",
+      "ModifiedOn": "2026-11-04T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f48-700000000048",
+      "Name": "BIC-2026-1113",
+      "amount_c": 1250,
+      "status_c": "Paid",
+      "due_c": "2026-11-11",
+      "description_c": "Illustrative subscription for demo instance 4 — no payment due",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-11-01T08:30:00.000Z",
+      "ModifiedOn": "2026-11-03T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f49-700000000049",
+      "Name": "BIC-2026-1114",
+      "amount_c": 1150,
+      "status_c": "Overdue",
+      "due_c": "2026-11-12",
+      "description_c": "Illustrative subscription for demo instance 5 — no payment due",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-31T08:30:00.000Z",
+      "ModifiedOn": "2026-11-02T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f50-700000000050",
+      "Name": "BIC-2026-1115",
+      "amount_c": 390,
+      "status_c": "Paid",
+      "due_c": "2026-12-13",
+      "description_c": "Illustrative subscription for demo instance 6 — no payment due",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-30T08:30:00.000Z",
+      "ModifiedOn": "2026-11-01T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f51-700000000051",
+      "Name": "BIC-2026-1116",
+      "amount_c": 2499,
+      "status_c": "Pending",
+      "due_c": "2026-12-14",
+      "description_c": "Illustrative subscription for demo instance 7 — no payment due",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-10-29T08:30:00.000Z",
+      "ModifiedOn": "2026-10-31T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f52-700000000052",
+      "Name": "BIC-2026-1117",
+      "amount_c": 890,
+      "status_c": "Paid",
+      "due_c": "2026-12-15",
+      "description_c": "Illustrative subscription for demo instance 8 — no payment due",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-28T08:30:00.000Z",
+      "ModifiedOn": "2026-10-30T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f53-700000000053",
+      "Name": "BIC-2026-1118",
+      "amount_c": 490,
+      "status_c": "Paid",
+      "due_c": "2026-12-16",
+      "description_c": "Illustrative subscription for demo instance 9 — no payment due",
+      "Owner": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "ModifiedBy": {
+        "Id": "1d697d62-4ea9-447a-89ec-92d7be142b74",
+        "Name": "Demo Customer"
+      },
+      "CreatedOn": "2026-10-27T08:30:00.000Z",
+      "ModifiedOn": "2026-10-29T08:30:00.000Z"
+    },
+    {
+      "Id": "c9ba0d11-4be2-4d85-8f54-700000000054",
+      "Name": "BIC-2026-1119",
+      "amount_c": 2800,
+      "status_c": "Pending",
+      "due_c": "2026-12-17",
+      "description_c": "Illustrative subscription for demo instance 10 — no payment due",
+      "Owner": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "ModifiedBy": {
+        "Id": "a41c9d27-5e8f-4b06-9c3a-d7f218e64b90",
+        "Name": "Demo Admin"
+      },
+      "CreatedOn": "2026-10-26T08:30:00.000Z",
+      "ModifiedOn": "2026-10-28T08:30:00.000Z"
+    }
+  ]
+}
