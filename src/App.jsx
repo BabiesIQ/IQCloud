@@ -118,6 +118,9 @@ function Auth({ signup = false }) {
   const [busy, setBusy] = useState(false);
   const [verificationPending, setVerificationPending] = useState(false);
   const [code, setCode] = useState('');
+  const googleError = new URLSearchParams(window.location.search).get('google_error');
+  const googleMessages = { unavailable: 'Google sign-in is not configured yet.', account_exists: 'An account already uses this email. Sign in with your password; account linking will be available later.', expired_state: 'Google sign-in expired. Please try again.', invalid_request: 'Google sign-in could not be verified. Please retry.', unverified_email: 'Google did not confirm a verified email.', authorization_failed: 'Google authorization failed.' };
+  const startGoogle = () => { window.location.assign(getPreferences().apiBaseUrl + '/api/v1/auth/google/start'); };
   async function submit(e) {
     e.preventDefault(); setBusy(true); setError('');
     try {
@@ -151,8 +154,13 @@ function Auth({ signup = false }) {
       {error && <p role="alert" className="text-sm text-amber-600">{error}</p>}
       <button disabled={busy} className="w-full rounded-xl bg-primary p-3 font-medium text-primary-foreground">{signup ? (verificationPending ? 'Verify email' : 'Send verification code') : 'Sign in'}</button>
     </form>
+    <div className="mt-5">
+      <div className="mb-4 flex items-center gap-3 text-xs text-muted-foreground"><span className="h-px flex-1 bg-border"/><span>or continue with</span><span className="h-px flex-1 bg-border"/></div>
+      <button type="button" onClick={startGoogle} className="flex w-full items-center justify-center gap-3 rounded-xl border bg-background px-4 py-3 text-sm font-medium hover:bg-muted" aria-label="Continue with Google"><span className="font-bold text-lg text-blue-500">G</span> Continue with Google</button>
+      {googleError && <p role="alert" className="mt-3 text-sm text-amber-600">{googleMessages[googleError] || 'Google sign-in failed. Please retry.'}</p>}
+    </div>
     <div className="mt-5 flex justify-between text-sm"><Link to={signup?'/login':'/signup'}>{signup?'Sign in instead':'Create account'}</Link><Link to="/forgot-password">Forgot password?</Link></div>
-    <p className="mt-8 text-xs text-muted-foreground">Your account is protected by email verification and secure sessions. Google sign-in is coming soon.</p>
+    <p className="mt-8 text-xs text-muted-foreground">Your account is protected by email verification and secure sessions.</p>
   </main>;
 }
 function StatusPage({ title }) {
