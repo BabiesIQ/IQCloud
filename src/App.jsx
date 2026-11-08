@@ -7,6 +7,7 @@ import { apiRequest } from '@/services/apiClient';
 import CloudPreferences from '@/components/CloudPreferences';
 import Home from '@/pages/Home';
 import PasswordRecovery from '@/pages/auth/PasswordRecovery';
+import SecurityCenter from '@/pages/SecurityCenter';
 
 function Header() {
   const [account,setAccount] = useState(null);
@@ -25,7 +26,7 @@ function Header() {
       <div className="flex items-center gap-3 text-sm">
         <button type="button" onClick={toggle} aria-label="Toggle dark mode" className="rounded-xl border px-3 py-2">{theme === 'dark' ? '☀' : '☾'}</button>
         <Link to="/pricing" className="hidden sm:block">Pricing</Link>
-        {account ? <><Link to="/dashboard" className="rounded-xl border px-3 py-2">Dashboard</Link><button onClick={signOut} className="rounded-xl border px-3 py-2">Log out</button></> : <Link to="/login" className="rounded-xl border px-3 py-2">Log in</Link>}
+        {account ? <><Link to="/dashboard" className="rounded-xl border px-3 py-2">Dashboard</Link><Link to="/security" className="hidden sm:block">Security</Link><button onClick={signOut} className="rounded-xl border px-3 py-2">Log out</button></> : <Link to="/login" className="rounded-xl border px-3 py-2">Log in</Link>}
       </div>
     </nav>
   </header>;
@@ -87,6 +88,7 @@ function Shell() {
     <Route path="/forgot-password" element={<PasswordRecovery/>}/>
     <Route path="/reset-password" element={<PasswordRecovery reset/>}/>
     <Route path="/verify-email" element={<StatusPage title="Verify email"/>}/>
+    <Route path="/security" element={<SecurityCenter/>}/>
     <Route path="/settings" element={<main className="mx-auto max-w-xl px-5 py-12"><CloudPreferences/></main>}/>
     <Route path="/pricing" element={<StatusPage title="Pricing"/>}/>
     <Route path="/configure" element={<StatusPage title="Create server"/>}/>
