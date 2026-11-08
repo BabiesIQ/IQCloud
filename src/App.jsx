@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { Toaster } from 'sonner';
+import { Bell } from 'lucide-react';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { getPreferences, updatePreferences } from '@/config/runtime.config';
 import { apiRequest } from '@/services/apiClient';
@@ -14,6 +15,7 @@ function Header() {
   const [account, setAccount] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [theme, setTheme] = useState(getPreferences().theme);
   const navigate = useNavigate();
   useEffect(() => {
@@ -25,6 +27,18 @@ function Header() {
     window.addEventListener('iqcloud:auth-changed', refresh);
     return () => { active = false; window.removeEventListener('iqcloud:auth-changed', refresh); };
   }, []);
+  useEffect(() => {
+    let active = true;
+    const refresh = () => {
+      if (!account) { setUnreadCount(0); return; }
+      apiRequest('/api/v1/notifications')
+        .then(data => { if (active) setUnreadCount(Math.max(0, Number(data.unreadCount) || 0)); })
+        .catch(() => { if (active) setUnreadCount(0); });
+    };
+    refresh();
+    window.addEventListener('iqcloud:notifications-changed', refresh);
+    return () => { active = false; window.removeEventListener('iqcloud:notifications-changed', refresh); };
+  }, [account]);
   useEffect(() => {
     const sync = () => setTheme(getPreferences().theme);
     window.addEventListener('iqcloud:preferences', sync);
@@ -55,7 +69,7 @@ function Header() {
   }
   const menuItems = [
     { to: '/', label: 'Home', icon: '⌂' },
-    ...(account ? [{ to: '/dashboard', label: 'Dashboard', icon: '▦' }, { to: '/security', label: 'Security Center', icon: '♢' }, { to: '/notifications', label: 'Notifications', icon: '♧' }] : []),
+    ...(account ? [{ to: '/dashboard', label: 'Dashboard', icon: '▦' }, { to: '/security', label: 'Security Center', icon: '♢' }] : []),
     { to: '/pricing', label: 'Pricing', icon: '◇' },
     ...(account ? [{ to: '/settings', label: 'Preferences', icon: '⚙' }] : []),
     { to: '/docs', label: 'Documentation', icon: '◫' }
@@ -70,6 +84,10 @@ function Header() {
           <Link className="truncate text-base font-semibold tracking-tight sm:text-lg" to="/">☁ BabiesIQ Cloud</Link>
         </div>
         <div className="flex shrink-0 items-center gap-2 text-sm">
+          {account && <Link to="/notifications" aria-label={unreadCount ? `Notifications, ${unreadCount} unread` : 'Notifications'} title="Notifications" className="relative flex h-10 w-10 items-center justify-center rounded-xl border hover:bg-muted">
+            <Bell size={19} aria-hidden="true" />
+            {unreadCount > 0 && <span className="absolute -right-1 -top-1 flex min-h-4 min-w-4 items-center justify-center rounded-full bg-emerald-500 px-1 text-[10px] font-semibold text-black">{unreadCount > 99 ? '99+' : unreadCount}</span>}
+          </Link>}
           <button type="button" onClick={toggleTheme} aria-label="Toggle dark mode" className="flex h-10 w-10 items-center justify-center rounded-xl border">{theme === 'dark' ? '☀' : '☾'}</button>
           {!account && <Link to="/login" className="rounded-xl border px-3 py-2">Log in</Link>}
         </div>
