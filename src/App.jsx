@@ -119,7 +119,7 @@ function Auth({ signup = false }) {
   const [verificationPending, setVerificationPending] = useState(false);
   const [code, setCode] = useState('');
   const googleError = new URLSearchParams(window.location.search).get('google_error');
-  const googleMessages = { unavailable: 'Google sign-in is not configured yet.', account_exists: 'An account already uses this email. Sign in with your password; account linking will be available later.', expired_state: 'Google sign-in expired. Please try again.', invalid_request: 'Google sign-in could not be verified. Please retry.', unverified_email: 'Google did not confirm a verified email.', authorization_failed: 'Google authorization failed.' };
+  const googleMessages = { unavailable: 'Google sign-in is not configured yet.', account_exists: 'This email already belongs to an account.', link_verification_required: 'For non-Gmail addresses, additional verification is required before linking an existing account.', account_conflict: 'This account is already connected to another Google identity. Contact support.', expired_state: 'Google sign-in expired. Please try again.', invalid_request: 'Google sign-in could not be verified. Please retry.', unverified_email: 'Google did not confirm a verified email.', authorization_failed: 'Google authorization failed.' };
   const startGoogle = () => { window.location.assign(getPreferences().apiBaseUrl + '/api/v1/auth/google/start'); };
   async function submit(e) {
     e.preventDefault(); setBusy(true); setError('');
