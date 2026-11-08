@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { apiRequest } from '@/services/apiClient';
 import PasswordField from '@/components/PasswordField';
 
@@ -12,6 +12,9 @@ function strength(password) {
 }
 export default function PasswordRecovery({ reset = false }) {
   const [params] = useSearchParams();
+  const location = useLocation();
+  const backTo = !reset && location.state?.returnTo === '/settings' ? '/settings' : '/login';
+  const backLabel = backTo === '/settings' ? 'Back to Preferences' : 'Back to sign in';
   const token = params.get('token') || '';
   const validFormat = /^[a-f0-9]{64}$/.test(token);
   const [email,setEmail] = useState('');
@@ -37,7 +40,7 @@ export default function PasswordRecovery({ reset = false }) {
     finally {setBusy(false);}
   }
   return <main className="mx-auto max-w-md px-5 py-14 sm:py-20">
-    <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">← Back to sign in</Link>
+    <Link to={backTo} className="text-sm text-muted-foreground hover:text-foreground">← {backLabel}</Link>
     <div className="mt-8 rounded-2xl border bg-card p-6 sm:p-8 shadow-sm">
       <div className="mb-5 inline-flex rounded-xl bg-emerald-500/10 p-3 text-emerald-500" aria-hidden="true">✦</div>
       <h1 className="text-3xl font-semibold tracking-tight">{reset ? 'Set a new password' : 'Forgot your password?'}</h1>
