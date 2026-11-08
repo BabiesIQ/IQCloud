@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { apiRequest } from '@/services/apiClient';
+import PasswordField from '@/components/PasswordField';
 
 function strength(password) {
   if (!password) return { label: 'Enter a password', level: 0, color: 'bg-muted' };
@@ -16,7 +17,6 @@ export default function PasswordRecovery({ reset = false }) {
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
   const [confirm,setConfirm] = useState('');
-  const [show,setShow] = useState(false);
   const [busy,setBusy] = useState(false);
   const [error,setError] = useState('');
   const [success,setSuccess] = useState(false);
@@ -47,14 +47,9 @@ export default function PasswordRecovery({ reset = false }) {
         {!reset ? <label className="block text-sm font-medium">Email address<input type="email" required autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)} className="mt-2 w-full rounded-xl border bg-background px-4 py-3 outline-offset-2" placeholder="you@example.com"/></label> :
         <>
           {!validFormat && <p role="alert" className="rounded-xl bg-red-500/10 p-3 text-sm text-red-500">Invalid reset link. Request a new one.</p>}
-          <label className="block text-sm font-medium">New password
-            <span className="mt-2 flex overflow-hidden rounded-xl border bg-background">
-              <input type={show?'text':'password'} autoComplete="new-password" required minLength={12} value={password} onChange={e=>setPassword(e.target.value)} className="min-w-0 flex-1 bg-transparent px-4 py-3 outline-offset-2" />
-              <button type="button" onClick={()=>setShow(!show)} className="px-3 text-xs text-muted-foreground">{show?'Hide':'Show'}</button>
-            </span>
-          </label>
+          <PasswordField label="New password" autoComplete="new-password" minLength={12} value={password} onChange={e=>setPassword(e.target.value)}/>
           <div aria-live="polite"><div className="grid grid-cols-3 gap-1.5">{[1,2,3].map(n=><div key={n} className={`h-1.5 rounded-full ${quality.level>=n ? quality.color : 'bg-muted'}`}/>)}</div><p className="mt-2 text-xs text-muted-foreground">{quality.label} · Use at least 12 characters and a unique password.</p></div>
-          <label className="block text-sm font-medium">Confirm new password<input type="password" autoComplete="new-password" required minLength={12} value={confirm} onChange={e=>setConfirm(e.target.value)} className="mt-2 w-full rounded-xl border bg-background px-4 py-3"/></label>
+          <PasswordField label="Confirm new password" autoComplete="new-password" minLength={12} value={confirm} onChange={e=>setConfirm(e.target.value)}/>
         </>}
         {error && <p role="alert" className="text-sm text-red-500">{error}</p>}
         <button type="submit" disabled={busy||(reset&&!validFormat)} className="w-full rounded-xl bg-emerald-500 px-4 py-3 font-semibold text-black disabled:opacity-50">{busy?'Please wait…':reset?'Update password':'Send reset link'}</button>
