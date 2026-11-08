@@ -4,6 +4,9 @@ export const APP_CONFIG = {
   emoji: '☁️',
   icon: 'Cloud',
   defaultTheme: 'dark',
+  apiBaseUrl: 'https://api.cloud.babiesiq.tech',
+  supportedLanguages: ['en', 'hi'],
+  preferencesStorage: 'localStorage',
   defaultLoginRoute: '/login',
 };
 
