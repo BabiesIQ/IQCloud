@@ -8,6 +8,7 @@ import CloudPreferences from '@/components/CloudPreferences';
 import Home from '@/pages/Home';
 import PasswordRecovery from '@/pages/auth/PasswordRecovery';
 import SecurityCenter from '@/pages/SecurityCenter';
+import Notifications from '@/pages/Notifications';
 
 function Header() {
   const [account, setAccount] = useState(null);
@@ -54,7 +55,7 @@ function Header() {
   }
   const menuItems = [
     { to: '/', label: 'Home', icon: '⌂' },
-    ...(account ? [{ to: '/dashboard', label: 'Dashboard', icon: '▦' }, { to: '/security', label: 'Security Center', icon: '♢' }] : []),
+    ...(account ? [{ to: '/dashboard', label: 'Dashboard', icon: '▦' }, { to: '/security', label: 'Security Center', icon: '♢' }, { to: '/notifications', label: 'Notifications', icon: '♧' }] : []),
     { to: '/pricing', label: 'Pricing', icon: '◇' },
     ...(account ? [{ to: '/settings', label: 'Preferences', icon: '⚙' }] : []),
     { to: '/docs', label: 'Documentation', icon: '◫' }
@@ -150,6 +151,7 @@ function Shell() {
     <Route path="/reset-password" element={<PasswordRecovery reset/>}/>
     <Route path="/verify-email" element={<StatusPage title="Verify email"/>}/>
     <Route path="/security" element={<SecurityCenter/>}/>
+    <Route path="/notifications" element={<Notifications/>}/>
     <Route path="/settings" element={<main className="mx-auto max-w-xl px-5 py-12"><CloudPreferences/></main>}/>
     <Route path="/pricing" element={<StatusPage title="Pricing"/>}/>
     <Route path="/configure" element={<StatusPage title="Create server"/>}/>
