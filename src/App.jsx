@@ -11,6 +11,7 @@ import PasswordField from '@/components/PasswordField';
 import Home from '@/pages/Home';
 import Dashboard from '@/pages/Dashboard';
 import CreateInstance from '@/pages/CreateInstance';
+import Pricing from '@/pages/Pricing';
 import PasswordRecovery from '@/pages/auth/PasswordRecovery';
 import SecurityCenter from '@/pages/SecurityCenter';
 import Notifications from '@/pages/Notifications';
@@ -183,7 +184,7 @@ function Shell() {
     <Route path="/security" element={<SecurityCenter/>}/>
     <Route path="/notifications" element={<Notifications/>}/>
     <Route path="/settings" element={<main className="mx-auto max-w-xl space-y-5 px-5 py-12"><div><p className="text-xs font-semibold uppercase tracking-widest text-emerald-500">Account settings</p><h1 className="mt-2 text-3xl font-semibold">Preferences</h1><p className="mt-2 text-sm text-muted-foreground">Customize your experience and manage account security.</p></div><CloudPreferences/><PasswordSettings/></main>}/>
-    <Route path="/pricing" element={<StatusPage title="Pricing"/>}/>
+    <Route path="/pricing" element={<Pricing/>}/>
     <Route path="/configure" element={<CreateInstance/>}/>
     <Route path="/docs" element={<StatusPage title="Documentation"/>}/>
     <Route path="/dashboard" element={<Dashboard/>}/>
