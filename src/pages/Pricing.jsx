@@ -1,64 +1,18 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import ApperIcon from '@/components/ApperIcon';
-import { SectionHead, formatMoney, quoteServer } from '@/components/cloud/CloudUI';
+import { ArrowRight, LockKeyhole } from 'lucide-react';
 
-export const route = { path: '/pricing', layout: 'public', access: 'public' };
-
-const presets = [
-  { name: 'Launch', tagline: 'Simple websites & experiments', cpu: 1, ram: 1, storage: 20, popular: false, features: ['1 vCPU', '1 GB RAM', '20 GB requested disk', 'Linux image selection'] },
-  { name: 'Build', tagline: 'Apps, services & databases', cpu: 2, ram: 4, storage: 50, popular: true, features: ['2 vCPU', '4 GB RAM', '50 GB requested disk', 'Custom domain workflow'] },
-  { name: 'Scale', tagline: 'Heavier apps & staging', cpu: 4, ram: 8, storage: 100, popular: false, features: ['4 vCPU', '8 GB RAM', '100 GB requested disk', 'Support ticket access'] },
-];
-
-export default function Pricing() {
-  return (
-    <div className="mx-auto max-w-7xl px-6 py-17 md:px-8">
-      <div className="mb-14 text-center">
-        <p className="font-heading text-xs font-bold uppercase tracking-[0.2em] text-primary">Straightforward cloud pricing</p>
-        <h1 className="mt-4 font-heading text-4xl font-bold tracking-tight md:text-5xl">Only pay for what you configure.</h1>
-        <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-muted-foreground">
-          Preview estimates in INR. Rates and capacity are illustrative and do not represent confirmed Railway allocations or live offers.
-        </p>
-      </div>
-      <div className="grid gap-4 lg:grid-cols-3">
-        {presets.map((plan) => (
-          <div key={plan.name} className={'relative rounded-md border bg-card p-8 ' + (plan.popular ? 'border-primary' : 'border-border')}>
-            {plan.popular && <div className="absolute right-4 top-4 rounded bg-primary px-2 py-1 text-[10px] font-bold uppercase text-primary-foreground">Popular</div>}
-            <div className="font-heading text-lg font-bold">{plan.name}</div>
-            <p className="mt-2 text-sm text-muted-foreground">{plan.tagline}</p>
-            <div className="mt-9 border-b border-border pb-7">
-              <span className="font-heading text-4xl font-bold">{formatMoney(quoteServer({...plan, region:'us-west',term:'monthly'}))}</span>
-              <span className="ml-2 text-sm text-muted-foreground">/ month*</span>
-            </div>
-            <div className="mt-7 space-y-4">
-              {plan.features.map((feature) => <div key={feature} className="flex items-center gap-3 text-sm"><ApperIcon name="Check" size={16} className="text-success" />{feature}</div>)}
-            </div>
-            <Button asChild variant={plan.popular ? 'default' : 'outline'} className="mt-10 w-full">
-              <Link to="/configure">Customize plan <ApperIcon name="ArrowUpRight" size={16} /></Link>
-            </Button>
-          </div>
-        ))}
-      </div>
-      <div className="mt-6 rounded-md border border-warning-border bg-warning-muted px-5 py-4 text-sm text-warning">
-        * These are demo quotes, not billable plans. Storage, virtual CPU and memory are requested specs only. Full OS virtualization, public IPv4 assignment, and capacity cannot be guaranteed by a Railway container.
-      </div>
-      <div className="mt-20">
-        <SectionHead eyebrow="Included in the experience" title="Plan flexibility without the guesswork" />
-        <div className="grid gap-6 md:grid-cols-3">
-          {[
-            ['Globe', 'Four selectable regions', 'Choose a geographic region when requesting a deployment.'],
-            ['HardDrive', 'Custom disk requests', 'Separate ephemeral and persistent-storage estimates transparently.'],
-            ['ReceiptText', 'Billing overview', 'Track generated demo invoices and request statuses from your dashboard.'],
-          ].map(([icon,title,desc])=>(
-            <div key={title} className="rounded-md border border-border bg-card p-6">
-              <ApperIcon name={icon} size={24} className="text-primary" />
-              <h3 className="mt-5 font-semibold">{title}</h3>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">{desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+const prices=[[49,65,85,105,125,145,165,185],[65,99,115,135,155,175,195,215],[85,120,150,170,190,210,230,250],[110,185,200,220,240,260,280,300],[130,195,215,240,260,280,300,320],[150,220,240,270,290,310,330,350],[175,245,270,300,325,350,375,400],[200,275,300,350,375,400,450,500]];
+const caps=[[200,200,200,200,200,200,200,200],[200,300,300,300,300,300,300,300],[200,300,450,450,450,450,450,450],[200,500,500,500,500,500,500,500],[200,350,450,450,500,500,500,500],[200,350,450,550,600,600,600,600],[200,350,450,600,650,700,700,700],[200,350,500,700,750,800,900,1000]];
+export default function Pricing(){
+ const [ram,setRam]=useState(2),[cpu,setCpu]=useState(2),[storage,setStorage]=useState(200);
+ const cap=caps[ram-1][cpu-1],selected=Math.min(storage,cap),price=prices[ram-1][cpu-1];
+ return <main className="mx-auto max-w-5xl px-5 py-12 pb-24">
+  <div className="text-center"><p className="text-xs font-semibold uppercase tracking-widest text-emerald-500">BabiesIQ Cloud pricing</p><h1 className="mt-3 text-3xl font-semibold sm:text-4xl">Build your plan. See your price.</h1><p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground">Adjust RAM, CPU and SSD to explore 64 plan combinations.</p></div>
+  <div className="mt-9 grid gap-4 sm:grid-cols-2">{[['RAM',ram,setRam,'GB'],['CPU',cpu,setCpu,'vCPU']].map(([name,value,change,unit])=><div key={name} className="rounded-2xl border bg-card p-5"><div className="flex items-center justify-between"><label htmlFor={'pricing-'+name} className="font-medium">{name}</label><strong>{value} {unit}</strong></div><input id={'pricing-'+name} type="range" min="1" max="8" step="1" value={value} onChange={e=>change(Number(e.target.value))} className="mt-5 w-full accent-emerald-500"/><div className="mt-2 flex justify-between text-xs text-muted-foreground"><span>1 {unit}</span><span>8 {unit}</span></div><p className="mt-3 flex items-center gap-1 text-xs text-muted-foreground"><LockKeyhole size={12}/> Higher capacity coming soon</p></div>)}</div>
+  <div className="mt-4 rounded-2xl border bg-card p-5"><div className="flex items-center justify-between"><label htmlFor="pricing-storage" className="font-medium">SSD capacity</label><strong>{selected===1000?'1 TB':selected+' GB'}</strong></div><input id="pricing-storage" type="range" min="50" max="1000" step="50" value={selected} onChange={e=>setStorage(Math.min(Number(e.target.value),cap))} className="mt-5 w-full accent-emerald-500"/><div className="mt-2 flex justify-between text-xs text-muted-foreground"><span>50 GB</span><span>1 TB</span></div><p className="mt-3 flex items-center gap-2 text-xs text-muted-foreground"><LockKeyhole size={13}/> Your plan limit: {cap===1000?'1 TB':cap+' GB'}. Higher capacity locked.</p><div className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-emerald-500" style={{width:cap/10+'%'}}/></div></div>
+  <div className="mt-5 rounded-2xl border bg-card p-6"><p className="text-sm text-muted-foreground">Estimated compute price</p><p className="mt-2 text-4xl font-semibold">₹{price}<span className="text-sm font-normal text-muted-foreground"> / month</span></p><p className="mt-2 text-sm">{ram} GB RAM · {cpu} vCPU · {selected} GB selected SSD</p><p className="mt-3 text-xs leading-5 text-muted-foreground">This is a planning estimate for compute only. SSD and network costs are not included. Persistent storage capacity and provider costs are not verified; purchasing is disabled.</p><Link to="/configure" className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground">Configure instance <ArrowRight size={16}/></Link></div>
+  <section className="mt-12"><h2 className="text-xl font-semibold">Complete RAM × CPU price list</h2><p className="mt-2 text-sm text-muted-foreground">Monthly compute estimates in INR. Scroll sideways on mobile.</p><div className="mt-5 overflow-x-auto rounded-2xl border"><table className="w-full min-w-[650px] text-sm"><thead className="bg-muted/60"><tr><th scope="col" className="p-3 text-left">RAM / CPU</th>{Array.from({length:8},(_,i)=><th scope="col" key={i} className="p-3 text-right">{i+1}C</th>)}</tr></thead><tbody>{prices.map((row,i)=><tr key={i} className="border-t"><th scope="row" className="p-3 text-left font-semibold">{i+1} GB</th>{row.map((p,j)=><td key={j} className={'p-3 text-right tabular-nums '+(ram===i+1&&cpu===j+1?'bg-emerald-500/10 font-semibold text-emerald-500':'')}>₹{p}</td>)}</tr>)}</tbody></table></div></section>
+  <p className="mt-6 text-xs text-muted-foreground">Windows RDP, higher capacities and additional regions are coming soon. These prices are proposed and not confirmed Railway hosting rates.</p>
+ </main>;
 }
