@@ -33,7 +33,7 @@
       (function () {
         function note(text) { var el = document.getElementById('app-loading'); if (!el) return; var p = el.querySelector('.note'); if (!p) { p = document.createElement('span'); p.className = 'note'; p.style.cssText = 'font-size:12px;opacity:.7;max-width:22rem;text-align:center'; el.appendChild(p); } p.textContent = text; }
         setTimeout(function () { note('Starting up\u2026 the first open can take a few seconds.'); }, 3000);
-        setTimeout(function () { note('Still loading. If this continues, check your connection and refresh.'); }, 12000);
+        setTimeout(function () { note('Unable to start the application. Please refresh. If this continues, contact support.'); var el=document.getElementById('app-loading'); if(el && !el.querySelector('button')) { var b=document.createElement('button'); b.textContent='Retry'; b.style.cssText='margin-top:14px;border:1px solid #777;border-radius:10px;padding:10px 20px;color:inherit;background:transparent'; b.onclick=function(){location.reload()}; el.appendChild(b); } }, 12000);
       })();
     </script>
     <script type="module" src="/src/main.jsx"></script>
