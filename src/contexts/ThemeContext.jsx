@@ -1,5 +1,6 @@
 import { createContext, useContext, useLayoutEffect, useState } from 'react';
 import { APP_CONFIG } from '@/config/app.config';
+import { getPreferences } from '@/config/runtime.config';
 
 const ThemeContext = createContext();
 
@@ -15,8 +16,15 @@ function writeStoredTheme(theme) {
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(
-    () => readStoredTheme() || APP_CONFIG.defaultTheme || 'system'
+    () => getPreferences().theme || readStoredTheme() || APP_CONFIG.defaultTheme || 'system'
   );
+
+  useLayoutEffect(() => {
+    const sync = () => setTheme(getPreferences().theme);
+    window.addEventListener('iqcloud:preferences', sync);
+    window.addEventListener('storage', sync);
+    return () => { window.removeEventListener('iqcloud:preferences', sync); window.removeEventListener('storage', sync); };
+  }, []);
 
   useLayoutEffect(() => {
     writeStoredTheme(theme);
