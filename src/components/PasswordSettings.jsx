@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Eye, EyeOff, LockKeyhole, ShieldCheck } from 'lucide-react';
+import { LockKeyhole, ShieldCheck } from 'lucide-react';
+import PasswordField from '@/components/PasswordField';
 import { apiRequest } from '@/services/apiClient';
 
 function quality(p) {
@@ -12,7 +13,6 @@ export default function PasswordSettings() {
  const [current,setCurrent]=useState('');
  const [next,setNext]=useState('');
  const [confirm,setConfirm]=useState('');
- const [visible,setVisible]=useState(false);
  const [busy,setBusy]=useState(false);
  const [error,setError]=useState('');
  const [success,setSuccess]=useState('');
@@ -33,11 +33,10 @@ export default function PasswordSettings() {
   {success&&<p role="status" className="mt-4 rounded-xl bg-emerald-500/10 p-3 text-sm text-emerald-600">{success}</p>}
   <button type="button" onClick={()=>{setOpen(!open);setError('')}} aria-expanded={open} className="mt-5 flex w-full items-center justify-between rounded-xl border px-4 py-3 text-left text-sm font-medium hover:bg-muted"><span>Change password</span><span aria-hidden="true">{open?'−':'+'}</span></button>
   {open&&<form onSubmit={submit} className="mt-5 space-y-4">
-   <label className="block text-sm font-medium">Current password<input type={visible?'text':'password'} required autoComplete="current-password" value={current} onChange={e=>setCurrent(e.target.value)} className="mt-2 w-full rounded-xl border bg-background px-4 py-3"/></label>
-   <label className="block text-sm font-medium">New password<input type={visible?'text':'password'} required minLength={12} autoComplete="new-password" value={next} onChange={e=>setNext(e.target.value)} className="mt-2 w-full rounded-xl border bg-background px-4 py-3"/></label>
+   <PasswordField label="Current password" autoComplete="current-password" value={current} onChange={e=>setCurrent(e.target.value)}/>
+   <PasswordField label="New password" autoComplete="new-password" minLength={12} value={next} onChange={e=>setNext(e.target.value)}/>
    <div aria-live="polite"><div className="h-1.5 rounded-full bg-muted"><div className={`h-full rounded-full transition-all ${strength.color}`} style={{width:next?strength.width:'0%'}}/></div><p className="mt-2 text-xs text-muted-foreground">{next?strength.label:'Use 12+ characters, with a unique password.'}</p></div>
-   <label className="block text-sm font-medium">Confirm new password<input type={visible?'text':'password'} required minLength={12} autoComplete="new-password" value={confirm} onChange={e=>setConfirm(e.target.value)} className="mt-2 w-full rounded-xl border bg-background px-4 py-3"/></label>
-   <button type="button" onClick={()=>setVisible(!visible)} className="flex items-center gap-2 text-xs text-muted-foreground">{visible?<EyeOff size={15}/>:<Eye size={15}/>} {visible?'Hide':'Show'} passwords</button>
+   <PasswordField label="Confirm new password" autoComplete="new-password" minLength={12} value={confirm} onChange={e=>setConfirm(e.target.value)}/>
    {error&&<p role="alert" className="rounded-xl bg-red-500/10 p-3 text-sm text-red-500">{error}</p>}
    <button type="submit" disabled={busy} className="w-full rounded-xl bg-primary px-4 py-3 font-semibold text-primary-foreground disabled:opacity-50">{busy?'Updating…':'Update password'}</button>
   </form>}
