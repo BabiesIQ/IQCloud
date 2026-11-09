@@ -4,6 +4,8 @@ const steps=['payment_pending','queued','creating','deploying','configuring','ru
 export default function InstanceProgress(){
  const [items,setItems]=useState([]);
  const [error,setError]=useState('');
+ const [deleting,setDeleting]=useState('');
+ async function removeDraft(id){if(!window.confirm('Delete this saved configuration?'))return;setDeleting(id);try{await apiRequest('/api/v1/instances/drafts/'+encodeURIComponent(id),{method:'DELETE'});setItems(old=>old.filter(item=>item._id!==id))}catch(e){setError(e.message||'Could not delete draft')}finally{setDeleting('')}}
  useEffect(()=>{
   let alive=true;
   const load=async()=>{
@@ -21,7 +23,8 @@ export default function InstanceProgress(){
   return <div key={item._id||i} className="rounded-xl border p-4">
    <div className="flex justify-between gap-3 text-sm"><strong>{item.name||'Cloud instance'}</strong><span className="capitalize text-muted-foreground">{item.status==='creating'||item.status==='deploying'?'Creating server…':(item.status||'Pending').replaceAll('_',' ')}</span></div>
    <div className="mt-3 h-2 overflow-hidden rounded-full bg-muted" role="progressbar" aria-label="Server creation progress" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}><div className="h-full rounded-full bg-emerald-500 transition-all" style={{width:percent+'%'}}/></div>
-   <p className="mt-2 text-xs text-muted-foreground">{item.status==='running'?'Server ready':item.status==='failed'?'Provisioning failed':'Progress follows actual backend status.'}</p>
+   <p className="mt-2 text-xs text-muted-foreground">{item.status==='draft'?'Configuration saved. No payment taken and no server created.':item.status==='running'?'Server ready':item.status==='failed'?'Provisioning failed':'Progress follows actual backend status.'}</p>
+   {item.status==='draft'&&<div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs"><span className="text-muted-foreground">{item.ram} GB RAM · {item.cpu} vCPU · {item.storage} GB SSD · {item.region}</span><button type="button" disabled={deleting===item._id} onClick={()=>removeDraft(item._id)} className="rounded-lg border px-3 py-2 text-red-500 disabled:opacity-50">{deleting===item._id?'Deleting…':'Delete draft'}</button></div>}
   </div>
  })}</div>
 }
