@@ -13,6 +13,9 @@ export default function Dashboard() {
  const [removingDraft,setRemovingDraft]=useState('');
  const [payingDraft,setPayingDraft]=useState('');
  const [checkoutMessage,setCheckoutMessage]=useState('');
+ const [pilotOrder,setPilotOrder]=useState(null);
+ const [pilotPassword,setPilotPassword]=useState('');
+ const [provisioning,setProvisioning]=useState(false);
  const [loading,setLoading]=useState(true);
  const [error,setError]=useState('');
  async function refresh(){
@@ -57,7 +60,8 @@ export default function Dashboard() {
     handler:async result=>{
      try{
       const verified=await apiRequest('/api/v1/payments/test/verify',{method:'POST',body:result});
-      setCheckoutMessage(verified.message||'Test payment signature verified');
+      setCheckoutMessage(verified.message||'Test payment captured');
+      if(verified.status==='captured_verified_test')setPilotOrder({orderId:order.orderId,draftId:id});
      }catch(e){setCheckoutMessage('Verification failed: '+e.message)}
      finally{setPayingDraft('')}
     },
@@ -67,6 +71,17 @@ export default function Dashboard() {
    checkout.on('payment.failed',response=>{setCheckoutMessage(response.error?.description||'Test payment failed');setPayingDraft('')});
    checkout.open();
   }catch(e){setCheckoutMessage(e.message||'Test checkout unavailable');setPayingDraft('')}
+ }
+ async function provisionPilot(){
+  if(!pilotOrder||provisioning)return;
+  setProvisioning(true);setCheckoutMessage('');
+  try{
+   const result=await apiRequest('/api/v1/payments/test/provision',{method:'POST',body:{orderId:pilotOrder.orderId,password:pilotPassword}});
+   setCheckoutMessage(result.message||result.error||('Railway provisioning status: '+result.status));
+   setPilotPassword('');
+   if(result.status==='deploying')setPilotOrder(null);
+  }catch(e){setCheckoutMessage(e.message||'Provisioning unavailable')}
+  finally{setProvisioning(false)}
  }
  const activeCount=instances.filter(x=>x.status==='running').length;
  const draftCount=instances.filter(x=>x.status==='draft').length;
@@ -78,6 +93,7 @@ export default function Dashboard() {
  ];
  return <main className="mx-auto max-w-6xl px-5 pb-20 pt-10 sm:pt-14">
   <div className="flex flex-wrap items-start justify-between gap-4"><div><div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-emerald-500"><Cloud size={15}/> Cloud workspace</div><h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{loading?'Loading workspace…':`Welcome back, ${name}`}</h1><p className="mt-3 text-sm text-muted-foreground">Your infrastructure and account, in one place.</p></div><button type="button" onClick={refresh} disabled={loading} className="flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm hover:bg-muted disabled:opacity-50"><RefreshCw size={16}/> Refresh</button></div>
+  {pilotOrder&&<div className="mt-6 rounded-xl border border-amber-500/40 p-4 text-sm"><p className="font-semibold">Real Railway provisioning pilot</p><p className="mt-2 text-muted-foreground">Only Ubuntu/Debian, 1 vCPU, 1 GB RAM, 50 GB selected, US West. Storage is not guaranteed persistent. Other configurations cannot be provisioned by this pilot. The root password is sent once over HTTPS, not saved as a draft.</p><input type="password" autoComplete="new-password" value={pilotPassword} onChange={e=>setPilotPassword(e.target.value)} placeholder="Root password (16+ characters)" className="mt-3 w-full rounded-lg border bg-background p-3"/><button type="button" disabled={provisioning||pilotPassword.length<16} onClick={provisionPilot} className="mt-3 rounded-lg bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-50">{provisioning?'Requesting Railway deployment…':'Provision real Railway pilot'}</button></div>}
   {checkoutMessage&&<div role="status" className="mt-6 rounded-xl border border-amber-500/30 p-4 text-sm">{checkoutMessage}</div>}
   {error&&<div role="alert" className="mt-7 rounded-xl border border-red-500/30 p-4 text-sm">{error} <button onClick={refresh} className="ml-2 underline">Try again</button></div>}
   <div className="mt-9 grid gap-4 sm:grid-cols-3">
