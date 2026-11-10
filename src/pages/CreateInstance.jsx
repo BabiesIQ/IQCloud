@@ -9,6 +9,7 @@ const regions=[['us-west','US West'],['us-east','US East'],['eu-west','Europe We
 function ResourceSlider({title,icon:Icon,value,onChange,min=1,max=8,unit='GB',soon='Higher capacity coming soon'}){
  return <div className="rounded-2xl border bg-card p-5"><div className="flex items-center justify-between"><span className="flex items-center gap-2 font-medium"><Icon size={18} className="text-emerald-500"/>{title}</span><strong>{value} {unit}</strong></div><input type="range" min={min} max={max} step={1} value={value} onChange={e=>onChange(Number(e.target.value))} className="mt-5 w-full accent-emerald-500" aria-label={title}/><div className="mt-2 flex justify-between text-xs text-muted-foreground"><span>{min} {unit}</span><span>{max} {unit}</span></div><div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground"><LockKeyhole size={13}/>{soon}</div></div>
 }
+export const route = { path: '/dashboard/instances/new', layout: 'owner', access: 'authenticated' };
 export default function CreateInstance(){
  const navigate=useNavigate();
  const [type,setType]=useState('linux');
