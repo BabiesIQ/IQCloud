@@ -14,8 +14,7 @@ export default function Dashboard() {
  const [checkoutMessage,setCheckoutMessage]=useState('');
  const [checkoutErrorDraft,setCheckoutErrorDraft]=useState('');
  const [pilotOrder,setPilotOrder]=useState(null);
- const [pilotPassword,setPilotPassword]=useState('');
- const [provisioning,setProvisioning]=useState(false);
+ const [pilotStatus,setPilotStatus]=useState(null);
  const [loading,setLoading]=useState(true);
  const [error,setError]=useState('');
  async function refresh(){
@@ -25,6 +24,8 @@ export default function Dashboard() {
    setAccount(user);
    const inventory=await apiRequest('/api/v1/instances').catch(()=>null);
    setInstances(Array.isArray(inventory?.items)?inventory.items:[]);
+   const paidItem=(inventory?.items||[]).find(item=>item.orderId && ['payment_verified','deploying','running'].includes(item.status));
+   if(paidItem)setPilotOrder({orderId:paidItem.orderId,draftId:paidItem._id});
    const result=await apiRequest('/api/v1/notifications').catch(()=>null);
    setActivity(Array.isArray(result?.notifications)?result.notifications.slice(0,3):Array.isArray(result?.items)?result.items.slice(0,3):[]);
   }catch(e){
@@ -76,17 +77,22 @@ export default function Dashboard() {
    checkout.open();
   }catch(e){setCheckoutErrorDraft(id);setCheckoutMessage(e.message||'Checkout unavailable');setPayingDraft('')}
  }
- async function provisionPilot(){
-  if(!pilotOrder||provisioning)return;
-  setProvisioning(true);setCheckoutMessage('');
-  try{
-   const result=await apiRequest('/api/v1/payments/test/provision',{method:'POST',body:{orderId:pilotOrder.orderId,password:pilotPassword}});
-   setCheckoutMessage(result.message||result.error||('Railway provisioning status: '+result.status));
-   setPilotPassword('');
-   if(result.status==='deploying')setPilotOrder(null);
-  }catch(e){setCheckoutMessage(e.message||'Provisioning unavailable')}
-  finally{setProvisioning(false)}
- }
+ useEffect(()=>{
+  if(!pilotOrder?.orderId)return;
+  let mounted=true;
+  const check=async()=>{
+   try{
+    const status=await apiRequest('/api/v1/payments/test/provision/'+encodeURIComponent(pilotOrder.orderId));
+    if(mounted){
+     setPilotStatus(status);
+     if(status.status==='ready'||status.status==='needs_review')refresh();
+    }
+   }catch(e){if(mounted)setPilotStatus({status:'check_failed',message:e.message})}
+  };
+  check();
+  const timer=window.setInterval(check,8000);
+  return()=>{mounted=false;window.clearInterval(timer)};
+ },[pilotOrder?.orderId]);
  const activeCount=instances.filter(x=>x.status==='running').length;
  const draftCount=instances.filter(x=>x.status==='draft').length;
  const name=[account?.firstName,account?.lastName].filter(Boolean).join(' ')||account?.email?.split('@')[0]||'there';
@@ -97,7 +103,7 @@ export default function Dashboard() {
  ];
  return <main className="mx-auto max-w-6xl px-5 pb-20 pt-10 sm:pt-14">
   <div className="flex flex-wrap items-start justify-between gap-4"><div><div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-emerald-500"><Cloud size={15}/> Cloud workspace <span className="rounded border px-2 py-0.5 text-[10px] text-muted-foreground" title="Frontend deployment version">WEB-20261109-4</span></div><h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{loading?'Loading workspace…':`Welcome back, ${name}`}</h1><p className="mt-3 text-sm text-muted-foreground">Your infrastructure and account, in one place.</p></div><button type="button" onClick={refresh} disabled={loading} className="flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm hover:bg-muted disabled:opacity-50"><RefreshCw size={16}/> Refresh</button></div>
-  {pilotOrder&&<div className="mt-6 rounded-xl border border-amber-500/40 p-4 text-sm"><p className="font-semibold">Real Railway provisioning pilot</p><p className="mt-2 text-muted-foreground">All validated Ubuntu/Debian configurations (1–8 GB RAM, 1–8 vCPU, eligible 50–1000 GB selected allowance) can request a real Railway pilot. Only one provisioning attempt per account. Selected storage is not guaranteed persistent SSD, and requested region is not enforced yet. Railway charges may apply even though Razorpay is in Test Mode. Your root password is sent once over HTTPS, not saved as a draft.</p><input type="password" autoComplete="new-password" value={pilotPassword} onChange={e=>setPilotPassword(e.target.value)} placeholder="Root password (16+ characters)" className="mt-3 w-full rounded-lg border bg-background p-3"/><button type="button" disabled={provisioning||pilotPassword.length<16} onClick={provisionPilot} className="mt-3 rounded-lg bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-50">{provisioning?'Requesting Railway deployment…':'Provision real Railway pilot'}</button></div>}
+  {pilotOrder&&<div className="mt-6 rounded-xl border border-amber-500/40 p-4 text-sm"><p className="font-semibold">Real Railway provisioning — Razorpay Test Mode</p><p className="mt-2 text-muted-foreground">Your captured test payment starts real Railway container provisioning automatically. No second payment or root-password entry is needed. Railway hosting charges may still apply. Selected storage and region are not guaranteed.</p><p className="mt-3 font-medium">Status: {pilotStatus?.status||'Checking…'}</p>{pilotStatus?.message&&<p className="mt-2 text-muted-foreground">{pilotStatus.message}</p>}{pilotStatus?.status==='ready'&&pilotStatus.sshHost&&<p className="mt-3 font-mono">ssh -p {pilotStatus.sshPort} root@{pilotStatus.sshHost}</p>}{pilotStatus?.status==='needs_review'&&<p className="mt-2 text-amber-600">Your payment is recorded. Do not pay again or create another server. Provider reconciliation is required.</p>}</div>
   {checkoutMessage&&!checkoutErrorDraft&&<div role="status" className="mt-6 rounded-xl border border-amber-500/30 p-4 text-sm">{checkoutMessage}</div>}
   {error&&<div role="alert" className="mt-7 rounded-xl border border-red-500/30 p-4 text-sm">{error} <button onClick={refresh} className="ml-2 underline">Try again</button></div>}
   <div className="mt-9 grid gap-4 sm:grid-cols-3">
