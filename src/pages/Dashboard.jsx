@@ -14,6 +14,7 @@ export default function Dashboard() {
  const [checkoutMessage,setCheckoutMessage]=useState('');
  const [checkoutErrorDraft,setCheckoutErrorDraft]=useState('');
  const [pilotOrder,setPilotOrder]=useState(null);
+ const [checkingOrder,setCheckingOrder]=useState(null);
  const [pilotStatus,setPilotStatus]=useState(null);
  const [loading,setLoading]=useState(true);
  const [error,setError]=useState('');
@@ -34,6 +35,45 @@ export default function Dashboard() {
   }finally{setLoading(false)}
  }
  useEffect(()=>{refresh()},[]);
+ // Razorpay's browser handler may be interrupted by mobile navigation.
+ // Show the verified status coming from the backend webhook, even if the
+ // Checkout callback did not reach this page.
+ useEffect(()=>{
+  let active=true;
+  const sync=async()=>{
+   try{
+    const inventory=await apiRequest('/api/v1/instances');
+    if(!active||!Array.isArray(inventory?.items))return;
+    setInstances(inventory.items);
+    const paid=inventory.items.find(item=>item.orderId&&['payment_verified','deploying','running'].includes(item.status));
+    if(paid){
+     setPilotOrder(previous=>previous?.orderId===paid.orderId?previous:{orderId:paid.orderId,draftId:paid._id});
+     setPayingDraft('');
+    }
+   }catch{/* leave the last known server state visible */}
+  };
+  const timer=window.setInterval(sync,10000);
+  return()=>{active=false;window.clearInterval(timer)};
+ },[]);
+ useEffect(()=>{
+  if(!checkingOrder?.orderId)return;
+  let active=true;
+  const check=async()=>{
+   try{
+    const order=await apiRequest('/api/v1/payments/test/orders/'+encodeURIComponent(checkingOrder.orderId));
+    if(!active)return;
+    if(order.status==='captured_verified'){
+     setPilotOrder({orderId:checkingOrder.orderId,draftId:checkingOrder.draftId});
+     setCheckingOrder(null);
+     setPayingDraft('');
+     setCheckoutMessage('Razorpay Test Mode payment verified. Checking real Railway provisioning; do not pay again.');
+    }
+   }catch{/* signed webhooks and background reconciliation remain authoritative */}
+  };
+  check();
+  const timer=window.setInterval(check,7000);
+  return()=>{active=false;window.clearInterval(timer)};
+ },[checkingOrder?.orderId]);
  async function deleteDraft(id){
   if(!id||removingDraft)return;
   setRemovingDraft(id);
@@ -51,6 +91,7 @@ export default function Dashboard() {
    if(!fresh){setInstances(Array.isArray(inventory?.items)?inventory.items:[]);throw Error('This configuration is no longer available. Refresh or create a new one.')}
    const order=await apiRequest('/api/v1/payments/test/orders',{method:'POST',body:{draftId:fresh._id}});
    if(!order.keyId||!order.orderId)throw Error('Payment order unavailable');
+   setCheckingOrder({orderId:order.orderId,draftId:id});
    if(!window.Razorpay){
     await new Promise((resolve,reject)=>{
      const script=document.createElement('script');
@@ -67,13 +108,13 @@ export default function Dashboard() {
       const verified=await apiRequest('/api/v1/payments/test/verify',{method:'POST',body:result});
       setCheckoutMessage(verified.message||'Test payment captured');
       if(verified.status==='captured_verified')setPilotOrder({orderId:order.orderId,draftId:id});
-     }catch(e){setCheckoutMessage('Verification failed: '+e.message)}
+     }catch(e){setCheckoutMessage('Waiting for secure Razorpay webhook verification. Do not pay again. '+e.message)}
      finally{setPayingDraft('')}
     },
-    modal:{ondismiss:()=>setPayingDraft('')},
+    modal:{ondismiss:()=>{setPayingDraft('');setCheckoutMessage('Checking your existing Razorpay order. If you completed payment, do not pay again.');}},
     theme:{color:'#10b981'}
    });
-   checkout.on('payment.failed',response=>{setCheckoutMessage(response.error?.description||'Test payment failed');setPayingDraft('')});
+   checkout.on('payment.failed',response=>{setCheckoutMessage(response.error?.description||'Test payment failed');setCheckingOrder(null);setPayingDraft('')});
    checkout.open();
   }catch(e){setCheckoutErrorDraft(id);setCheckoutMessage(e.message||'Checkout unavailable');setPayingDraft('')}
  }
@@ -111,7 +152,7 @@ export default function Dashboard() {
    <div className="rounded-2xl border bg-card p-5"><div className="flex items-center justify-between text-sm text-muted-foreground">Billing <Wallet size={18}/></div><div className="mt-5 text-lg font-semibold">Razorpay checkout</div><p className="mt-2 text-xs text-muted-foreground">Razorpay payment · selected monthly compute price · Railway provisioning requested after capture</p></div>
    <div className="rounded-2xl border bg-card p-5"><div className="flex items-center justify-between text-sm text-muted-foreground">Account <ShieldCheck size={18}/></div><div className="mt-5 text-lg font-semibold">{loading?'Checking…':account?.emailVerified?'Verified':'Verification pending'}</div><p className="mt-2 truncate text-xs text-muted-foreground">{account?.email||'Secure session'}</p></div>
   </div>
-  <section className="mt-8 rounded-3xl border bg-card p-6 sm:p-8"><div className="flex flex-wrap items-start justify-between gap-4"><div><h2 className="text-xl font-semibold">Your servers</h2><p className="mt-2 text-sm text-muted-foreground">Your saved configurations appear here; only successfully provisioned services count as active.</p></div><Link to="/configure" className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"><Plus size={17}/> Explore server setup</Link></div><ServerNetworking/>{instances.length>0&&<div className="mt-7 space-y-3"><h3 className="text-sm font-semibold">Saved configurations and servers</h3>{instances.map(item=><div key={item._id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"><div><p className="font-medium">{item.os==='debian-12'?'Debian 12':'Ubuntu 24.04'} · {item.ram} GB RAM · {item.cpu} vCPU</p><p className="mt-1 text-xs text-muted-foreground">{item.storage} GB selected (not guaranteed persistent) · {item.region} · {item.status==='draft'?'Draft — no server provisioned':item.status}</p></div>{item.status==='draft'&&<button type="button" disabled={!!payingDraft} onClick={()=>payTestDraft(item._id)} className="rounded-lg border border-emerald-500 px-3 py-2 text-xs font-semibold text-emerald-500 disabled:opacity-50">{payingDraft===item._id?'Opening test checkout…':`Pay ₹${item.computePriceINR ?? '—'} /month`}</button>}{checkoutErrorDraft===item._id&&checkoutMessage&&<p role="alert" className="w-full text-xs text-red-500">{checkoutMessage}</p>}{item.status==='draft'&&<button type="button" disabled={!!removingDraft} onClick={()=>deleteDraft(item._id)} className="rounded-lg border px-3 py-2 text-xs disabled:opacity-50">{removingDraft===item._id?'Deleting…':'Delete draft'}</button>}</div>)}</div>}<div className="mt-8 flex flex-col items-center rounded-2xl border border-dashed px-4 py-12 text-center"><span className="rounded-2xl bg-muted p-4"><Server size={26} className="text-muted-foreground"/></span><h3 className="mt-5 font-semibold">Server management is coming soon</h3><p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">Provisioning is being connected. We don't display demo servers as real infrastructure.</p><Link to="/configure" className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-emerald-500">Explore setup <ArrowRight size={16}/></Link></div></section>
+  <section className="mt-8 rounded-3xl border bg-card p-6 sm:p-8"><div className="flex flex-wrap items-start justify-between gap-4"><div><h2 className="text-xl font-semibold">Your servers</h2><p className="mt-2 text-sm text-muted-foreground">Your saved configurations appear here; only successfully provisioned services count as active.</p></div><Link to="/configure" className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"><Plus size={17}/> Explore server setup</Link></div><ServerNetworking/>{instances.length>0&&<div className="mt-7 space-y-3"><h3 className="text-sm font-semibold">Saved configurations and servers</h3>{instances.map(item=><div key={item._id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"><div><p className="font-medium">{item.os==='debian-12'?'Debian 12':'Ubuntu 24.04'} · {item.ram} GB RAM · {item.cpu} vCPU</p><p className="mt-1 text-xs text-muted-foreground">{item.storage} GB selected (not guaranteed persistent) · {item.region} · {item.status==='draft'?'Draft — no server provisioned':item.status}</p></div>{item.status==='draft'&&<button type="button" disabled={!!payingDraft||checkingOrder?.draftId===item._id} onClick={()=>payTestDraft(item._id)} className="rounded-lg border border-emerald-500 px-3 py-2 text-xs font-semibold text-emerald-500 disabled:opacity-50">{checkingOrder?.draftId===item._id?'Checking existing payment…':payingDraft===item._id?'Opening test checkout…':`Pay ₹${item.computePriceINR ?? '—'} /month`}</button>}{checkoutErrorDraft===item._id&&checkoutMessage&&<p role="alert" className="w-full text-xs text-red-500">{checkoutMessage}</p>}{item.status==='draft'&&<button type="button" disabled={!!removingDraft} onClick={()=>deleteDraft(item._id)} className="rounded-lg border px-3 py-2 text-xs disabled:opacity-50">{removingDraft===item._id?'Deleting…':'Delete draft'}</button>}</div>)}</div>}<div className="mt-8 flex flex-col items-center rounded-2xl border border-dashed px-4 py-12 text-center"><span className="rounded-2xl bg-muted p-4"><Server size={26} className="text-muted-foreground"/></span><h3 className="mt-5 font-semibold">Server management is coming soon</h3><p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">Provisioning is being connected. We don't display demo servers as real infrastructure.</p><Link to="/configure" className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-emerald-500">Explore setup <ArrowRight size={16}/></Link></div></section>
   <div className="mt-8 grid gap-6 lg:grid-cols-2">
    <section className="rounded-2xl border bg-card p-6"><h2 className="font-semibold">Quick access</h2><div className="mt-4 space-y-2">{shortcuts.map(({to,title,detail,Icon})=><Link key={to} to={to} className="flex items-center gap-3 rounded-xl p-3 hover:bg-muted"><span className="rounded-lg bg-muted p-2"><Icon size={18}/></span><span className="flex-1"><span className="block text-sm font-medium">{title}</span><span className="block text-xs text-muted-foreground">{detail}</span></span><ArrowRight size={16} className="text-muted-foreground"/></Link>)}</div></section>
    <section className="rounded-2xl border bg-card p-6"><div className="flex items-center justify-between"><h2 className="font-semibold">Recent activity</h2><Link to="/notifications" className="text-xs font-medium text-emerald-500">View all</Link></div><div className="mt-5 space-y-3">{activity.length?activity.map((item,i)=><div key={item.id||item._id||i} className="rounded-xl border p-3"><p className="text-sm font-medium">{item.title||'Account activity'}</p><p className="mt-1 text-xs text-muted-foreground">{item.message||item.body||''}</p></div>):<div className="rounded-xl border border-dashed px-4 py-10 text-center text-sm text-muted-foreground">No recent activity to show.</div>}</div></section>
