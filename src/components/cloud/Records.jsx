@@ -22,16 +22,16 @@ export const RESOURCE = {
   instances: {
     table: 'instances_c', title: 'Instances', singular: 'Instance', icon: 'Server',
     subtitle: 'Monitor your cloud configurations and instance requests.',
-    fields: ['Name','region_c','os_c','cpu_c','ram_c','storage_c','status_c','price_c','term_c','endpoint_c'],
+    fields: ['Name','region_c','os_c','cpu_c','ram_c','status_c','price_c','term_c','endpoint_c'],
     filter: 'status_c', filterOptions: ['All','Running','Provisioning','Stopped','Pending'],
     labels: {
       Name:'Server name',region_c:'Region',os_c:'Operating system',cpu_c:'vCPU',
-      ram_c:'Memory (GB)',storage_c:'Disk request (GB)',status_c:'State',
+      ram_c:'Memory (GB)',status_c:'State',
       price_c:'Monthly price (INR)',term_c:'Billing cycle',endpoint_c:'SSH endpoint'
     },
-    types: {cpu_c:'number',ram_c:'number',storage_c:'number',price_c:'number',region_c:'select',os_c:'select',status_c:'select',term_c:'select'},
-    values: {region_c:['ap-southeast','us-west','eu-west','us-east'],os_c:['Ubuntu 24.04 LTS','Debian 12','Alpine Linux'],status_c:['Running','Provisioning','Stopped','Pending'],term_c:['Monthly','Yearly']},
-    defaults: {Name:'new-app-server',region_c:'ap-southeast',os_c:'Ubuntu 24.04 LTS',cpu_c:2,ram_c:4,storage_c:50,status_c:'Pending',price_c:1099,term_c:'Monthly',endpoint_c:'Not assigned'},
+    types: {cpu_c:'number',ram_c:'number',price_c:'number',region_c:'select',os_c:'select',status_c:'select',term_c:'select'},
+    values: {region_c:['ap-southeast','us-west','eu-west','us-east'],os_c:['Ubuntu 24.04 LTS','Debian 12'],status_c:['Running','Provisioning','Stopped','Pending'],term_c:['Monthly','Yearly']},
+    defaults: {Name:'new-app-server',region_c:'ap-southeast',os_c:'Ubuntu 24.04 LTS',cpu_c:2,ram_c:4,status_c:'Pending',price_c:185,term_c:'Monthly',endpoint_c:'Not assigned'},
   },
   domains: {
     table:'domains_c',title:'Domains',singular:'Domain',icon:'Globe2',

@@ -11,10 +11,8 @@ export default function Checkout() {
   const region = search.get('region') || 'ap-southeast';
   const os = search.get('os') || 'ubuntu-24';
   const cpu = Math.min(8, Math.max(1, Number(search.get('cpu')) || 2));
-  const ram = Math.min(16, Math.max(1, Number(search.get('ram')) || 4));
-  const storage = Math.min(200, Math.max(10, Number(search.get('storage')) || 50));
-  const term = search.get('term') === 'yearly' ? 'yearly' : 'monthly';
-  const amount = quoteServer({cpu,ram,storage,region,term});
+  const ram = Math.min(8, Math.max(1, Number(search.get('ram')) || 4));
+  const amount = quoteServer({cpu,ram});
   const regionLabel = REGIONS.find(x => x.code === region)?.city || region;
   const imageLabel = SYSTEMS.find(x => x.id === os)?.name || os;
 
@@ -30,11 +28,11 @@ export default function Checkout() {
         <div className="grid gap-x-8 gap-y-6 py-8 sm:grid-cols-2">
           {[
             ['Location',regionLabel],['Operating system',imageLabel],['Compute',cpu+' vCPU'],
-            ['RAM',ram+' GB'],['Persistent storage request',storage+' GB'],['Billing',term==='yearly'?'Annual':'Monthly'],
+            ['RAM',ram+' GB'],['Host storage','Shared ephemeral; no per-user quota'],['Billing','Monthly'],
           ].map(([label,value])=><div key={label}><p className="text-xs text-muted-foreground">{label}</p><p className="mt-2 text-sm font-semibold">{value}</p></div>)}
         </div>
         <div className="flex flex-wrap items-center justify-between gap-5 rounded-md bg-muted px-5 py-5">
-          <div><p className="text-xs text-muted-foreground">Estimated monthly equivalent</p><p className="mt-2 font-heading text-3xl font-bold">{formatMoney(amount)}</p></div>
+          <div><p className="text-xs text-muted-foreground">Monthly compute estimate</p><p className="mt-2 font-heading text-3xl font-bold">{formatMoney(amount)}</p></div>
           <div className="text-right text-xs text-muted-foreground">DEMO QUOTE<br/>Not a payment obligation</div>
         </div>
         <div className="mt-7 rounded-md border border-warning-border bg-warning-muted p-4 text-sm leading-6 text-warning">

@@ -5,7 +5,7 @@ import ApperIcon from '@/components/ApperIcon';
 export const route = { path: '/docs', layout: 'public', access: 'public' };
 
 const blocks = [
-  {icon:'Server',title:'Getting started',text:'Choose region, image, processor, RAM and storage from the configurator. Review the estimated price before opening your console.'},
+  {icon:'Server',title:'Getting started',text:'Choose Linux image, region, RAM and CPU. Monthly pricing is compute-only and no disk size is selected.'},
   {icon:'TerminalSquare',title:'SSH and remote access',text:'Railway TCP Proxy generally provides an allocated hostname and external port. It is not equivalent to an independent public IPv4 on port 22. Use key-based authentication when enabled.'},
   {icon:'Globe2',title:'Connect a custom domain',text:'Customer creates a DNS CNAME pointing to a real Railway-assigned hostname only after the operator registers the domain through Railway. DNS records cannot direct traffic to arbitrary ports by themselves.'},
   {icon:'Database',title:'Persistent storage',text:'Only a specifically attached Railway volume is persistent. The apparent size reported for a container overlay filesystem must not be sold as dedicated or persistent disk.'},

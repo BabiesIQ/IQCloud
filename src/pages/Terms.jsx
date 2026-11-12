@@ -4,11 +4,11 @@ import { BackLink } from '@/components/cloud/CloudUI';
 export const route = { path: '/terms', layout: 'public', access: 'public' };
 
 const clauses=[
-  ['1. Service description','BabiesIQ Cloud is currently a demonstration of a proposed managed hosting platform. No production VPS, virtual machine, public address, storage allocation or commercial hosting service is being supplied through this preview.'],
+  ['1. Service description','BabiesIQ Cloud is currently piloting Railway-backed Linux containers for verified test orders. These are shared-kernel containers, not fully virtualized VMs or Windows RDP; commercial availability, billing and service levels are not yet broadly established.'],
   ['2. Eligibility and use','Future users must be legally eligible to enter binding contracts and may use the service only for lawful purposes. Spam, malware, unauthorized intrusion, abusive scraping, illicit content and other prohibited activity would not be allowed.'],
-  ['3. Resource allocation','Selected vCPU, memory and disk are requests and estimates until accepted and fulfilled. Containerized environments may share a host kernel, and no guarantee of dedicated hardware, arbitrary root capabilities or static public IPv4 is made.'],
+  ['3. Resource allocation','Selected vCPU and memory are compute resources. No individual SSD quota is sold: container root storage uses a shared ephemeral host filesystem and files may be lost on redeploy. Shared host capacity is not a customer entitlement and network speed targets are not guaranteed. Containerized environments share a host kernel, with no promise of dedicated hardware, arbitrary root capabilities or static public IPv4.'],
   ['4. Availability and changes','Regions, supported operating-system images, prices, uptime, network ingress, quotas and volume limits will depend on provider capacity, service plan and applicable terms. They may change before sale.'],
-  ['5. Payment and renewal','All prices in the preview are illustrative. A future checkout must disclose applicable taxes, subscription period, renewal terms, cancellation deadlines and total charges before payment authorization. No money is collected now.'],
+  ['5. Payment and renewal','Published monthly compute prices are estimates for RAM and CPU only. Pilot checkout uses Razorpay Test Mode where enabled; actual commercial payment terms, taxes, renewals, cancellations and refunds must be disclosed and legally reviewed before launch.'],
   ['6. Customer content and security','Future customers would be responsible for their uploaded content, domain ownership, access keys and lawful operations. BabiesIQ Cloud would need authentication, tenant isolation, operational monitoring and backup policies before launch.'],
   ['7. Custom domain routing','A domain would require customer DNS control and registration against the correct hosting service. Propagation times vary; verification is not guaranteed. The system will not claim domain ownership merely because DNS is entered.'],
   ['8. Suspension and misuse','A future service may suspend access for abuse, payment failure or infrastructure security threats, subject to a published notice, review and appeal policy.'],
@@ -22,7 +22,7 @@ export default function Terms() {
       <BackLink to="/" label="Back to home"/>
       <p className="font-heading text-xs uppercase tracking-widest text-primary">Legal / Draft preview</p>
       <h1 className="mt-4 font-heading text-4xl font-bold">Terms of service</h1>
-      <p className="mt-4 border-b border-border pb-8 text-sm leading-7 text-muted-foreground">Draft dated 6 November 2026. These conditions explain the proposed service model; they are not a substitute for a legally reviewed agreement.</p>
+      <p className="mt-4 border-b border-border pb-8 text-sm leading-7 text-muted-foreground">Draft updated 12 November 2026. These conditions explain the proposed service model; they are not a substitute for a legally reviewed agreement.</p>
       <div className="mt-9 space-y-9">
         {clauses.map(([title,description])=>(
           <section key={title}><h2 className="font-heading text-base font-bold">{title}</h2><p className="mt-3 text-sm leading-8 text-muted-foreground">{description}</p></section>

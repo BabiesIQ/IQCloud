@@ -6,7 +6,7 @@ import ApperIcon from '@/components/ApperIcon';
 export const route = { path: '/', layout: 'public', access: 'public' };
 
 const features = [
-  { icon: 'SlidersHorizontal', title: 'Choose your resources', description: 'Set your CPU, RAM and storage. See the price as you go.' },
+  { icon: 'SlidersHorizontal', title: 'Choose your resources', description: 'Set CPU and RAM. Clear, compute-only monthly pricing.' },
   { icon: 'Globe2', title: 'Connect your domain', description: 'Add your website domain and follow simple DNS steps.' },
   { icon: 'LayoutDashboard', title: 'Manage everything', description: 'Keep servers, domains and billing in one place.' },
 ];
@@ -26,7 +26,7 @@ export default function Home() {
           Create a server your way. Pick a region, choose your resources, and manage it all in one simple dashboard.
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-3">
-          <Link to="/configure" className="inline-flex h-12 items-center gap-2 rounded-full bg-foreground px-6 text-sm font-semibold text-background transition hover:opacity-85">
+          <Link to="/dashboard/instances/new" className="inline-flex h-12 items-center gap-2 rounded-full bg-foreground px-6 text-sm font-semibold text-background transition hover:opacity-85">
             Create a server <ApperIcon name="ArrowUpRight" size={17} />
           </Link>
           <Link to="/pricing" className="inline-flex h-12 items-center gap-2 rounded-full border border-border bg-card px-6 text-sm font-medium hover:bg-accent">
@@ -61,7 +61,7 @@ export default function Home() {
           </div>
           <div className="mt-5 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-5">
             <div><div className="text-xs text-muted-foreground">Illustrative compute price (4 GB / 2 vCPU)</div><div className="mt-1 text-2xl font-semibold">₹185<span className="ml-2 text-sm font-normal text-muted-foreground">/ month</span></div></div>
-            <Link to="/configure" className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium hover:bg-accent">Customize <ApperIcon name="ArrowRight" size={16}/></Link>
+            <Link to="/dashboard/instances/new" className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium hover:bg-accent">Customize <ApperIcon name="ArrowRight" size={16}/></Link>
           </div>
         </div>
       </section>
@@ -89,15 +89,15 @@ export default function Home() {
             <div>
               <span className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">Cloud hosting preview</span>
               <h2 className="mt-6 text-3xl font-semibold tracking-tight">More ways to host.</h2>
-              <p className="mt-4 max-w-md text-sm leading-7 text-muted-foreground">Linux VPS, Windows RDP and multiple regions. Flexible compute and storage, all from one dashboard.</p>
-              <p className="mt-3 text-xs text-muted-foreground">1–3 TB SSD options and Windows RDP are planned, not currently available.</p>
-              <Link to="/configure" className="mt-6 inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background">Explore servers <ApperIcon name="ArrowUpRight" size={16}/></Link>
+              <p className="mt-4 max-w-md text-sm leading-7 text-muted-foreground">Linux containers today, Windows RDP planned. Choose compute and region from one dashboard.</p>
+              <p className="mt-3 text-xs text-muted-foreground">Target network up to 3–5 Gbps (unverified, not guaranteed). Shared host capacity target 2–30 TB is not a per-user SSD or persistence promise. Windows RDP coming later.</p>
+              <Link to="/dashboard/instances/new" className="mt-6 inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background">Explore servers <ApperIcon name="ArrowUpRight" size={16}/></Link>
             </div>
             <div className="relative min-h-[260px] [perspective:900px]">
               <div className="absolute inset-5 rounded-3xl bg-primary/10 blur-2xl" />
               <div className="cloud-float-a absolute left-[5%] top-4 w-[70%] rounded-2xl border border-border bg-background p-5 shadow-xl">
                 <div className="flex items-center gap-3"><span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary"><ApperIcon name="Server" size={21}/></span><div><div className="text-sm font-semibold">Linux VPS</div><div className="text-xs text-muted-foreground">Cloud compute</div></div></div>
-                <div className="mt-5 flex gap-2 text-xs"><span className="rounded-full bg-muted px-3 py-1">Ubuntu</span><span className="rounded-full bg-muted px-3 py-1">SSD</span></div>
+                <div className="mt-5 flex gap-2 text-xs"><span className="rounded-full bg-muted px-3 py-1">Ubuntu</span><span className="rounded-full bg-muted px-3 py-1">Shared storage</span></div>
               </div>
               <div className="cloud-float-b absolute bottom-3 right-0 w-[67%] rounded-2xl border border-border bg-background p-5 shadow-xl">
                 <div className="flex items-center gap-3"><span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary"><ApperIcon name="Monitor" size={21}/></span><div><div className="text-sm font-semibold">Windows RDP</div><div className="text-xs text-muted-foreground">Coming later</div></div></div>
@@ -111,7 +111,7 @@ export default function Home() {
       <section className="border-t border-border px-5 py-20 text-center">
         <h2 className="text-3xl font-semibold tracking-tight">Ready to get started?</h2>
         <p className="mt-3 text-sm text-muted-foreground">Set up your first server in a few simple steps.</p>
-        <Link to="/configure" className="mt-7 inline-flex h-12 items-center gap-2 rounded-full bg-foreground px-6 text-sm font-semibold text-background">Build your server <ApperIcon name="ArrowUpRight" size={17}/></Link>
+        <Link to="/dashboard/instances/new" className="mt-7 inline-flex h-12 items-center gap-2 rounded-full bg-foreground px-6 text-sm font-semibold text-background">Build your server <ApperIcon name="ArrowUpRight" size={17}/></Link>
       </section>
     </main>
   );
