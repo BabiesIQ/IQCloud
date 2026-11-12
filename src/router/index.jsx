@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 import RootLayout from '@/layouts/RootLayout';
 import OwnerLayout from '@/layouts/OwnerLayout';
@@ -93,6 +93,22 @@ function buildAuthRoutes() {
 }
 
 const ownerRoutes = discoveredRoutes.filter((r) => r.layout === 'owner').map(buildDiscoveredRoute);
+
+// Old Create Instance links and bookmarks must all resolve to the actual
+// authenticated provisioning form, not the legacy demo instance detail page.
+const oldCreatePaths = [
+  'instances/new',
+  'create-instance',
+  'create-server',
+  'dashboard/create-instance',
+  'dashboard/create-server',
+  'dashboard/new',
+];
+const legacyCreateRoutes = oldCreatePaths.map((path) => ({
+  path,
+  element: <Navigate to="/dashboard/instances/new" replace />,
+  handle: { access: 'authenticated' },
+}));
 const publicRoutes = [
   ...discoveredRoutes.filter((r) => r.layout === 'public').map(buildDiscoveredRoute),
   ...buildAuthRoutes(),
@@ -105,7 +121,7 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <OwnerLayout />,
-        children: [...ownerRoutes],
+        children: [...ownerRoutes, ...legacyCreateRoutes],
       },
       {
         element: <PublicLayout />,
