@@ -12,7 +12,7 @@ export default function CustomPorts(){
  const [query]=useSearchParams();
  const [servers,setServers]=useState([]);
  const [selected,setSelected]=useState(query.get('instanceId')||'');
- const [mode,setMode]=useState('inbound');
+ const [mode,setMode]=useState(()=>query.get('tab')==='outbound'?'outbound':'inbound');
  const [bindings,setBindings]=useState(null);
  const [loading,setLoading]=useState(true);
  const [working,setWorking]=useState(false);

@@ -25,6 +25,7 @@ import Notifications from '@/pages/Notifications';
 function Header() {
   const [account, setAccount] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [networkMenuOpen, setNetworkMenuOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [theme, setTheme] = useState(getPreferences().theme);
@@ -80,7 +81,7 @@ function Header() {
   }
   const menuItems = [
     { to: '/', label: 'Home', icon: '⌂' },
-    ...(account ? [{ to: '/dashboard', label: 'Dashboard', icon: '▦' }, { to: '/dashboard/networking/ports', label: 'Networking · Custom Ports', icon: '⇅' }, { to: '/security', label: 'Security Center', icon: '♢' }] : []),
+    ...(account ? [{ to: '/dashboard', label: 'Dashboard', icon: '▦' }, { to: '/security', label: 'Security Center', icon: '♢' }] : []),
     { to: '/pricing', label: 'Pricing', icon: '◇' },
     ...(account ? [{ to: '/settings', label: 'Preferences', icon: '⚙' }] : []),
     { to: '/docs', label: 'Documentation', icon: '◫' }
@@ -113,6 +114,10 @@ function Header() {
         </div>
         <div className="flex-1 space-y-1 overflow-y-auto p-3">
           {menuItems.map(item => <Link key={item.to} to={item.to} onClick={() => setMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium hover:bg-muted focus-visible:bg-muted"><span aria-hidden="true" className="w-6 text-center text-lg">{item.icon}</span>{item.label}</Link>)}
+          {account&&<div className="mt-2 rounded-xl border">
+           <button type="button" onClick={()=>setNetworkMenuOpen(v=>!v)} aria-expanded={networkMenuOpen} className="flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold hover:bg-muted"><span className="flex items-center gap-3"><span aria-hidden="true" className="w-6 text-center text-lg">⇅</span>Networking</span><span aria-hidden="true">{networkMenuOpen?'▾':'▸'}</span></button>
+           {networkMenuOpen&&<div className="space-y-1 border-t px-3 py-2"><Link onClick={()=>setMenuOpen(false)} to="/dashboard/networking/ports?tab=inbound" className="block rounded-lg px-4 py-3 text-sm hover:bg-muted">Inbound · HTTP ports</Link><Link onClick={()=>setMenuOpen(false)} to="/dashboard/networking/ports?tab=outbound" className="block rounded-lg px-4 py-3 text-sm hover:bg-muted">Outbound · Connections</Link></div>}
+          </div>}
         </div>
         <div className="border-t p-3">
           {account ? <button type="button" onClick={signOut} disabled={loggingOut} className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium text-red-500 hover:bg-red-500/10 disabled:opacity-50"><span aria-hidden="true" className="w-6 text-center">⇥</span>{loggingOut ? 'Logging out…' : 'Log out'}</button> :
