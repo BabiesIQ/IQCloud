@@ -160,6 +160,8 @@ export default function Dashboard() {
    <div className="mt-6 space-y-4">{instances.filter(i=>i.status!=='draft').slice().sort((a,b)=>new Date(a.createdAt||0)-new Date(b.createdAt||0)).map((item,index)=><div key={item._id} className="rounded-2xl border bg-background p-5">
     <div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="font-semibold">Instance {index+1}</h3><p className="mt-1 text-sm text-muted-foreground">{item.os==='debian-12'?'Debian 12':'Ubuntu 24.04'} · {item.ram} GB RAM · {item.cpu} vCPU</p></div><span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold">{item.status==='running'?'Running':item.status}</span></div>
     <p className="mt-2 text-xs text-muted-foreground">Region: {item.region} · Shared ephemeral storage · Public SSH via TCP proxy</p>
+    {item.providerRuntime==='needs_review'&&<p className="mt-3 rounded-lg border border-amber-500/40 p-3 text-xs text-amber-600">Provider verification needs review. Your paid validity and last known SSH address are preserved. Do not pay again.</p>}
+    {item.rootResetStatus==='redeploy_requested'&&<p className="mt-3 rounded-lg border p-3 text-xs text-muted-foreground">Root password update was requested. Railway may be redeploying this instance; check SSH connectivity before connecting.</p>}
     {item.validUntil&&<div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border p-3 text-sm">
      <div className="min-w-0"><div className="flex items-center gap-2 font-semibold"><CalendarClock size={16} className="text-emerald-500"/> Billing validity</div>
       <p className="mt-1 text-xs text-muted-foreground">Expires: {new Date(item.validUntil).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</p>
