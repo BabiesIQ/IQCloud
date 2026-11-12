@@ -17,6 +17,7 @@ export default function CustomPorts(){
  const [loading,setLoading]=useState(true);
  const [working,setWorking]=useState(false);
  const [port,setPort]=useState('3000');
+ const [riskAccepted,setRiskAccepted]=useState(false);
  const [error,setError]=useState('');
  const [notice,setNotice]=useState('');
  async function refreshInstances(){
@@ -48,7 +49,7 @@ export default function CustomPorts(){
   if(!Number.isInteger(value)||value<1||value>65535||value===22){setError('Choose an internal application port 1–65535 other than SSH port 22');return}
   setWorking(true);setError('');setNotice('');
   try{
-   const result=await apiRequest('/api/v1/instances/'+encodeURIComponent(selected)+'/ports/inbound',{method:'POST',body:{port:value}});
+   const result=await apiRequest('/api/v1/instances/'+encodeURIComponent(selected)+'/ports/inbound',{method:'POST',body:{port:value,acceptRedeployRisk:riskAccepted}});
    setNotice(result.notice||'Railway HTTP endpoint created. Verify your app is listening on the selected port.');
    const data=await apiRequest('/api/v1/instances/'+encodeURIComponent(selected)+'/ports');
    setBindings(data);
@@ -73,9 +74,10 @@ export default function CustomPorts(){
    <div className="flex items-center gap-2 font-semibold"><Globe2 size={19} className="text-emerald-500"/> Inbound HTTP</div>
    <p className="text-sm leading-6 text-muted-foreground">Run your app inside the instance on a chosen TCP port (for example <code>0.0.0.0:3000</code>). Railway will assign a public HTTPS hostname that forwards traffic to that HTTP port. DNS/TLS and your app's response should be verified before sharing it.</p>
    <div className="flex items-start gap-2 rounded-xl border p-3 text-xs text-muted-foreground"><LockKeyhole size={16} className="shrink-0"/> SSH keeps its existing public TCP proxy and port. Railway allows only one public TCP proxy per service, so arbitrary additional inbound TCP/UDP ports are not supported by this control.</div>
+   <label className="flex items-start gap-2 rounded-xl border border-amber-500/40 p-3 text-xs text-muted-foreground"><input type="checkbox" className="mt-0.5" checked={riskAccepted} onChange={e=>setRiskAccepted(e.target.checked)}/><span>I understand that provider networking changes may redeploy or interrupt a Railway container and its ephemeral files may be lost. I have backed up important data.</span></label>
    <div className="flex flex-wrap items-end gap-3">
     <label htmlFor="http-port" className="block flex-1 text-sm font-medium">Internal HTTP application port<input id="http-port" type="number" min="1" max="65535" value={port} onChange={e=>setPort(e.target.value)} className="mt-2 w-full rounded-xl border bg-background p-3" /></label>
-    <button type="button" onClick={createInbound} disabled={!selectedServer||working} className="rounded-xl bg-primary px-5 py-3 font-semibold text-primary-foreground disabled:opacity-50">{working?'Configuring…':'Expose HTTP port'}</button>
+    <button type="button" onClick={createInbound} disabled={!selectedServer||working||!riskAccepted} className="rounded-xl bg-primary px-5 py-3 font-semibold text-primary-foreground disabled:opacity-50">{working?'Configuring…':'Expose HTTP port'}</button>
    </div>
    {bindings?.inbound?.length>0&&<div className="space-y-3"><h3 className="font-semibold">Provider endpoints</h3>{bindings.inbound.map(p=><div key={p.port} className="rounded-xl border p-4 text-sm"><div className="flex items-center justify-between"><strong>Internal port {p.port}</strong><span className="text-xs">{p.status}</span></div>{p.domain&&<a className="mt-2 inline-flex items-center gap-2 break-all text-emerald-500 underline" href={'https://'+p.domain} target="_blank" rel="noopener noreferrer">{p.domain}<ArrowUpRight size={14}/></a>}{p.status==='needs_review'&&<p className="mt-2 text-xs text-amber-600">Manual provider review required. Do not create the same port again.</p>}</div>)}</div>}
    <p className="text-xs text-muted-foreground">Provider endpoint creation does not install a web server, open local firewall rules, or prove your app is listening.</p>
