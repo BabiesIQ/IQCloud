@@ -5,7 +5,8 @@ import ApperIcon from '@/components/ApperIcon';
 export const route = { path: '/docs', layout: 'public', access: 'public' };
 
 const blocks = [
-  {icon:'Server',title:'Getting started',text:'Choose Linux image, region, RAM and CPU. Monthly pricing is compute-only and no disk size is selected.'},
+  {icon:'Server',title:'Getting started',text:'Choose Linux image, region, RAM and CPU, then a billing term: monthly, 3 months (7% off), 6 months (14% off) or 12 months (30% off). Only compute resources are priced; no SSD allocation is sold.'},
+  {icon:'CalendarClock',title:'Billing validity and renewal',text:'Validity starts when the server is SSH-ready. Three days before expiry, we send an in-app and email warning. Use Renew in the dashboard to extend the existing service. Expired deployments stop; reopening them can erase ephemeral files. No auto-debit is enabled.'},
   {icon:'TerminalSquare',title:'SSH and remote access',text:'Railway TCP Proxy assigns a public SSH hostname and external port, not a dedicated public IPv4/IPv6 address or port 22 on a unique host. IPv4/IPv6 support depends on provider DNS/routing; do not assume dual-stack without verification. Copy your masked host from the dashboard. Use key-based authentication where configured.'},
   {icon:'Globe2',title:'Connect a custom domain',text:'Customer creates a DNS CNAME pointing to a real Railway-assigned hostname only after the operator registers the domain through Railway. DNS records cannot direct traffic to arbitrary ports by themselves.'},
   {icon:'Database',title:'Persistent storage',text:'Only a specifically attached Railway volume is persistent. The apparent size reported for a container overlay filesystem must not be sold as dedicated or persistent disk.'},
@@ -37,7 +38,7 @@ export default function Docs() {
         </ol>
         <p className="mt-5 text-xs text-warning">This page illustrates a future workflow. The demo does not issue live DNS targets or make Railway API calls.</p>
       </div>
-      <div className="mt-9 flex gap-5 text-sm"><Link to="/configure" className="font-semibold text-primary">Configure a demo server →</Link><Link to="/terms" className="font-semibold text-muted-foreground">Read service terms →</Link></div>
+      <div className="mt-9 flex gap-5 text-sm"><Link to="/dashboard/instances/new" className="font-semibold text-primary">Configure an instance →</Link><Link to="/terms" className="font-semibold text-muted-foreground">Read service terms →</Link></div>
     </div>
   );
 }
