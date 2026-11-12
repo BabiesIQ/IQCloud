@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import '@/cloud-motion.css';
 import ApperIcon from '@/components/ApperIcon';
+import SharedInfrastructure from '@/components/cloud/SharedInfrastructure';
 
 
 export const route = { path: '/', layout: 'public', access: 'public' };
@@ -66,6 +67,7 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-5xl px-5 pb-16"><h2 className="mb-5 text-xl font-semibold">Network & storage details</h2><SharedInfrastructure/></section>
       <section className="border-t border-border bg-card/40 px-5 py-20">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-center text-3xl font-semibold tracking-tight sm:text-4xl">Everything in one place.</h2>
