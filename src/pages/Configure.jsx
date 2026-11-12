@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { REGIONS, SYSTEMS, formatMoney, quoteServer } from '@/components/cloud/CloudUI';
 import ApperIcon from '@/components/ApperIcon';
+import { isRecommended } from '@/config/plans';
+import SharedInfrastructure from '@/components/cloud/SharedInfrastructure';
 
 export const route = { path: '/configure', layout: 'public', access: 'authenticated' };
 
@@ -15,11 +17,9 @@ export default function Configure() {
   const [os, setOs] = useState('ubuntu-24');
   const [cpu, setCpu] = useState(2);
   const [ram, setRam] = useState(4);
-  const [storage, setStorage] = useState(50);
-  const [term, setTerm] = useState('monthly');
-  const amount = quoteServer({ cpu, ram, storage, region, term });
+  const amount = quoteServer({ cpu, ram });
   const ready = name.trim().length >= 3 && /^[a-z0-9-]+$/.test(name.trim());
-  const query = new URLSearchParams({ name, region, os, cpu, ram, storage, term, estimate: amount }).toString();
+  const query = new URLSearchParams({ name, region, os, cpu, ram, estimate: amount }).toString();
 
   return (
     <div className="border-b border-border">
@@ -27,7 +27,7 @@ export default function Configure() {
         <div className="mb-10">
           <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-primary">01 / Configure instance</p>
           <h1 className="mt-3 font-heading text-3xl font-bold md:text-4xl">Create your cloud server.</h1>
-          <p className="mt-3 text-sm text-muted-foreground">Build a custom configuration. All provisioning and billing are simulated in this preview.</p>
+          <p className="mt-3 text-sm text-muted-foreground">Choose RAM and CPU. This public review is a preview; actual server drafts are created from your dashboard.</p>
         </div>
         <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
           <div className="space-y-6">
@@ -70,8 +70,7 @@ export default function Configure() {
               <div className="mb-7 flex items-center gap-3"><span className="grid size-9 place-items-center rounded-md bg-primary/10 font-heading text-sm font-semibold text-primary">04</span><h2 className="font-heading text-lg font-bold">Hardware specifications</h2></div>
               {[
                 { name: 'vCPU', subtitle: 'Requested compute', value: cpu, change: setCpu, min: 1, max: 8, suffix: ' cores', icon: 'Cpu' },
-                { name: 'Memory', subtitle: 'Requested RAM', value: ram, change: setRam, min: 1, max: 16, suffix: ' GB', icon: 'MemoryStick' },
-                { name: 'Storage', subtitle: 'Requested persistent disk', value: storage, change: setStorage, min: 10, max: 200, step: 10, suffix: ' GB', icon: 'HardDrive' },
+                { name: 'Memory', subtitle: 'Requested RAM', value: ram, change: setRam, min: 1, max: 8, suffix: ' GB', icon: 'MemoryStick' },
               ].map((control) => (
                 <div key={control.name} className="mb-8 last:mb-0">
                   <div className="mb-5 flex items-center justify-between gap-4">
@@ -83,8 +82,10 @@ export default function Configure() {
                 </div>
               ))}
               <p className="rounded-md bg-muted p-3 text-xs leading-6 text-muted-foreground">
-                Resource sliders define requests, not guaranteed dedicated resources. Live provisioning must enforce actual plan quotas and persistent-volume limits.
+                RAM and CPU are the only billable resources. Shared host disk has no guaranteed per-customer quota.
               </p>
+              <button type="button" className="mt-3 w-full rounded-md border border-primary/40 bg-primary/10 p-3 text-left text-sm" onClick={()=>{setRam(8);setCpu(4)}}><strong>★ Recommended · 8 GB RAM + 4 vCPU · ₹350/month</strong></button>
+              <SharedInfrastructure className="mt-5"/>
             </section>
           </div>
           <aside className="lg:sticky lg:top-24">
@@ -97,20 +98,11 @@ export default function Configure() {
                   ['Image', SYSTEMS.find((x)=>x.id===os)?.name],
                   ['vCPU', cpu + ' cores'],
                   ['Memory', ram + ' GB'],
-                  ['Storage', storage + ' GB'],
                 ].map(([label,value]) => <div key={label} className="flex items-center justify-between gap-3 text-sm"><span className="text-muted-foreground">{label}</span><span className="text-right font-semibold">{value}</span></div>)}
                 <div className="border-t border-border pt-5">
-                  <Label htmlFor="billing-cycle">Billing cycle</Label>
-                  <select id="billing-cycle" value={term} onChange={(event)=>setTerm(event.target.value)} className="mt-2 h-11 w-full rounded-md border border-input bg-background px-3 text-sm">
-                    <option value="monthly">Monthly</option>
-                    <option value="yearly">Yearly commitment · 15% off monthly rate</option>
-                  </select>
-                </div>
-                <div className="border-t border-border pt-5">
-                  <p className="text-xs text-muted-foreground">Estimated monthly equivalent</p>
+                  <p className="text-xs text-muted-foreground">Monthly compute price {isRecommended(ram,cpu)?'· Recommended':''}</p>
                   <div className="mt-1 font-heading text-4xl font-bold">{formatMoney(amount)}<span className="ml-1 text-sm font-normal text-muted-foreground">/mo</span></div>
-                  {term==='yearly' && <p className="mt-2 text-xs text-muted-foreground">Estimated annual total: {formatMoney(amount*12)}</p>}
-                  <p className="mt-3 text-xs leading-5 text-muted-foreground">Illustrative rate, taxes and live provider costs not included.</p>
+                  <p className="mt-3 text-xs leading-5 text-muted-foreground">Monthly RAM/CPU estimate. Shared ephemeral disk and target network speeds are not guaranteed.</p>
                 </div>
                 <Button asChild disabled={!ready} size="lg" className="w-full">
                   <Link to={ready ? '/checkout?'+query : '#'}>Continue to review <ApperIcon name="ArrowRight" size={17} /></Link>

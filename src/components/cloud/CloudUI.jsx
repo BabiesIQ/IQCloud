@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import ApperIcon from '@/components/ApperIcon';
+import { computePrice } from '@/config/plans';
 
 export const REGIONS = [
   { code: 'us-west', city: 'US West', subtitle: 'California, USA', flag: '🇺🇸', latency: 'Americas' },
@@ -11,14 +12,10 @@ export const REGIONS = [
 export const SYSTEMS = [
   { id: 'ubuntu-24', name: 'Ubuntu 24.04 LTS', icon: '🐧' },
   { id: 'debian-12', name: 'Debian 12', icon: '🌀' },
-  { id: 'alpine', name: 'Alpine Linux', icon: '⛰️' },
 ];
 
-export function quoteServer({ cpu, ram, storage, region, term }) {
-  const base = 149 + cpu * 110 + ram * 95 + storage * 3.5;
-  const regionMultiplier = region === 'ap-southeast' ? 1.12 : region === 'eu-west' ? 1.08 : 1;
-  const discount = term === 'yearly' ? 0.85 : 1;
-  return Math.round(base * regionMultiplier * discount);
+export function quoteServer({ cpu, ram }) {
+  return computePrice(ram,cpu);
 }
 
 export function SectionHead({ eyebrow, title, description, right }) {
