@@ -9,9 +9,9 @@ const activeApp = readFileSync('src/App.jsx', 'utf8');
 const createPage = readFileSync('src/pages/CreateInstance.jsx', 'utf8');
 const checkoutPage = readFileSync('src/pages/ServerCheckout.jsx', 'utf8');
 
-assert.match(main, /import App from ['"]\\.\\/App['"];/, 'production entrypoint must import App');
-assert.match(activeApp, /import CreateInstance from ['"]@\\/pages\\/CreateInstance['"];/, 'CreateInstance must be imported by active App');
-assert.match(activeApp, /import ServerCheckout from ['"]@\\/pages\\/ServerCheckout['"];/, 'ServerCheckout must be imported by active App');
+assert.ok(main.includes("import App from './App';"), 'production entrypoint must import App');
+assert.ok(activeApp.includes("import CreateInstance from '@/pages/CreateInstance';"), 'CreateInstance must be imported by active App');
+assert.ok(activeApp.includes("import ServerCheckout from '@/pages/ServerCheckout';"), 'ServerCheckout must be imported by active App');
 for (const [path, element] of Object.entries({
   '/dashboard': 'Dashboard',
   '/dashboard/instances/new': 'CreateInstance',
