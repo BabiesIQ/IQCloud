@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Bell, Cloud, Plus, RefreshCw, Server, Settings2, ShieldCheck, Wallet } from 'lucide-react';
 import { apiRequest } from '@/services/apiClient';
-import ServerNetworking from '@/components/ServerNetworking';
 import ServerCredentials from '@/components/ServerCredentials';
 import { CalendarClock, AlertTriangle } from 'lucide-react';
 
@@ -149,7 +148,6 @@ export default function Dashboard() {
  ];
  return <main className="mx-auto max-w-6xl px-5 pb-20 pt-10 sm:pt-14">
   <div className="flex flex-wrap items-start justify-between gap-4"><div><div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-emerald-500"><Cloud size={15}/> Cloud workspace <span className="rounded border px-2 py-0.5 text-[10px] text-muted-foreground" title="Frontend deployment version">WEB-20261109-4</span></div><h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{loading?'Loading workspace…':`Welcome back, ${name}`}</h1><p className="mt-3 text-sm text-muted-foreground">Your infrastructure and account, in one place.</p></div><button type="button" onClick={refresh} disabled={loading} className="flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm hover:bg-muted disabled:opacity-50"><RefreshCw size={16}/> Refresh</button></div>
-  {pilotOrder&&<div className="mt-6 rounded-xl border border-amber-500/40 p-4 text-sm"><p className="font-semibold">Real Railway provisioning — Razorpay Test Mode</p><p className="mt-2 text-muted-foreground">Your captured test payment starts real Railway container provisioning automatically. No second payment or root-password entry is needed. Railway hosting charges may still apply. Shared host disk is ephemeral, not a dedicated SSD quota; region and throughput depend on provider.</p><p className="mt-3 font-medium">Status: {pilotStatus?.status||'Checking…'}</p>{pilotStatus?.message&&<p className="mt-2 text-muted-foreground">{pilotStatus.message}</p>}{pilotStatus?.status==='ready'&&<p className="mt-3 text-xs text-muted-foreground">Your server is ready. Copy host and port securely from the numbered instance card below.</p>}{pilotStatus?.status==='needs_review'&&<p className="mt-2 text-amber-600">Your payment is recorded. Do not pay again or create another server. Provider reconciliation is required.</p>}</div>}
   {checkoutMessage&&!checkoutErrorDraft&&<div role="status" className="mt-6 rounded-xl border border-amber-500/30 p-4 text-sm">{checkoutMessage}</div>}
   {error&&<div role="alert" className="mt-7 rounded-xl border border-red-500/30 p-4 text-sm">{error} <button onClick={refresh} className="ml-2 underline">Try again</button></div>}
   <div className="mt-9 grid gap-4 sm:grid-cols-3">
@@ -174,7 +172,6 @@ export default function Dashboard() {
     {item.status==='running'?<ServerCredentials item={item}/>:<p className="mt-3 text-xs text-muted-foreground">{['expired','expiring','resume_pending','resuming','resume_failed'].includes(item.status)?'The paid period ended or renewal redeployment is in progress. Railway root data is ephemeral and may be lost when the service restarts.':'Your SSH details will appear after verified payment and successful provisioning.'}</p>}
    </div>)}
    {instances.filter(i=>i.status!=='draft').length===0&&<div className="rounded-xl border border-dashed p-7 text-center text-sm text-muted-foreground">No provisioned instances yet.</div>}</div>
-   <ServerNetworking/>
    {instances.some(i=>i.status==='draft')&&<div className="mt-8"><h3 className="font-semibold">Saved drafts</h3><div className="mt-4 space-y-3">{instances.filter(i=>i.status==='draft').map((item,index)=><div key={item._id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"><div><p className="font-semibold">Draft {index+1}</p><p className="mt-1 text-xs text-muted-foreground">{item.os} · {item.ram} GB RAM · {item.cpu} vCPU · ₹{item.computePriceINR}/month · {item.billingMonths||1} month(s) validity</p></div><div className="flex gap-2"><Link to={'/dashboard/checkout?draftId='+encodeURIComponent(item._id)} className="rounded-lg border border-emerald-500 px-3 py-2 text-xs font-semibold text-emerald-500">Checkout</Link><button type="button" disabled={!!removingDraft} onClick={()=>deleteDraft(item._id)} className="rounded-lg border px-3 py-2 text-xs disabled:opacity-50">{removingDraft===item._id?'Deleting…':'Delete'}</button></div></div>)}</div></div>}
   </section>
   <div className="mt-8 grid gap-6 lg:grid-cols-2">
