@@ -7,3 +7,24 @@ export const MONTHLY_COMPUTE_PRICES=[
 ];
 export const isRecommended=(ram,cpu)=>Number(ram)===8&&Number(cpu)===4;
 export const computePrice=(ram,cpu)=>MONTHLY_COMPUTE_PRICES[Number(ram)-1]?.[Number(cpu)-1]??null;
+
+export const BILLING_TERMS = [
+ {months:1,discountPercent:0,label:'Monthly'},
+ {months:3,discountPercent:7,label:'3 months'},
+ {months:6,discountPercent:14,label:'6 months'},
+ {months:12,discountPercent:30,label:'12 months'},
+];
+export const billingTerm = (months) => BILLING_TERMS.find(term=>term.months===Number(months)) || BILLING_TERMS[0];
+export function termQuote(ram,cpu,months){
+ const monthlyPriceINR=computePrice(ram,cpu);
+ const term=billingTerm(months);
+ if(monthlyPriceINR==null)return null;
+ const subtotalPaise=monthlyPriceINR*term.months*100;
+ const discountPaise=Math.floor((subtotalPaise*term.discountPercent+50)/100);
+ return {months:term.months,discountPercent:term.discountPercent,monthlyPriceINR,
+  subtotalPaise,discountPaise,totalPaise:subtotalPaise-discountPaise};
+}
+export const priceINR=(paise) => (Number(paise)/100).toLocaleString('en-IN',{
+ style:'currency',currency:'INR',minimumFractionDigits:0,
+ maximumFractionDigits:2
+});
