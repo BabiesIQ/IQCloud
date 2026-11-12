@@ -13,6 +13,9 @@ import Dashboard from '@/pages/Dashboard';
 import CreateInstance from '@/pages/CreateInstance';
 import ServerCheckout from '@/pages/ServerCheckout';
 import Pricing from '@/pages/Pricing';
+import Docs from '@/pages/Docs';
+import Terms from '@/pages/Terms';
+import Privacy from '@/pages/Privacy';
 import PasswordRecovery from '@/pages/auth/PasswordRecovery';
 import SecurityCenter from '@/pages/SecurityCenter';
 import Notifications from '@/pages/Notifications';
@@ -195,7 +198,9 @@ function Shell() {
     <Route path="/dashboard/create-instance" element={<Navigate to="/dashboard/instances/new" replace/>}/>
     <Route path="/dashboard/create-server" element={<Navigate to="/dashboard/instances/new" replace/>}/>
     <Route path="/dashboard/new" element={<Navigate to="/dashboard/instances/new" replace/>}/>
-    <Route path="/docs" element={<StatusPage title="Documentation"/>}/>
+    <Route path="/docs" element={<Docs/>}/>
+    <Route path="/terms" element={<Terms/>}/>
+    <Route path="/privacy" element={<Privacy/>}/>
     <Route path="/dashboard" element={<Dashboard/>}/>
     <Route path="/instances" element={<Navigate to="/dashboard" replace/>}/>
     <Route path="*" element={<StatusPage title="Page not found"/>}/>

@@ -45,6 +45,7 @@ export default function ServerCheckout(){
    setError('Please confirm that you understand ephemeral data can be lost when a stopped instance is redeployed.');return;
   }
   busy.current=true;setPaying(true);setError('');
+  let modalOpened=false;
   try{
    let checkoutOrder=order;
    if(!checkoutOrder){
@@ -84,8 +85,9 @@ export default function ServerCheckout(){
     busy.current=false;setPaying(false);
    });
    razorpay.open();
+   modalOpened=true;
   }catch(e){setError(e.message||'Checkout unavailable')}
-  finally{busy.current=false;setPaying(false)}
+  finally{if(!modalOpened){busy.current=false;setPaying(false)}}
  }
  return <main className="mx-auto max-w-3xl px-5 py-8 pb-24">
   <Link to={isRenewal?'/dashboard':'/dashboard/instances/new'} className="inline-flex items-center gap-2 text-sm text-muted-foreground"><ArrowLeft size={16}/> Back</Link>
