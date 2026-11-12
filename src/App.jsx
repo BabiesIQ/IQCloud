@@ -13,6 +13,7 @@ import Dashboard from '@/pages/Dashboard';
 import CreateInstance from '@/pages/CreateInstance';
 import ServerCheckout from '@/pages/ServerCheckout';
 import CustomPorts from '@/pages/CustomPorts';
+import InstancePasswordReset from '@/pages/InstancePasswordReset';
 import Pricing from '@/pages/Pricing';
 import Docs from '@/pages/Docs';
 import Terms from '@/pages/Terms';
@@ -194,6 +195,7 @@ function Shell() {
     <Route path="/dashboard/instances/new" element={<CreateInstance/>}/>
     <Route path="/dashboard/checkout" element={<ServerCheckout/>}/>
     <Route path="/dashboard/networking/ports" element={<CustomPorts/>}/>
+    <Route path="/dashboard/instances/:id/reset-password" element={<InstancePasswordReset/>}/>
     <Route path="/instances/new" element={<Navigate to="/dashboard/instances/new" replace/>}/>
     <Route path="/create-instance" element={<Navigate to="/dashboard/instances/new" replace/>}/>
     <Route path="/create-server" element={<Navigate to="/dashboard/instances/new" replace/>}/>

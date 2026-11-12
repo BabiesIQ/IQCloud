@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Copy, Eye, EyeOff, ShieldCheck, Terminal } from 'lucide-react';
+import { Copy, Eye, EyeOff, ShieldCheck, Terminal, KeyRound } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { apiRequest } from '@/services/apiClient';
 
 export const maskedHost = (host) => host ? host.slice(0,3) + 'xxxxxx' : 'Not assigned';
@@ -37,6 +38,10 @@ export default function ServerCredentials({item}){
    </div>
   </div>
   {host&&port>0&&<button type="button" onClick={()=>copy(`ssh -p ${port} root@${host}`,'ssh command')} className="mt-3 inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-medium"><Copy size={14}/> Copy SSH command</button>}
+  <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border p-3">
+   <span className="text-xs text-muted-foreground">Forgot root password or changed it using passwd?</span>
+   <Link to={'/dashboard/instances/'+encodeURIComponent(item._id)+'/reset-password'} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold"><KeyRound size={14}/> Reset password</Link>
+  </div>
   {copied&&<p role="status" className="mt-2 text-xs text-emerald-600">{copied==='Copy blocked by browser'?copied:'Copied '+copied}</p>}
   {error&&<p role="alert" className="mt-2 text-xs text-amber-600">{error}</p>}
   <p className="mt-3 flex items-start gap-2 text-xs leading-5 text-muted-foreground"><ShieldCheck size={14} className="mt-0.5 shrink-0"/> The public TCP proxy uses a hostname and port, not a dedicated IPv4/IPv6 address. IPv4/IPv6 availability depends on provider routing and DNS. Password is revealed only once after the server is ready; do not share or email it.</p>
