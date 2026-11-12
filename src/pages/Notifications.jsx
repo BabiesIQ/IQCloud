@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { apiRequest } from '@/services/apiClient';
 
+export const route = { path: '/notifications', layout: 'owner', access: 'authenticated' };
+
 export default function Notifications() {
  const navigate=useNavigate();
  const [items,setItems]=useState([]);

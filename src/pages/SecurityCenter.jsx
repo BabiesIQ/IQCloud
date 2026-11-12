@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { apiRequest } from '@/services/apiClient';
 
+export const route = { path: '/security', layout: 'owner', access: 'authenticated' };
+
 function formatTime(value) {
  if(!value || Number.isNaN(Date.parse(value))) return 'Not available';
  return new Date(value).toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'});

@@ -5,6 +5,9 @@ import { apiRequest } from '@/services/apiClient';
 import ServerNetworking from '@/components/ServerNetworking';
 import ServerCredentials from '@/components/ServerCredentials';
 
+// Required by src/router/index.jsx, which auto-registers pages using exported route metadata.
+export const route = { path: '/dashboard', layout: 'owner', access: 'authenticated' };
+
 export default function Dashboard() {
  const navigate=useNavigate();
  const [account,setAccount]=useState(null);
