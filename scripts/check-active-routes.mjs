@@ -16,6 +16,8 @@ for (const [path, element] of Object.entries({
   '/dashboard': 'Dashboard',
   '/dashboard/instances/new': 'CreateInstance',
   '/dashboard/checkout': 'ServerCheckout',
+  '/dashboard/networking/ports': 'CustomPorts',
+  '/dashboard/instances/:id/reset-password': 'InstancePasswordReset',
 })) {
   const route = `<Route path="${path}" element={<${element}/>}/>`;
   assert.ok(activeApp.includes(route), `missing active route: ${route}`);
