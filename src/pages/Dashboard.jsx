@@ -4,6 +4,7 @@ import { ArrowRight, Bell, Cloud, Plus, RefreshCw, Server, Settings2, ShieldChec
 import { apiRequest } from '@/services/apiClient';
 import ServerNetworking from '@/components/ServerNetworking';
 import ServerCredentials from '@/components/ServerCredentials';
+import { CalendarClock, AlertTriangle } from 'lucide-react';
 
 // Required by src/router/index.jsx, which auto-registers pages using exported route metadata.
 export const route = { path: '/dashboard', layout: 'owner', access: 'authenticated' };
@@ -161,11 +162,20 @@ export default function Dashboard() {
    <div className="mt-6 space-y-4">{instances.filter(i=>i.status!=='draft').slice().sort((a,b)=>new Date(a.createdAt||0)-new Date(b.createdAt||0)).map((item,index)=><div key={item._id} className="rounded-2xl border bg-background p-5">
     <div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="font-semibold">Instance {index+1}</h3><p className="mt-1 text-sm text-muted-foreground">{item.os==='debian-12'?'Debian 12':'Ubuntu 24.04'} · {item.ram} GB RAM · {item.cpu} vCPU</p></div><span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold">{item.status==='running'?'Running':item.status}</span></div>
     <p className="mt-2 text-xs text-muted-foreground">Region: {item.region} · Shared ephemeral storage · Public SSH via TCP proxy</p>
-    {item.status==='running'?<ServerCredentials item={item}/>:<p className="mt-3 text-xs text-muted-foreground">Your SSH details will appear after verified payment and successful provisioning.</p>}
+    {item.validUntil&&<div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border p-3 text-sm">
+     <div className="min-w-0"><div className="flex items-center gap-2 font-semibold"><CalendarClock size={16} className="text-emerald-500"/> Billing validity</div>
+      <p className="mt-1 text-xs text-muted-foreground">Expires: {new Date(item.validUntil).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</p>
+      {new Date(item.validUntil).getTime()<=Date.now()?<p className="mt-2 text-xs font-semibold text-amber-600">Expired · deployment is being stopped or is stopped</p>:
+       new Date(item.validUntil).getTime()-Date.now()<=3*86400000&&<p className="mt-2 flex items-start gap-1 text-xs font-semibold text-amber-600"><AlertTriangle size={14}/> Expiring within 3 days — please renew now</p>}
+     </div>
+     {['running','expired','resuming','resume_pending'].includes(item.status)&&<Link to={'/dashboard/checkout?renewInstanceId='+encodeURIComponent(item._id)} className="rounded-xl border border-emerald-500 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-600 dark:text-emerald-400">Renew instance</Link>}
+    </div>}
+    {!item.validUntil&&item.status==='running'&&<p className="mt-2 text-xs text-muted-foreground">Legacy server: no new subscription expiry has been applied to this instance.</p>}
+    {item.status==='running'?<ServerCredentials item={item}/>:<p className="mt-3 text-xs text-muted-foreground">{['expired','expiring','resume_pending','resuming','resume_failed'].includes(item.status)?'The paid period ended or renewal redeployment is in progress. Railway root data is ephemeral and may be lost when the service restarts.':'Your SSH details will appear after verified payment and successful provisioning.'}</p>}
    </div>)}
    {instances.filter(i=>i.status!=='draft').length===0&&<div className="rounded-xl border border-dashed p-7 text-center text-sm text-muted-foreground">No provisioned instances yet.</div>}</div>
    <ServerNetworking/>
-   {instances.some(i=>i.status==='draft')&&<div className="mt-8"><h3 className="font-semibold">Saved drafts</h3><div className="mt-4 space-y-3">{instances.filter(i=>i.status==='draft').map((item,index)=><div key={item._id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"><div><p className="font-semibold">Draft {index+1}</p><p className="mt-1 text-xs text-muted-foreground">{item.os} · {item.ram} GB RAM · {item.cpu} vCPU · ₹{item.computePriceINR}/month</p></div><div className="flex gap-2"><Link to={'/dashboard/checkout?draftId='+encodeURIComponent(item._id)} className="rounded-lg border border-emerald-500 px-3 py-2 text-xs font-semibold text-emerald-500">Checkout</Link><button type="button" disabled={!!removingDraft} onClick={()=>deleteDraft(item._id)} className="rounded-lg border px-3 py-2 text-xs disabled:opacity-50">{removingDraft===item._id?'Deleting…':'Delete'}</button></div></div>)}</div></div>}
+   {instances.some(i=>i.status==='draft')&&<div className="mt-8"><h3 className="font-semibold">Saved drafts</h3><div className="mt-4 space-y-3">{instances.filter(i=>i.status==='draft').map((item,index)=><div key={item._id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"><div><p className="font-semibold">Draft {index+1}</p><p className="mt-1 text-xs text-muted-foreground">{item.os} · {item.ram} GB RAM · {item.cpu} vCPU · ₹{item.computePriceINR}/month · {item.billingMonths||1} month(s) validity</p></div><div className="flex gap-2"><Link to={'/dashboard/checkout?draftId='+encodeURIComponent(item._id)} className="rounded-lg border border-emerald-500 px-3 py-2 text-xs font-semibold text-emerald-500">Checkout</Link><button type="button" disabled={!!removingDraft} onClick={()=>deleteDraft(item._id)} className="rounded-lg border px-3 py-2 text-xs disabled:opacity-50">{removingDraft===item._id?'Deleting…':'Delete'}</button></div></div>)}</div></div>}
   </section>
   <div className="mt-8 grid gap-6 lg:grid-cols-2">
    <section className="rounded-2xl border bg-card p-6"><h2 className="font-semibold">Quick access</h2><div className="mt-4 space-y-2">{shortcuts.map(({to,title,detail,Icon})=><Link key={to} to={to} className="flex items-center gap-3 rounded-xl p-3 hover:bg-muted"><span className="rounded-lg bg-muted p-2"><Icon size={18}/></span><span className="flex-1"><span className="block text-sm font-medium">{title}</span><span className="block text-xs text-muted-foreground">{detail}</span></span><ArrowRight size={16} className="text-muted-foreground"/></Link>)}</div></section>
