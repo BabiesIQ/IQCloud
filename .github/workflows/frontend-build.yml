@@ -16,5 +16,7 @@ jobs:
           node-version: '24'
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+      - name: Check active routing contract
+        run: node scripts/check-active-routes.mjs
       - name: Build
         run: npm run build

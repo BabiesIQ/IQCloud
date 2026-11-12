@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import { Bell } from 'lucide-react';
 import { ThemeProvider } from '@/contexts/ThemeContext';
@@ -11,6 +11,7 @@ import PasswordField from '@/components/PasswordField';
 import Home from '@/pages/Home';
 import Dashboard from '@/pages/Dashboard';
 import CreateInstance from '@/pages/CreateInstance';
+import ServerCheckout from '@/pages/ServerCheckout';
 import Pricing from '@/pages/Pricing';
 import PasswordRecovery from '@/pages/auth/PasswordRecovery';
 import SecurityCenter from '@/pages/SecurityCenter';
@@ -186,8 +187,17 @@ function Shell() {
     <Route path="/settings" element={<main className="mx-auto max-w-xl space-y-5 px-5 py-12"><div><p className="text-xs font-semibold uppercase tracking-widest text-emerald-500">Account settings</p><h1 className="mt-2 text-3xl font-semibold">Preferences</h1><p className="mt-2 text-sm text-muted-foreground">Customize your experience and manage account security.</p></div><CloudPreferences/><PasswordSettings/></main>}/>
     <Route path="/pricing" element={<Pricing/>}/>
     <Route path="/configure" element={<CreateInstance/>}/>
+    <Route path="/dashboard/instances/new" element={<CreateInstance/>}/>
+    <Route path="/dashboard/checkout" element={<ServerCheckout/>}/>
+    <Route path="/instances/new" element={<Navigate to="/dashboard/instances/new" replace/>}/>
+    <Route path="/create-instance" element={<Navigate to="/dashboard/instances/new" replace/>}/>
+    <Route path="/create-server" element={<Navigate to="/dashboard/instances/new" replace/>}/>
+    <Route path="/dashboard/create-instance" element={<Navigate to="/dashboard/instances/new" replace/>}/>
+    <Route path="/dashboard/create-server" element={<Navigate to="/dashboard/instances/new" replace/>}/>
+    <Route path="/dashboard/new" element={<Navigate to="/dashboard/instances/new" replace/>}/>
     <Route path="/docs" element={<StatusPage title="Documentation"/>}/>
     <Route path="/dashboard" element={<Dashboard/>}/>
+    <Route path="/instances" element={<Navigate to="/dashboard" replace/>}/>
     <Route path="*" element={<StatusPage title="Page not found"/>}/>
   </Routes><footer className="border-t px-5 py-8 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} BabiesIQ Cloud</footer><Toaster position="top-right" richColors/></div>;
 }
