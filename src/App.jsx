@@ -12,6 +12,7 @@ import Home from '@/pages/Home';
 import Dashboard from '@/pages/Dashboard';
 import CreateInstance from '@/pages/CreateInstance';
 import ServerCheckout from '@/pages/ServerCheckout';
+import CustomPorts from '@/pages/CustomPorts';
 import Pricing from '@/pages/Pricing';
 import Docs from '@/pages/Docs';
 import Terms from '@/pages/Terms';
@@ -78,7 +79,7 @@ function Header() {
   }
   const menuItems = [
     { to: '/', label: 'Home', icon: '⌂' },
-    ...(account ? [{ to: '/dashboard', label: 'Dashboard', icon: '▦' }, { to: '/security', label: 'Security Center', icon: '♢' }] : []),
+    ...(account ? [{ to: '/dashboard', label: 'Dashboard', icon: '▦' }, { to: '/dashboard/networking/ports', label: 'Networking · Custom Ports', icon: '⇅' }, { to: '/security', label: 'Security Center', icon: '♢' }] : []),
     { to: '/pricing', label: 'Pricing', icon: '◇' },
     ...(account ? [{ to: '/settings', label: 'Preferences', icon: '⚙' }] : []),
     { to: '/docs', label: 'Documentation', icon: '◫' }
@@ -192,6 +193,7 @@ function Shell() {
     <Route path="/configure" element={<CreateInstance/>}/>
     <Route path="/dashboard/instances/new" element={<CreateInstance/>}/>
     <Route path="/dashboard/checkout" element={<ServerCheckout/>}/>
+    <Route path="/dashboard/networking/ports" element={<CustomPorts/>}/>
     <Route path="/instances/new" element={<Navigate to="/dashboard/instances/new" replace/>}/>
     <Route path="/create-instance" element={<Navigate to="/dashboard/instances/new" replace/>}/>
     <Route path="/create-server" element={<Navigate to="/dashboard/instances/new" replace/>}/>
