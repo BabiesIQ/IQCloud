@@ -17,7 +17,7 @@ function knownTranslated(source,value){
 // Translate only reviewed exact public UI labels. Private server/account data,
 // invoices, identifiers and credentials never leave this browser.
 function installDOMLanguage(language,machineCatalog){
- const translate=source=>machineCatalog?.[source]||translateUI(source,language);
+ const translate=source=>{const reviewed=translateUI(source,language);return reviewed!==source?reviewed:(machineCatalog?.[source]||source)};
  const root=document.getElementById("root");if(!root)return ()=>{};
  function visit(rootNode){
   if(!rootNode)return;
@@ -108,7 +108,7 @@ export function LocaleProvider({children}){
   };
   return {...preferences,language,country,currency,isInternational:country!=="IN",catalogStatus,
    fxStatus:fx?.status||"loading",fxUpdatedAt:fx?.at,
-   t:english=>remoteCatalog[english]||translateUI(english,language),formatPaise,formatINR,
+   t:english=>{const reviewed=translateUI(english,language);return reviewed!==english?reviewed:(remoteCatalog[english]||english)},formatPaise,formatINR,
    formatMonthly:rupees=>formatPaise((Number(rupees)||0)*100),
    setLanguage:value=>updatePreferences({language:value}),
    setCountry:value=>updatePreferences({country:value}),
