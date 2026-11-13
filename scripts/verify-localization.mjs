@@ -30,7 +30,9 @@ for(const [lang,dict] of Object.entries(UI_DICTIONARIES)){
  assert.ok(LANGUAGE_CODES.includes(lang),'No phantom language dictionary: '+lang);
  for(const [source,target] of Object.entries(dict)){
   assert.ok(source.trim()&&target.trim(),'Empty localization: '+lang+' / '+source);
-  assert.ok(!source.includes('BabiesIQ'),'Brand may not be localized');
+  for(const brand of ['BabiesIQ','Railway','Razorpay','PayPal','Cloudflare','Ubuntu','Debian']){
+   if(source.includes(brand))assert.ok(target.includes(brand),'Brand must remain unchanged: '+lang+' / '+source);
+  }
   assert.ok(!/[<>]/.test(target),'Translated UI must not contain markup: '+lang+' / '+source);
  }
 }
