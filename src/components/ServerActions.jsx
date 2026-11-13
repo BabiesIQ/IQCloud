@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pause, Play, RotateCcw, Square, Trash2, ShieldAlert, MailCheck } from 'lucide-react';
+import { Pause, Play, Trash2, ShieldAlert, MailCheck } from 'lucide-react';
 import { apiRequest } from '@/services/apiClient';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 
@@ -57,15 +57,11 @@ export default function ServerActions({item,onChanged}){
  return <div className="mt-4 rounded-xl border p-4">
   <div className="mb-3 flex items-center justify-between gap-2"><h4 className="text-sm font-semibold">Server controls</h4><span className="text-xs text-muted-foreground">{item.status==='running'?'Online':item.status}</span></div>
   <div className="flex flex-wrap gap-2">
-   {item.status==='running'&&<>
-    <button type="button" disabled={!!runningAction} onClick={()=>execute('pause')} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold disabled:opacity-50"><Pause size={15}/> Pause</button>
-    <button type="button" disabled={!!runningAction} onClick={()=>execute('restart')} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold disabled:opacity-50"><RotateCcw size={15}/> Restart</button>
-    <button type="button" disabled={!!runningAction} onClick={()=>execute('stop')} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold disabled:opacity-50"><Square size={15}/> Stop</button>
-   </>}
-   {['paused','stopped'].includes(item.status)&&<button type="button" disabled={!!runningAction} onClick={()=>execute('start')} className="inline-flex items-center gap-2 rounded-lg border border-emerald-500 px-3 py-2 text-xs font-semibold text-emerald-500 disabled:opacity-50"><Play size={15}/> Start / Resume</button>}
+   {item.status==='running'&&<button type="button" disabled={!!runningAction} onClick={()=>execute('pause')} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold disabled:opacity-50"><Pause size={15}/> Pause</button>}
+   {['paused','stopped','resuming'].includes(item.status)&&<button type="button" disabled={!!runningAction} onClick={()=>execute('resume')} className="inline-flex items-center gap-2 rounded-lg border border-emerald-500 px-3 py-2 text-xs font-semibold text-emerald-500 disabled:opacity-50"><Play size={15}/> {item.status==='resuming'?'Check & resume':'Resume'}</button>}
    {eligible&&<button type="button" disabled={!!runningAction} onClick={()=>closeDialog(true)} className="inline-flex items-center gap-2 rounded-lg border border-red-500/40 px-3 py-2 text-xs font-semibold text-red-600 dark:text-red-400 disabled:opacity-50"><Trash2 size={15}/> Delete permanently</button>}
   </div>
-  {eligible&&<p className="mt-2 text-xs text-muted-foreground">Pause/stop retains the service but stops its running deployment. Paid validity continues and resuming may erase ephemeral files; back up data first. No OTP is required for pause, stop or restart.</p>}
+  {['running','paused','stopped','resuming'].includes(item.status)&&<p className="mt-2 text-xs leading-5 text-muted-foreground">Data-safe controls only: Resume checks the existing Railway deployment without restarting it. Pause is blocked while a safe suspend and persistent storage are unavailable; your files are not risked by an automatic stop/redeploy.</p>}
   {item.status==='action_needs_review'&&<p className="mt-2 text-xs text-amber-600">The previous provider action needs reconciliation. Do not retry automatically.</p>}
   {item.status==='delete_needs_review'&&<p className="mt-2 text-xs text-amber-600">Permanent deletion could not be confirmed. Contact support; do not retry.</p>}
   {message&&<p role="status" className="mt-3 text-xs text-emerald-600">{message}</p>}

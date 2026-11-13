@@ -4,10 +4,9 @@ import { getPreferences, updatePreferences } from '@/config/runtime.config';
 // Can be mounted in account settings or the global header.
 export default function CloudPreferences() {
   const [prefs, setPrefs] = useState(getPreferences);
-  const [url, setUrl] = useState(prefs.apiBaseUrl);
   const [error, setError] = useState('');
   useEffect(() => {
-    const sync = () => { const next = getPreferences(); setPrefs(next); setUrl(next.apiBaseUrl); };
+    const sync = () => { const next = getPreferences(); setPrefs(next); };
     window.addEventListener('iqcloud:preferences', sync);
     window.addEventListener('storage', sync);
     return () => { window.removeEventListener('iqcloud:preferences', sync); window.removeEventListener('storage', sync); };
@@ -35,12 +34,6 @@ export default function CloudPreferences() {
           <option value="en">English</option><option value="hi">हिन्दी</option>
         </select>
       </label>
-      <form className="space-y-2" onSubmit={e => { e.preventDefault(); update({ apiBaseUrl: url }); }}>
-        <label className="block text-sm" htmlFor="cloud-api-url">Backend API URL</label>
-        <input id="cloud-api-url" className="w-full rounded-lg border bg-background p-2" type="url" value={url} onChange={e => setUrl(e.target.value)} required />
-        <p className="text-xs text-muted-foreground">HTTPS on babiesiq.tech only. Changes apply to requests using the shared API client.</p>
-        <button type="submit" className="rounded-lg bg-primary px-4 py-2 text-primary-foreground">Save API URL</button>
-      </form>
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
     </section>
   );
