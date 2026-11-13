@@ -56,8 +56,8 @@ export default function OwnerLayout() {
   return (
     <div className="min-h-svh bg-background text-foreground lg:flex">
       <aside className={cn(
-        'fixed inset-y-0 left-0 z-50 w-64 border-r border-sidebar-border bg-sidebar px-4 py-6 text-sidebar-foreground lg:sticky lg:top-0 lg:flex lg:h-svh lg:flex-col',
-        navOpen ? 'block' : 'hidden lg:flex',
+        'fixed inset-y-0 left-0 z-50 w-72 max-w-[88vw] flex-col overflow-hidden border-r border-sidebar-border bg-sidebar px-4 py-6 text-sidebar-foreground lg:sticky lg:top-0 lg:flex lg:h-svh lg:w-64',
+        navOpen ? 'flex' : 'hidden lg:flex',
       )}>
         <Link to={homeRoute} className="mb-10 flex items-center gap-3 px-2 font-heading text-sm font-bold">
           <span className="grid size-10 place-items-center rounded-md bg-primary text-primary-foreground">
@@ -72,9 +72,9 @@ export default function OwnerLayout() {
           </div>
           <p className="mt-1.5 leading-relaxed text-sidebar-foreground/55">Manage your Railway-backed instances</p>
         </div>
-        <nav className="flex-1 space-y-2 overflow-y-auto">{navigation}
-        <div className="px-1 pt-3">
-          <button type="button" aria-expanded={domainOpen} onClick={()=>{setDomainOpen(v=>!v);if(!domainOpen)loadDomainServers()}} className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm text-sidebar-foreground/75 transition hover:bg-sidebar-accent/70 hover:text-sidebar-foreground">
+        <nav className="min-h-0 flex-1 space-y-2 overflow-y-auto overscroll-contain">
+        <div className="px-1 pb-3">
+          <button type="button" aria-expanded={domainOpen} onClick={()=>{setDomainOpen(v=>!v);if(!domainOpen)loadDomainServers()}} className="flex min-h-12 w-full items-center gap-3 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 text-left text-sm text-sidebar-foreground transition hover:bg-sidebar-accent/70 hover:text-sidebar-foreground">
             <ApperIcon name="Globe" size={18}/><span className="flex-1 font-medium">Domains</span><ApperIcon name={domainOpen?'ChevronDown':'ChevronRight'} size={15}/>
           </button>
           {domainOpen&&<div className="ml-5 mt-1 space-y-1 border-l border-sidebar-border pl-3">
@@ -87,7 +87,8 @@ export default function OwnerLayout() {
             </NavLink>)}
           </div>}
         </div>
-</nav>
+        <div className="border-t border-sidebar-border pt-3">{navigation}</div>
+        </nav>
         <div className="mt-4 rounded-xl border border-sidebar-border bg-sidebar-accent/40 p-3">
           <p className="truncate text-xs font-medium text-sidebar-foreground" title={verifiedAccount?.email || user?.emailAddress || user?.email || ""}>{verifiedAccount?.email || user?.emailAddress || user?.email || "Account"}</p>
           {verifiedAccount && <p className="mt-1.5 flex items-center gap-1.5 text-xs text-sidebar-foreground/65">{verifiedAccount.emailVerified ? "✓ Account verified" : "Email verification pending"}</p>}
