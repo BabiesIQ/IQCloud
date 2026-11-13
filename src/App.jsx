@@ -3,6 +3,8 @@ import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate } from 'react
 import { Toaster } from 'sonner';
 import { Bell } from 'lucide-react';
 import { ThemeProvider } from '@/contexts/ThemeContext';
+import { LocaleProvider, useLocale } from '@/i18n/LocaleProvider';
+import LanguageSelector from '@/components/LanguageSelector';
 import { getPreferences, updatePreferences } from '@/config/runtime.config';
 import { apiRequest } from '@/services/apiClient';
 import CloudPreferences from '@/components/CloudPreferences';
@@ -25,6 +27,7 @@ import SecurityCenter from '@/pages/SecurityCenter';
 import Notifications from '@/pages/Notifications';
 
 function Header() {
+  const {t} = useLocale();
   const [account, setAccount] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [networkMenuOpen, setNetworkMenuOpen] = useState(false);
@@ -136,7 +139,7 @@ function Header() {
         <div className="flex-1 space-y-1 overflow-y-auto p-3">
                     <div className="mt-2 rounded-xl border border-primary/20 bg-primary/5">
             <button type="button" onClick={toggleDomainMenu} aria-expanded={domainsMenuOpen} aria-controls="cloud-domains-submenu" className="flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold hover:bg-muted">
-              <span className="flex items-center gap-3"><span aria-hidden="true" className="w-6 text-center text-lg">◎</span>Domains</span>
+              <span className="flex items-center gap-3"><span aria-hidden="true" className="w-6 text-center text-lg">◎</span>{t('Domains')}</span>
               <span aria-hidden="true">{domainsMenuOpen?'▾':'▸'}</span>
             </button>
             {domainsMenuOpen&&<div id="cloud-domains-submenu" className="space-y-1 border-t px-3 py-2">
@@ -147,9 +150,9 @@ function Header() {
               {account&&domainServers.map(({instance,number})=><Link key={instance._id} to={'/domains/'+encodeURIComponent(instance._id)} onClick={()=>setMenuOpen(false)} className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-muted"><span aria-hidden="true">▣</span><span className="min-w-0 flex-1 truncate">Instance {number} · {instance.os==='ubuntu-22'?'Ubuntu 22':instance.os==='ubuntu-26'?'Ubuntu 26':instance.os==='debian-12'?'Debian 12':'Ubuntu 24'}</span><span aria-hidden="true">›</span></Link>)}
             </div>}
           </div>
-          {menuItems.map(item => <Link key={item.to} to={item.to} onClick={() => setMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium hover:bg-muted focus-visible:bg-muted"><span aria-hidden="true" className="w-6 text-center text-lg">{item.icon}</span>{item.label}</Link>)}
+          {menuItems.map(item => <Link key={item.to} to={item.to} onClick={() => setMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium hover:bg-muted focus-visible:bg-muted"><span aria-hidden="true" className="w-6 text-center text-lg">{item.icon}</span>{t(item.label)}</Link>)}
           {account&&<div className="mt-2 rounded-xl border">
-           <button type="button" onClick={()=>setNetworkMenuOpen(v=>!v)} aria-expanded={networkMenuOpen} className="flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold hover:bg-muted"><span className="flex items-center gap-3"><span aria-hidden="true" className="w-6 text-center text-lg">⇅</span>Networking</span><span aria-hidden="true">{networkMenuOpen?'▾':'▸'}</span></button>
+           <button type="button" onClick={()=>setNetworkMenuOpen(v=>!v)} aria-expanded={networkMenuOpen} className="flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold hover:bg-muted"><span className="flex items-center gap-3"><span aria-hidden="true" className="w-6 text-center text-lg">⇅</span>{t('Networking')}</span><span aria-hidden="true">{networkMenuOpen?'▾':'▸'}</span></button>
            {networkMenuOpen&&<div className="space-y-1 border-t px-3 py-2"><Link onClick={()=>setMenuOpen(false)} to="/dashboard/networking/ports?tab=inbound" className="block rounded-lg px-4 py-3 text-sm hover:bg-muted">Inbound · HTTP ports</Link><Link onClick={()=>setMenuOpen(false)} to="/dashboard/networking/ports?tab=outbound" className="block rounded-lg px-4 py-3 text-sm hover:bg-muted">Outbound · Connections</Link></div>}
           </div>}
         </div>
@@ -249,8 +252,8 @@ function Shell() {
     <Route path="/dashboard" element={<Dashboard/>}/>
     <Route path="/instances" element={<Navigate to="/dashboard" replace/>}/>
     <Route path="*" element={<StatusPage title="Page not found"/>}/>
-  </Routes><footer className="border-t px-5 py-8 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} BabiesIQ Cloud</footer><Toaster position="top-right" richColors/></div>;
+  </Routes><LanguageSelector/><footer className="border-t px-5 py-8 pb-20 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} BabiesIQ Cloud</footer><Toaster position="top-right" richColors/></div>;
 }
 export default function App() {
-  return <ThemeProvider><BrowserRouter><Shell/></BrowserRouter></ThemeProvider>;
+  return <ThemeProvider><LocaleProvider><BrowserRouter><Shell/></BrowserRouter></LocaleProvider></ThemeProvider>;
 }
