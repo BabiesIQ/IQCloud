@@ -13,6 +13,8 @@ import Dashboard from '@/pages/Dashboard';
 import CreateInstance from '@/pages/CreateInstance';
 import ServerCheckout from '@/pages/ServerCheckout';
 import CustomPorts from '@/pages/CustomPorts';
+import Domains from '@/pages/Domains';
+import DomainManager from '@/pages/DomainManager';
 import InstancePasswordReset from '@/pages/InstancePasswordReset';
 import Pricing from '@/pages/Pricing';
 import Docs from '@/pages/Docs';
@@ -26,6 +28,23 @@ function Header() {
   const [account, setAccount] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [networkMenuOpen, setNetworkMenuOpen] = useState(false);
+  const [domainsMenuOpen,setDomainsMenuOpen] = useState(false);
+  const [domainServers,setDomainServers] = useState([]);
+  const [domainServersLoading,setDomainServersLoading] = useState(false);
+  const [domainServersError,setDomainServersError] = useState('');
+  async function refreshDomainServers(){
+    setDomainServersLoading(true);setDomainServersError('');
+    try{
+      const response=await apiRequest('/api/v1/instances');
+      const inventory=(response.items||[]).filter(x=>x.status!=='draft'&&x.status!=='deleted').slice().sort((a,b)=>new Date(a.createdAt||0)-new Date(b.createdAt||0));
+      setDomainServers(inventory.map((instance,index)=>({instance,number:index+1})).filter(({instance})=>instance.status==='running'));
+    }catch(err){setDomainServersError(err.message||'Unable to load your VPS')}
+    finally{setDomainServersLoading(false)}
+  }
+  function toggleDomainMenu(){
+    if(!domainsMenuOpen&&account)refreshDomainServers();
+    setDomainsMenuOpen(open=>!open);
+  }
   const [loggingOut, setLoggingOut] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [theme, setTheme] = useState(getPreferences().theme);
@@ -114,6 +133,19 @@ function Header() {
         </div>
         <div className="flex-1 space-y-1 overflow-y-auto p-3">
           {menuItems.map(item => <Link key={item.to} to={item.to} onClick={() => setMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium hover:bg-muted focus-visible:bg-muted"><span aria-hidden="true" className="w-6 text-center text-lg">{item.icon}</span>{item.label}</Link>)}
+          {account&&<div className="mt-2 rounded-xl border border-primary/20 bg-primary/5">
+            <button type="button" onClick={toggleDomainMenu} aria-expanded={domainsMenuOpen} aria-controls="cloud-domains-submenu" className="flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold hover:bg-muted">
+              <span className="flex items-center gap-3"><span aria-hidden="true" className="w-6 text-center text-lg">◎</span>Domains</span>
+              <span aria-hidden="true">{domainsMenuOpen?'▾':'▸'}</span>
+            </button>
+            {domainsMenuOpen&&<div id="cloud-domains-submenu" className="space-y-1 border-t px-3 py-2">
+              <Link to="/domains" onClick={()=>setMenuOpen(false)} className="block rounded-lg px-4 py-3 text-sm font-semibold hover:bg-muted">All VPS domains</Link>
+              {domainServersLoading&&<p role="status" className="px-4 py-2 text-xs text-muted-foreground">Loading VPS list…</p>}
+              {domainServersError&&<div className="px-4 py-2 text-xs text-red-500">{domainServersError} <button type="button" onClick={refreshDomainServers} className="ml-2 underline">Retry</button></div>}
+              {!domainServersLoading&&!domainServersError&&domainServers.length===0&&<p className="px-4 py-2 text-xs text-muted-foreground">No running VPS found</p>}
+              {domainServers.map(({instance,number})=><Link key={instance._id} to={'/domains/'+encodeURIComponent(instance._id)} onClick={()=>setMenuOpen(false)} className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-muted"><span aria-hidden="true">▣</span><span className="min-w-0 flex-1 truncate">Instance {number} · {instance.os==='ubuntu-22'?'Ubuntu 22':instance.os==='ubuntu-26'?'Ubuntu 26':instance.os==='debian-12'?'Debian 12':'Ubuntu 24'}</span><span aria-hidden="true">›</span></Link>)}
+            </div>}
+          </div>}
           {account&&<div className="mt-2 rounded-xl border">
            <button type="button" onClick={()=>setNetworkMenuOpen(v=>!v)} aria-expanded={networkMenuOpen} className="flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold hover:bg-muted"><span className="flex items-center gap-3"><span aria-hidden="true" className="w-6 text-center text-lg">⇅</span>Networking</span><span aria-hidden="true">{networkMenuOpen?'▾':'▸'}</span></button>
            {networkMenuOpen&&<div className="space-y-1 border-t px-3 py-2"><Link onClick={()=>setMenuOpen(false)} to="/dashboard/networking/ports?tab=inbound" className="block rounded-lg px-4 py-3 text-sm hover:bg-muted">Inbound · HTTP ports</Link><Link onClick={()=>setMenuOpen(false)} to="/dashboard/networking/ports?tab=outbound" className="block rounded-lg px-4 py-3 text-sm hover:bg-muted">Outbound · Connections</Link></div>}
@@ -200,6 +232,8 @@ function Shell() {
     <Route path="/dashboard/instances/new" element={<CreateInstance/>}/>
     <Route path="/dashboard/checkout" element={<ServerCheckout/>}/>
     <Route path="/dashboard/networking/ports" element={<CustomPorts/>}/>
+    <Route path="/domains" element={<Domains/>}/>
+    <Route path="/domains/:instanceId" element={<DomainManager/>}/>
     <Route path="/dashboard/instances/:id/reset-password" element={<InstancePasswordReset/>}/>
     <Route path="/instances/new" element={<Navigate to="/dashboard/instances/new" replace/>}/>
     <Route path="/create-instance" element={<Navigate to="/dashboard/instances/new" replace/>}/>
