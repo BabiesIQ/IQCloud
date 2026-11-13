@@ -42,6 +42,11 @@ export function translateUI(source,language){
  const dictionary=dictionaries[language]||dictionaries[language.split("-")[0]];
  return dictionary?.[source]||source;
 }
+export function isKnownTranslationOf(source,value){
+ if(source===value)return true;
+ for(const dictionary of Object.values(dictionaries)){if(dictionary[source]===value)return true}
+ return false;
+}
 export function translationCompleteness(language){
  if(language==="en")return "original";
  return dictionaries[language]?"partial":"fallback";

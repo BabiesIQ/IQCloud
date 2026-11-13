@@ -1,7 +1,7 @@
 import {createContext,useContext,useEffect,useMemo,useState} from 'react';
 import {getPreferences,updatePreferences} from '@/config/runtime.config';
 import {RTL_LANGUAGES,currencyForCountry,priceLocale} from '@/i18n/config';
-import {translateUI} from '@/i18n/translations';
+import {translateUI,isKnownTranslationOf} from '@/i18n/translations';
 import {apiRequest} from '@/services/apiClient';
 
 const Context=createContext(null);
@@ -19,7 +19,7 @@ function installDOMLanguage(language){
    if(!parent||excluded.has(parent.tagName)||parent.closest("[data-no-translate]"))return;
    const current=node.nodeValue||"";
    let source=rawText.get(node);
-   if(source==null||current!==source&&current!==translateUI(source,language)){source=current;rawText.set(node,source)}
+   if(source==null||current!==source&&!isKnownTranslationOf(source,current)){source=current;rawText.set(node,source)}
    const trimmed=source.trim();
    if(trimmed.length<1||trimmed.length>120)return;
    const translated=translateUI(trimmed,language);
@@ -35,7 +35,7 @@ function installDOMLanguage(language){
     for(const key of ["placeholder","title","aria-label"]){
      const value=el.getAttribute(key);if(value==null)continue;
      const saved=original[key];
-     if(saved==null||value!==saved&&value!==translateUI(saved,language))original[key]=value;
+     if(saved==null||value!==saved&&!isKnownTranslationOf(saved,value))original[key]=value;
      const target=translateUI(original[key],language);
      if(target!==value)el.setAttribute(key,target);
     }

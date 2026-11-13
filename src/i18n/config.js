@@ -56,6 +56,6 @@ export function countryName(country,locale="en"){
  catch{return country}
 }
 export function priceLocale(lang,country){
- const fallback=LANGUAGE_GROUPS[lang]||"IN";
- return lang==="en"&&country==="IN"?"en-IN":lang==="en"&&country==="GB"?"en-GB":lang+"-"+(country||fallback);
+ const region=country||LANGUAGE_GROUPS[lang]||"IN";
+ return lang.split("-")[0]+"-"+region;
 }
