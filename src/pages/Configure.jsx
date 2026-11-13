@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import {useLocale} from '@/i18n/LocaleProvider';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -12,6 +13,7 @@ import SharedInfrastructure from '@/components/cloud/SharedInfrastructure';
 export const route = { path: '/configure', layout: 'public', access: 'authenticated' };
 
 export default function Configure() {
+  const {formatMonthly}=useLocale();
   const [name, setName] = useState('my-cloud-server');
   const [region, setRegion] = useState('ap-southeast');
   const [os, setOs] = useState('ubuntu-24');
@@ -84,7 +86,7 @@ export default function Configure() {
               <p className="rounded-md bg-muted p-3 text-xs leading-6 text-muted-foreground">
                 RAM and CPU are the only billable resources. Shared host disk has no guaranteed per-customer quota.
               </p>
-              <button type="button" className="mt-3 w-full rounded-md border border-primary/40 bg-primary/10 p-3 text-left text-sm" onClick={()=>{setRam(8);setCpu(4)}}><strong>★ Recommended · 8 GB RAM + 4 vCPU · ₹350/month</strong></button>
+              <button type="button" className="mt-3 w-full rounded-md border border-primary/40 bg-primary/10 p-3 text-left text-sm" onClick={()=>{setRam(8);setCpu(4)}}><strong>★ Recommended · 8 GB RAM + 4 vCPU · {formatMonthly(350)}/month</strong></button>
               <SharedInfrastructure className="mt-5"/>
             </section>
           </div>
@@ -101,7 +103,7 @@ export default function Configure() {
                 ].map(([label,value]) => <div key={label} className="flex items-center justify-between gap-3 text-sm"><span className="text-muted-foreground">{label}</span><span className="text-right font-semibold">{value}</span></div>)}
                 <div className="border-t border-border pt-5">
                   <p className="text-xs text-muted-foreground">Monthly compute price {isRecommended(ram,cpu)?'· Recommended':''}</p>
-                  <div className="mt-1 font-heading text-4xl font-bold">{formatMoney(amount)}<span className="ml-1 text-sm font-normal text-muted-foreground">/mo</span></div>
+                  <div className="mt-1 font-heading text-4xl font-bold">{formatMonthly(amount)}<span className="ml-1 text-sm font-normal text-muted-foreground">/mo</span></div>
                   <p className="mt-3 text-xs leading-5 text-muted-foreground">Monthly RAM/CPU estimate. Shared ephemeral disk and target network speeds are not guaranteed.</p>
                 </div>
                 <Button asChild disabled={!ready} size="lg" className="w-full">

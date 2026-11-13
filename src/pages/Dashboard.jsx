@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import {useLocale} from '@/i18n/LocaleProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Bell, Cloud, Plus, RefreshCw, Server, Settings2, ShieldCheck } from 'lucide-react';
 import { apiRequest } from '@/services/apiClient';
@@ -10,6 +11,7 @@ import { CalendarClock, AlertTriangle } from 'lucide-react';
 export const route = { path: '/dashboard', layout: 'owner', access: 'authenticated' };
 
 export default function Dashboard() {
+ const {isInternational,formatPaise}=useLocale();
  const navigate=useNavigate();
  const [account,setAccount]=useState(null);
  const [activity,setActivity]=useState([]);
@@ -87,6 +89,7 @@ export default function Dashboard() {
   finally{setRemovingDraft('')}
  }
  async function payTestDraft(id){
+  if(isInternational){setCheckoutMessage('International PayPal checkout is not yet enabled. No Razorpay order was created.');return}
   if(payingDraft)return;
   setPayingDraft(id);setCheckoutMessage('');setCheckoutErrorDraft('');
   try{
@@ -174,7 +177,7 @@ export default function Dashboard() {
     {item.status==='running'?<ServerCredentials item={item}/>:<p className="mt-3 text-xs text-muted-foreground">{['paused','stopped'].includes(item.status)?'This instance is stopped. Its saved endpoint is reserved; starting again creates a new Railway deployment and may erase ephemeral files.': ['expired','expiring','resume_pending','resuming','resume_failed'].includes(item.status)?'The paid period ended or renewal redeployment is in progress. Railway root data is ephemeral and may be lost when the service restarts.':'Your SSH details will appear after verified payment and successful provisioning.'}</p>}
    </div>)}
    {instances.filter(i=>i.status!=='draft'&&i.status!=='deleted').length===0&&<div className="rounded-xl border border-dashed p-7 text-center text-sm text-muted-foreground">No provisioned instances yet.</div>}</div>
-   {instances.some(i=>i.status==='draft')&&<div className="mt-8"><h3 className="font-semibold">Saved drafts</h3><div className="mt-4 space-y-3">{instances.filter(i=>i.status==='draft').map((item,index)=><div key={item._id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"><div><p className="font-semibold">Draft {index+1}</p><p className="mt-1 text-xs text-muted-foreground">{item.os} · {item.ram} GB RAM · {item.cpu} vCPU · ₹{item.computePriceINR}/month · {item.billingMonths||1} month(s) validity</p></div><div className="flex gap-2"><Link to={'/dashboard/checkout?draftId='+encodeURIComponent(item._id)} className="rounded-lg border border-emerald-500 px-3 py-2 text-xs font-semibold text-emerald-500">Checkout</Link><button type="button" disabled={!!removingDraft} onClick={()=>deleteDraft(item._id)} className="rounded-lg border px-3 py-2 text-xs disabled:opacity-50">{removingDraft===item._id?'Deleting…':'Delete'}</button></div></div>)}</div></div>}
+   {instances.some(i=>i.status==='draft')&&<div className="mt-8"><h3 className="font-semibold">Saved drafts</h3><div className="mt-4 space-y-3">{instances.filter(i=>i.status==='draft').map((item,index)=><div key={item._id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"><div><p className="font-semibold">Draft {index+1}</p><p className="mt-1 text-xs text-muted-foreground">{item.os} · {item.ram} GB RAM · {item.cpu} vCPU · {formatPaise(item.computePriceINR*100)}/month · {item.billingMonths||1} month(s) validity</p></div><div className="flex gap-2"><Link to={'/dashboard/checkout?draftId='+encodeURIComponent(item._id)} className="rounded-lg border border-emerald-500 px-3 py-2 text-xs font-semibold text-emerald-500">Checkout</Link><button type="button" disabled={!!removingDraft} onClick={()=>deleteDraft(item._id)} className="rounded-lg border px-3 py-2 text-xs disabled:opacity-50">{removingDraft===item._id?'Deleting…':'Delete'}</button></div></div>)}</div></div>}
   </section>
   <div className="mt-8 grid gap-6 lg:grid-cols-2">
    <section className="rounded-2xl border bg-card p-6"><h2 className="font-semibold">Quick access</h2><div className="mt-4 space-y-2">{shortcuts.map(({to,title,detail,Icon})=><Link key={to} to={to} className="flex items-center gap-3 rounded-xl p-3 hover:bg-muted"><span className="rounded-lg bg-muted p-2"><Icon size={18}/></span><span className="flex-1"><span className="block text-sm font-medium">{title}</span><span className="block text-xs text-muted-foreground">{detail}</span></span><ArrowRight size={16} className="text-muted-foreground"/></Link>)}</div></section>

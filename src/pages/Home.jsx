@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import {useLocale} from '@/i18n/LocaleProvider';
 import '@/cloud-motion.css';
 import ApperIcon from '@/components/ApperIcon';
 import SharedInfrastructure from '@/components/cloud/SharedInfrastructure';
@@ -14,6 +15,7 @@ const features = [
 ];
 
 export default function Home() {
+ const {formatPaise,formatMonthly,isInternational,currency}=useLocale();
   return (
     <main>
       <section className="mx-auto max-w-5xl px-5 pb-20 pt-24 text-center sm:pt-32">
@@ -35,7 +37,7 @@ export default function Home() {
             View pricing <ApperIcon name="ArrowRight" size={16} />
           </Link>
         </div>
-        <p className="mt-6 text-xs text-muted-foreground">Explore plans without paying. Checkout currently uses Razorpay Test Mode; no live subscription auto-debit is enabled.</p>
+        <p className="mt-6 text-xs text-muted-foreground">{isInternational?'International plans use 2× India prices. '+currency+' values are estimates; PayPal checkout is pending business activation.':'Explore plans without paying. Checkout currently uses Razorpay Test Mode; no live subscription auto-debit is enabled.'}</p>
       </section>
 
       <section className="mx-auto max-w-5xl px-5 pb-24">
@@ -62,7 +64,7 @@ export default function Home() {
             ))}
           </div>
           <div className="mt-5 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-5">
-            <div><div className="text-xs text-muted-foreground">Illustrative compute price (4 GB / 2 vCPU)</div><div className="mt-1 text-2xl font-semibold">₹185<span className="ml-2 text-sm font-normal text-muted-foreground">/ month</span></div></div>
+            <div><div className="text-xs text-muted-foreground">Illustrative compute price (4 GB / 2 vCPU)</div><div className="mt-1 text-2xl font-semibold">{formatMonthly(185)}<span className="ml-2 text-sm font-normal text-muted-foreground">/ month</span></div></div>
             <Link to="/dashboard/instances/new" className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium hover:bg-accent">Customize <ApperIcon name="ArrowRight" size={16}/></Link>
           </div>
         </div>
@@ -72,7 +74,7 @@ export default function Home() {
        <div className="mb-5 flex flex-wrap items-end justify-between gap-3"><div><h2 className="text-2xl font-semibold">Choose your billing period</h2><p className="mt-2 text-sm text-muted-foreground">Start monthly or save more when paying for longer. Recommended 8 GB RAM + 4 vCPU shown below.</p></div><Link to="/pricing" className="text-sm font-semibold text-emerald-500">View all plans</Link></div>
        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{BILLING_TERMS.map(term=><Link key={term.months} to={`/dashboard/instances/new?ram=8&cpu=4&billingMonths=${term.months}`} className="rounded-2xl border bg-card p-5 transition hover:border-emerald-500">
         <p className="font-semibold">{term.label}</p>
-        <p className="mt-2 text-xl font-bold">{priceINR(termQuote(8,4,term.months).totalPaise)}</p>
+        <p className="mt-2 text-xl font-bold">{formatPaise(termQuote(8,4,term.months).totalPaise)}</p>
         <p className="mt-1 text-xs font-medium text-emerald-500">{term.discountPercent?term.discountPercent+'% OFF':'Base monthly price'}</p>
        </Link>)}</div>
        <p className="mt-4 text-xs leading-5 text-muted-foreground">Validity begins once SSH is ready. We warn you 3 days before expiry; unpaid instances stop at expiry. Renew before expiry and back up ephemeral data.</p>
