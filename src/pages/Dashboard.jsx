@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Bell, Cloud, Plus, RefreshCw, Server, Settings2, ShieldCheck } from 'lucide-react';
 import { apiRequest } from '@/services/apiClient';
 import ServerCredentials from '@/components/ServerCredentials';
+import ServerActions from '@/components/ServerActions';
 import { CalendarClock, AlertTriangle } from 'lucide-react';
 
 // Required by src/router/index.jsx, which auto-registers pages using exported route metadata.
@@ -155,7 +156,7 @@ export default function Dashboard() {
   </div>
   <section className="mt-8 rounded-3xl border bg-card p-6 sm:p-8">
    <div className="flex flex-wrap items-start justify-between gap-4"><div><h2 className="text-xl font-semibold">Your instances</h2><p className="mt-2 text-sm text-muted-foreground">Numbered servers with private connection details; only provisioned servers are numbered.</p></div><Link to="/dashboard/instances/new" className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"><Plus size={17}/> Create server</Link></div>
-   <div className="mt-6 space-y-4">{instances.filter(i=>i.status!=='draft').slice().sort((a,b)=>new Date(a.createdAt||0)-new Date(b.createdAt||0)).map((item,index)=><div key={item._id} className="rounded-2xl border bg-background p-5">
+   <div className="mt-6 space-y-4">{instances.filter(i=>i.status!=='draft'&&i.status!=='deleted').slice().sort((a,b)=>new Date(a.createdAt||0)-new Date(b.createdAt||0)).map((item,index)=><div key={item._id} className="rounded-2xl border bg-background p-5">
     <div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="font-semibold">Instance {index+1}</h3><p className="mt-1 text-sm text-muted-foreground">{item.os==='debian-12'?'Debian 12':item.os==='ubuntu-22'?'Ubuntu 22.04 LTS':item.os==='ubuntu-26'?'Ubuntu 26.04 LTS':'Ubuntu 24.04 LTS'} · {item.ram} GB RAM · {item.cpu} vCPU</p></div><span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold">{item.status==='running'?'Running':item.status}</span></div>
     <p className="mt-2 text-xs text-muted-foreground">Region: {item.region} · Shared ephemeral storage · Public SSH via TCP proxy</p>
     {item.providerRuntime==='needs_review'&&<p className="mt-3 rounded-lg border border-amber-500/40 p-3 text-xs text-amber-600">Provider verification needs review. Your paid validity and last known SSH address are preserved. Do not pay again.</p>}
@@ -169,9 +170,10 @@ export default function Dashboard() {
      {['running','expired','resuming','resume_pending'].includes(item.status)&&<Link to={'/dashboard/checkout?renewInstanceId='+encodeURIComponent(item._id)} className="rounded-xl border border-emerald-500 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-600 dark:text-emerald-400">Renew instance</Link>}
     </div>}
     {!item.validUntil&&item.status==='running'&&<p className="mt-2 text-xs text-muted-foreground">Legacy server: no new subscription expiry has been applied to this instance.</p>}
+    <ServerActions item={item} onChanged={refresh}/>
     {item.status==='running'?<ServerCredentials item={item}/>:<p className="mt-3 text-xs text-muted-foreground">{['expired','expiring','resume_pending','resuming','resume_failed'].includes(item.status)?'The paid period ended or renewal redeployment is in progress. Railway root data is ephemeral and may be lost when the service restarts.':'Your SSH details will appear after verified payment and successful provisioning.'}</p>}
    </div>)}
-   {instances.filter(i=>i.status!=='draft').length===0&&<div className="rounded-xl border border-dashed p-7 text-center text-sm text-muted-foreground">No provisioned instances yet.</div>}</div>
+   {instances.filter(i=>i.status!=='draft'&&i.status!=='deleted').length===0&&<div className="rounded-xl border border-dashed p-7 text-center text-sm text-muted-foreground">No provisioned instances yet.</div>}</div>
    {instances.some(i=>i.status==='draft')&&<div className="mt-8"><h3 className="font-semibold">Saved drafts</h3><div className="mt-4 space-y-3">{instances.filter(i=>i.status==='draft').map((item,index)=><div key={item._id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"><div><p className="font-semibold">Draft {index+1}</p><p className="mt-1 text-xs text-muted-foreground">{item.os} · {item.ram} GB RAM · {item.cpu} vCPU · ₹{item.computePriceINR}/month · {item.billingMonths||1} month(s) validity</p></div><div className="flex gap-2"><Link to={'/dashboard/checkout?draftId='+encodeURIComponent(item._id)} className="rounded-lg border border-emerald-500 px-3 py-2 text-xs font-semibold text-emerald-500">Checkout</Link><button type="button" disabled={!!removingDraft} onClick={()=>deleteDraft(item._id)} className="rounded-lg border px-3 py-2 text-xs disabled:opacity-50">{removingDraft===item._id?'Deleting…':'Delete'}</button></div></div>)}</div></div>}
   </section>
   <div className="mt-8 grid gap-6 lg:grid-cols-2">
