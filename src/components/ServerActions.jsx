@@ -65,7 +65,7 @@ export default function ServerActions({item,onChanged}){
    {['paused','stopped'].includes(item.status)&&<button type="button" disabled={!!runningAction} onClick={()=>execute('start')} className="inline-flex items-center gap-2 rounded-lg border border-emerald-500 px-3 py-2 text-xs font-semibold text-emerald-500 disabled:opacity-50"><Play size={15}/> Start / Resume</button>}
    {eligible&&<button type="button" disabled={!!runningAction} onClick={()=>closeDialog(true)} className="inline-flex items-center gap-2 rounded-lg border border-red-500/40 px-3 py-2 text-xs font-semibold text-red-600 dark:text-red-400 disabled:opacity-50"><Trash2 size={15}/> Delete permanently</button>}
   </div>
-  {['paused','stopped'].includes(item.status)&&<p className="mt-2 text-xs text-muted-foreground">Billing validity continues while stopped. Restarting the deployment can erase ephemeral files.</p>}
+  {eligible&&<p className="mt-2 text-xs text-muted-foreground">Pause/stop retains the service but stops its running deployment. Paid validity continues and resuming may erase ephemeral files; back up data first. No OTP is required for pause, stop or restart.</p>}
   {item.status==='action_needs_review'&&<p className="mt-2 text-xs text-amber-600">The previous provider action needs reconciliation. Do not retry automatically.</p>}
   {item.status==='delete_needs_review'&&<p className="mt-2 text-xs text-amber-600">Permanent deletion could not be confirmed. Contact support; do not retry.</p>}
   {message&&<p role="status" className="mt-3 text-xs text-emerald-600">{message}</p>}
