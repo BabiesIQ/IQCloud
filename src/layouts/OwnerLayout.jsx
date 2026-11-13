@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { apiRequest } from '@/services/apiClient';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { useOwnerLayoutData } from '@/hooks/useOwnerLayoutData';
 import { cn } from '@/lib/utils';
@@ -11,6 +12,8 @@ export default function OwnerLayout() {
   const { user, logout, homeRoute, navItems, navGroups, initials, displayName, counts } = useOwnerLayoutData();
   const grouped = navGroups.length ? navGroups : [{ label: null, items: navItems }];
   const [navOpen, setNavOpen] = useState(false);
+  const [verifiedAccount, setVerifiedAccount] = useState(null);
+  useEffect(() => { let live = true; apiRequest('/api/v1/auth/me').then(data => { if(live) setVerifiedAccount(data); }).catch(() => {}); return () => {live = false}; }, []);
 
   const navigation = grouped.map((group, index) => (
     <div key={group.label ?? index} className="space-y-1">
@@ -54,10 +57,14 @@ export default function OwnerLayout() {
             <span className="size-1.5 rounded-full bg-highlight" />
             Control center
           </div>
-          <p className="mt-1.5 leading-relaxed text-sidebar-foreground/55">Demo infrastructure environment</p>
+          <p className="mt-1.5 leading-relaxed text-sidebar-foreground/55">Manage your Railway-backed instances</p>
         </div>
         <nav className="flex-1 space-y-2 overflow-y-auto">{navigation}</nav>
-        <Link to="/" className="mt-5 flex items-center gap-2 rounded-md border border-sidebar-border p-3 text-xs text-sidebar-foreground/70 hover:bg-sidebar-accent">
+        <div className="mt-4 rounded-xl border border-sidebar-border bg-sidebar-accent/40 p-3">
+          <p className="truncate text-xs font-medium text-sidebar-foreground" title={verifiedAccount?.email || user?.emailAddress || user?.email || ""}>{verifiedAccount?.email || user?.emailAddress || user?.email || "Account"}</p>
+          {verifiedAccount && <p className="mt-1.5 flex items-center gap-1.5 text-xs text-sidebar-foreground/65">{verifiedAccount.emailVerified ? "✓ Account verified" : "Email verification pending"}</p>}
+        </div>
+        <Link to="/" className="mt-3 flex items-center gap-2 rounded-md border border-sidebar-border p-3 text-xs text-sidebar-foreground/70 hover:bg-sidebar-accent">
           <ApperIcon name="ArrowUpRight" size={15} /> Return to website
         </Link>
       </aside>

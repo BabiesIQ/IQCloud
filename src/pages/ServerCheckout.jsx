@@ -97,7 +97,7 @@ export default function ServerCheckout(){
   {loading?<p className="mt-7">Loading your configuration…</p>:draft&&quote?<div className="mt-7 space-y-5">
    <div className="rounded-2xl border bg-card p-6">
     <div className="grid gap-4 sm:grid-cols-2">
-     {[['Operating system',draft.os==='debian-12'?'Debian 12':'Ubuntu 24.04'],['RAM',draft.ram+' GB'],['CPU',draft.cpu+' vCPU'],['Region',draft.region],['SSH login','root'],['Storage','Shared ephemeral, no dedicated SSD']].map(([label,value])=><div key={label}><p className="text-xs text-muted-foreground">{label}</p><p className="mt-1 font-semibold">{value}</p></div>)}
+     {[['Operating system',draft.os==='debian-12'?'Debian 12':draft.os==='ubuntu-22'?'Ubuntu 22.04 LTS':draft.os==='ubuntu-26'?'Ubuntu 26.04 LTS':'Ubuntu 24.04 LTS'],['RAM',draft.ram+' GB'],['CPU',draft.cpu+' vCPU'],['Region',draft.region],['SSH login','root'],['Storage','Shared ephemeral, no dedicated SSD']].map(([label,value])=><div key={label}><p className="text-xs text-muted-foreground">{label}</p><p className="mt-1 font-semibold">{value}</p></div>)}
     </div>
     {isRenewal&&draft.validUntil&&<p className="mt-4 rounded-xl bg-muted p-3 text-sm">Current validity ends: <strong>{new Date(draft.validUntil).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</strong>. Renewals extend from the later of now or the current expiry.</p>}
    </div>

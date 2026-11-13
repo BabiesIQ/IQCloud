@@ -10,7 +10,9 @@ export const REGIONS = [
 ];
 
 export const SYSTEMS = [
+  { id: 'ubuntu-22', name: 'Ubuntu 22.04 LTS', icon: '🐧' },
   { id: 'ubuntu-24', name: 'Ubuntu 24.04 LTS', icon: '🐧' },
+  { id: 'ubuntu-26', name: 'Ubuntu 26.04 LTS', icon: '🐧' },
   { id: 'debian-12', name: 'Debian 12', icon: '🌀' },
 ];
 
