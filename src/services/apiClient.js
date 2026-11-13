@@ -8,6 +8,6 @@ export async function apiRequest(path, { method = 'GET', body, headers = {}, sig
     ...(body === undefined ? {} : { body: JSON.stringify(body) }),
   });
   const data = await response.json().catch(() => null);
-  if (!response.ok) throw Error(data?.error || 'Request failed');
+  if (!response.ok) { const error = new Error(data?.error || 'Request failed'); error.details = data || {}; error.status = response.status; throw error; }
   return data;
 }
