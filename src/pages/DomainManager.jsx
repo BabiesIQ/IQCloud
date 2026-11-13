@@ -66,7 +66,7 @@ export default function DomainManager(){
   try{await navigator.clipboard.writeText(value);setMessage('DNS value copied.')}catch{setMessage('Copy not supported by this browser. Long press the text to copy.')}
  }
  useEffect(()=>{load()},[instanceId]);
- useEffect(()=>{if(selection&&!details&&!loading)inspect(selection)},[selection,loading]);
+
  const refresh=async()=>{await inspect(selection)};
  return <main className="mx-auto max-w-4xl pb-24">
   <Link to="/domains" className="inline-flex items-center gap-2 text-sm text-muted-foreground"><ArrowLeft size={16}/> All VPS domains</Link>
@@ -91,7 +91,7 @@ export default function DomainManager(){
   <section className="mt-6 rounded-2xl border bg-card p-5 sm:p-7">
    <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="font-semibold">Connected & pending domains</h2><button disabled={loading} type="button" onClick={load} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs"><RefreshCw size={14}/> Refresh list</button></div>
    {!list.length&&<p className="mt-4 text-sm text-muted-foreground">No custom domain configured for this VPS yet.</p>}
-   <div className="mt-4 space-y-2">{list.map(item=><button key={item.domain} type="button" onClick={()=>{setDetails(null);setSelection(item.domain)}} className={'flex w-full items-center gap-3 rounded-xl border p-4 text-left text-sm '+(selection===item.domain?'border-emerald-500':'hover:bg-muted/40')}><Globe2 size={17}/><div className="min-w-0 flex-1"><p className="break-all font-semibold">{item.domain}</p><p className="text-xs text-muted-foreground">HTTP port {item.port} · {item.state?.replaceAll('_',' ')}</p></div><ChevronRight size={17}/></button>)}</div>
+   <div className="mt-4 space-y-2">{list.map(item=><button key={item.domain} type="button" onClick={()=>{setDetails(null);inspect(item.domain)}} className={'flex w-full items-center gap-3 rounded-xl border p-4 text-left text-sm '+(selection===item.domain?'border-emerald-500':'hover:bg-muted/40')}><Globe2 size={17}/><div className="min-w-0 flex-1"><p className="break-all font-semibold">{item.domain}</p><p className="text-xs text-muted-foreground">HTTP port {item.port} · {item.state?.replaceAll('_',' ')}</p></div><ChevronRight size={17}/></button>)}</div>
   </section>
   {details&&<section className="mt-6 space-y-5 rounded-2xl border bg-card p-5 sm:p-7">
    <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs uppercase tracking-widest text-muted-foreground">Live Railway verification</p><h2 className="mt-1 break-all text-xl font-semibold">{details.domain}</h2><p className="mt-1 text-xs text-muted-foreground">Target port {details.port} · Checked {details.checkedAt?new Date(details.checkedAt).toLocaleString():'just now'}</p></div>
