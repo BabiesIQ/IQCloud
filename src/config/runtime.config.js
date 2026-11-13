@@ -1,30 +1,33 @@
-// Central, non-secret frontend configuration. API origin is fixed and not editable
-// from browser preferences, even if an older session saved an apiBaseUrl.
+// Preferences never allow the backend URL to be user controlled.
+import {browserCountry,browserLanguage,canonicalLanguage,LANGUAGE_CODES} from '@/i18n/config';
 const DEFAULT_API = 'https://api.cloud.babiesiq.tech';
 const KEY = 'iqcloud:preferences:v1';
-const defaults = Object.freeze({ theme: 'system', language: 'en', apiBaseUrl: DEFAULT_API });
+const defaults = Object.freeze({ theme: 'system', apiBaseUrl: DEFAULT_API });
+const safeTheme = theme => ['light','dark','system'].includes(theme)?theme:"system";
+const safeCountry = input => /^[A-Z]{2}$/.test(String(input||""))?String(input):browserCountry();
 
-export function getPreferences() {
-  try {
-    const stored = JSON.parse(localStorage.getItem(KEY) || '{}');
-    return {
-      theme: ['light','dark','system'].includes(stored.theme) ? stored.theme : defaults.theme,
-      language: ['en','hi'].includes(stored.language) ? stored.language : defaults.language,
-      apiBaseUrl: DEFAULT_API,
-    };
-  } catch { return { ...defaults }; }
+export function getPreferences(){
+ let saved={};
+ try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch{}
+ return {
+  theme:safeTheme(saved.theme),
+  language:canonicalLanguage(saved.language||browserLanguage()),
+  country:safeCountry(saved.country),
+  apiBaseUrl:DEFAULT_API,
+ };
 }
-export function updatePreferences(patch) {
-  const current = getPreferences();
-  const next = {
-    theme: patch.theme ?? current.theme,
-    language: patch.language ?? current.language,
-    apiBaseUrl: DEFAULT_API,
-  };
-  if (!['light','dark','system'].includes(next.theme)) throw Error('Invalid theme');
-  if (!['en','hi'].includes(next.language)) throw Error('Invalid language');
-  try { localStorage.setItem(KEY, JSON.stringify(next)); } catch { /* private browsing */ }
-  window.dispatchEvent(new CustomEvent('iqcloud:preferences', { detail: next }));
-  return next;
+export function updatePreferences(patch={}){
+ const current=getPreferences();
+ const next={
+  theme:safeTheme(patch.theme??current.theme),
+  language:canonicalLanguage(patch.language??current.language),
+  country:safeCountry(patch.country??current.country),
+  apiBaseUrl:DEFAULT_API,
+ };
+ if(patch.language!=null&&!LANGUAGE_CODES.includes(patch.language))throw Error("Unsupported language");
+ if(patch.country!=null&&!/^[A-Z]{2}$/.test(patch.country))throw Error("Invalid billing country");
+ try{localStorage.setItem(KEY,JSON.stringify(next))}catch{}
+ window.dispatchEvent(new CustomEvent('iqcloud:preferences',{detail:next}));
+ return next;
 }
-export const APP_RUNTIME_DEFAULTS = defaults;
+export const APP_RUNTIME_DEFAULTS=Object.freeze({...defaults,language:'en',country:'IN'});
