@@ -53,7 +53,7 @@ function Header() {
     let active = true;
     const refresh = () => apiRequest('/api/v1/auth/me')
       .then(user => { if (active) setAccount(user); })
-      .catch(() => { if (active) setAccount(null); });
+      .catch(() => { if (active) { setAccount(null); setDomainServers([]); setDomainsMenuOpen(false); } });
     refresh();
     window.addEventListener('iqcloud:auth-changed', refresh);
     return () => { active = false; window.removeEventListener('iqcloud:auth-changed', refresh); };
@@ -92,6 +92,8 @@ function Header() {
       await apiRequest('/api/v1/auth/logout', { method: 'POST' });
       setAccount(null);
       setMenuOpen(false);
+      setDomainsMenuOpen(false);
+      setDomainServers([]);
       window.dispatchEvent(new Event('iqcloud:auth-changed'));
       navigate('/login', { replace: true });
     } catch (error) {
@@ -132,20 +134,20 @@ function Header() {
           <button type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu" className="rounded-lg border px-3 py-2">✕</button>
         </div>
         <div className="flex-1 space-y-1 overflow-y-auto p-3">
-          {menuItems.map(item => <Link key={item.to} to={item.to} onClick={() => setMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium hover:bg-muted focus-visible:bg-muted"><span aria-hidden="true" className="w-6 text-center text-lg">{item.icon}</span>{item.label}</Link>)}
-          {account&&<div className="mt-2 rounded-xl border border-primary/20 bg-primary/5">
+                    <div className="mt-2 rounded-xl border border-primary/20 bg-primary/5">
             <button type="button" onClick={toggleDomainMenu} aria-expanded={domainsMenuOpen} aria-controls="cloud-domains-submenu" className="flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold hover:bg-muted">
               <span className="flex items-center gap-3"><span aria-hidden="true" className="w-6 text-center text-lg">◎</span>Domains</span>
               <span aria-hidden="true">{domainsMenuOpen?'▾':'▸'}</span>
             </button>
             {domainsMenuOpen&&<div id="cloud-domains-submenu" className="space-y-1 border-t px-3 py-2">
-              <Link to="/domains" onClick={()=>setMenuOpen(false)} className="block rounded-lg px-4 py-3 text-sm font-semibold hover:bg-muted">All VPS domains</Link>
+              {account?<Link to="/domains" onClick={()=>setMenuOpen(false)} className="block rounded-lg px-4 py-3 text-sm font-semibold hover:bg-muted">All my VPS domains</Link>:<Link to="/login" onClick={()=>setMenuOpen(false)} className="block rounded-lg px-4 py-3 text-sm font-semibold hover:bg-muted">Sign in to manage your domains</Link>}
               {domainServersLoading&&<p role="status" className="px-4 py-2 text-xs text-muted-foreground">Loading VPS list…</p>}
               {domainServersError&&<div className="px-4 py-2 text-xs text-red-500">{domainServersError} <button type="button" onClick={refreshDomainServers} className="ml-2 underline">Retry</button></div>}
-              {!domainServersLoading&&!domainServersError&&domainServers.length===0&&<p className="px-4 py-2 text-xs text-muted-foreground">No running VPS found</p>}
-              {domainServers.map(({instance,number})=><Link key={instance._id} to={'/domains/'+encodeURIComponent(instance._id)} onClick={()=>setMenuOpen(false)} className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-muted"><span aria-hidden="true">▣</span><span className="min-w-0 flex-1 truncate">Instance {number} · {instance.os==='ubuntu-22'?'Ubuntu 22':instance.os==='ubuntu-26'?'Ubuntu 26':instance.os==='debian-12'?'Debian 12':'Ubuntu 24'}</span><span aria-hidden="true">›</span></Link>)}
+              {account&&!domainServersLoading&&!domainServersError&&domainServers.length===0&&<p className="px-4 py-2 text-xs text-muted-foreground">No running VPS found</p>}
+              {account&&domainServers.map(({instance,number})=><Link key={instance._id} to={'/domains/'+encodeURIComponent(instance._id)} onClick={()=>setMenuOpen(false)} className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-muted"><span aria-hidden="true">▣</span><span className="min-w-0 flex-1 truncate">Instance {number} · {instance.os==='ubuntu-22'?'Ubuntu 22':instance.os==='ubuntu-26'?'Ubuntu 26':instance.os==='debian-12'?'Debian 12':'Ubuntu 24'}</span><span aria-hidden="true">›</span></Link>)}
             </div>}
-          </div>}
+          </div>
+          {menuItems.map(item => <Link key={item.to} to={item.to} onClick={() => setMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium hover:bg-muted focus-visible:bg-muted"><span aria-hidden="true" className="w-6 text-center text-lg">{item.icon}</span>{item.label}</Link>)}
           {account&&<div className="mt-2 rounded-xl border">
            <button type="button" onClick={()=>setNetworkMenuOpen(v=>!v)} aria-expanded={networkMenuOpen} className="flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold hover:bg-muted"><span className="flex items-center gap-3"><span aria-hidden="true" className="w-6 text-center text-lg">⇅</span>Networking</span><span aria-hidden="true">{networkMenuOpen?'▾':'▸'}</span></button>
            {networkMenuOpen&&<div className="space-y-1 border-t px-3 py-2"><Link onClick={()=>setMenuOpen(false)} to="/dashboard/networking/ports?tab=inbound" className="block rounded-lg px-4 py-3 text-sm hover:bg-muted">Inbound · HTTP ports</Link><Link onClick={()=>setMenuOpen(false)} to="/dashboard/networking/ports?tab=outbound" className="block rounded-lg px-4 py-3 text-sm hover:bg-muted">Outbound · Connections</Link></div>}

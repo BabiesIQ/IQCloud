@@ -13,19 +13,6 @@ export default function OwnerLayout() {
   const grouped = navGroups.length ? navGroups : [{ label: null, items: navItems }];
   const [navOpen, setNavOpen] = useState(false);
   const [verifiedAccount, setVerifiedAccount] = useState(null);
-  const [domainOpen,setDomainOpen] = useState(false);
-  const [domainServers,setDomainServers] = useState([]);
-  const [domainLoading,setDomainLoading] = useState(false);
-  const [domainError,setDomainError] = useState('');
-  async function loadDomainServers(){
-    setDomainLoading(true);setDomainError('');
-    try{
-      const result=await apiRequest('/api/v1/instances');
-      const all=(result.items||[]).filter(i=>i.status!=='draft'&&i.status!=='deleted').slice().sort((a,b)=>new Date(a.createdAt||0)-new Date(b.createdAt||0));
-      setDomainServers(all.map((server,index)=>({server,number:index+1})).filter(({server})=>server.status==='running'));
-    }catch(e){setDomainError(e.message||'Could not load VPS list')}
-    finally{setDomainLoading(false)}
-  }
   useEffect(() => { let live = true; apiRequest('/api/v1/auth/me').then(data => { if(live) setVerifiedAccount(data); }).catch(() => {}); return () => {live = false}; }, []);
 
   const navigation = grouped.map((group, index) => (
@@ -72,23 +59,7 @@ export default function OwnerLayout() {
           </div>
           <p className="mt-1.5 leading-relaxed text-sidebar-foreground/55">Manage your Railway-backed instances</p>
         </div>
-        <nav className="min-h-0 flex-1 space-y-2 overflow-y-auto overscroll-contain">
-        <div className="px-1 pb-3">
-          <button type="button" aria-expanded={domainOpen} onClick={()=>{setDomainOpen(v=>!v);if(!domainOpen)loadDomainServers()}} className="flex min-h-12 w-full items-center gap-3 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 text-left text-sm text-sidebar-foreground transition hover:bg-sidebar-accent/70 hover:text-sidebar-foreground">
-            <ApperIcon name="Globe" size={18}/><span className="flex-1 font-medium">Domains</span><ApperIcon name={domainOpen?'ChevronDown':'ChevronRight'} size={15}/>
-          </button>
-          {domainOpen&&<div className="ml-5 mt-1 space-y-1 border-l border-sidebar-border pl-3">
-            <Link to="/domains" onClick={()=>setNavOpen(false)} className="block rounded-md px-3 py-2 text-sm text-sidebar-foreground/80 hover:bg-sidebar-accent">All VPS domains</Link>
-            {domainLoading&&<p className="px-3 py-2 text-xs text-sidebar-foreground/60">Loading VPS…</p>}
-            {domainError&&<p className="px-3 py-2 text-xs text-red-400">{domainError} <button type="button" className="underline" onClick={loadDomainServers}>Retry</button></p>}
-            {!domainLoading&&!domainError&&!domainServers.length&&<p className="px-3 py-2 text-xs text-sidebar-foreground/50">No running VPS</p>}
-            {domainServers.map(({server,number})=><NavLink key={server._id} to={'/domains/'+encodeURIComponent(server._id)} onClick={()=>setNavOpen(false)} className={({isActive})=>cn('flex items-center gap-2 rounded-md px-3 py-2 text-xs transition',isActive?'bg-sidebar-accent font-semibold':'text-sidebar-foreground/60 hover:bg-sidebar-accent/70')}>
-              <ApperIcon name="Server" size={14}/><span>Instance {number} · {server.os==='ubuntu-22'?'Ubuntu 22':server.os==='ubuntu-26'?'Ubuntu 26':server.os==='debian-12'?'Debian 12':'Ubuntu 24'}</span>
-            </NavLink>)}
-          </div>}
-        </div>
-        <div className="border-t border-sidebar-border pt-3">{navigation}</div>
-        </nav>
+        <nav className="min-h-0 flex-1 space-y-2 overflow-y-auto overscroll-contain">{navigation}</nav>
         <div className="mt-4 rounded-xl border border-sidebar-border bg-sidebar-accent/40 p-3">
           <p className="truncate text-xs font-medium text-sidebar-foreground" title={verifiedAccount?.email || user?.emailAddress || user?.email || ""}>{verifiedAccount?.email || user?.emailAddress || user?.email || "Account"}</p>
           {verifiedAccount && <p className="mt-1.5 flex items-center gap-1.5 text-xs text-sidebar-foreground/65">{verifiedAccount.emailVerified ? "✓ Account verified" : "Email verification pending"}</p>}
