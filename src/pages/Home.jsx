@@ -15,7 +15,7 @@ const features = [
 ];
 
 export default function Home() {
- const {formatPaise,formatMonthly,isInternational,currency}=useLocale();
+ const {formatPaise,formatMonthly,isInternational,currency,t}=useLocale();
   return (
     <main>
       <section className="mx-auto max-w-5xl px-5 pb-20 pt-24 text-center sm:pt-32">
@@ -58,7 +58,7 @@ export default function Home() {
             ].map(item => (
               <div key={item.label} className="rounded-2xl border border-border bg-background p-5">
                 <ApperIcon name={item.icon} size={19} className="text-primary" />
-                <div className="mt-5 text-xs text-muted-foreground">{item.label}</div>
+                <div className="mt-5 text-xs text-muted-foreground">{t(item.label)}</div>
                 <div className="mt-1 text-sm font-semibold">{item.value}</div>
               </div>
             ))}
@@ -73,7 +73,7 @@ export default function Home() {
       <section className="mx-auto max-w-5xl px-5 pb-16">
        <div className="mb-5 flex flex-wrap items-end justify-between gap-3"><div><h2 className="text-2xl font-semibold">Choose your billing period</h2><p className="mt-2 text-sm text-muted-foreground">Start monthly or save more when paying for longer. Recommended 8 GB RAM + 4 vCPU shown below.</p></div><Link to="/pricing" className="text-sm font-semibold text-emerald-500">View all plans</Link></div>
        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{BILLING_TERMS.map(term=><Link key={term.months} to={`/dashboard/instances/new?ram=8&cpu=4&billingMonths=${term.months}`} className="rounded-2xl border bg-card p-5 transition hover:border-emerald-500">
-        <p className="font-semibold">{term.label}</p>
+        <p className="font-semibold">{t(term.label)}</p>
         <p className="mt-2 text-xl font-bold">{formatPaise(termQuote(8,4,term.months).totalPaise)}</p>
         <p className="mt-1 text-xs font-medium text-emerald-500">{term.discountPercent?term.discountPercent+'% OFF':'Base monthly price'}</p>
        </Link>)}</div>
@@ -88,8 +88,8 @@ export default function Home() {
             {features.map(item => (
               <div key={item.title} className="rounded-2xl border border-border bg-card p-6">
                 <span className="grid size-11 place-items-center rounded-xl bg-muted text-foreground"><ApperIcon name={item.icon} size={20}/></span>
-                <h3 className="mt-6 text-base font-semibold">{item.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.description}</p>
+                <h3 className="mt-6 text-base font-semibold">{t(item.title)}</h3>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">{t(item.description)}</p>
               </div>
             ))}
           </div>

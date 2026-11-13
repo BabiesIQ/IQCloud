@@ -306,11 +306,18 @@ Object.assign(dictionaries.hi,{
 });
 
 export const UI_DICTIONARIES=dictionaries;
+export const PROTECTED_BRANDS=Object.freeze(["BabiesIQ Cloud","BabiesIQ","Railway","Razorpay","PayPal","Cloudflare","Ubuntu","Debian"]);
+export function keepBrandTerms(source,translated){
+ if(typeof source!=="string"||typeof translated!=="string")return source;
+ for(const brand of PROTECTED_BRANDS){
+  if(source.includes(brand)&&!translated.includes(brand))return source;
+ }
+ return translated;
+}
 export function translateUI(source,language){
  if(language==="en"||typeof source!=="string")return source;
- if(/BabiesIQ|Railway|Razorpay|PayPal|Ubuntu|Debian/i.test(source))return source;
  const dictionary=dictionaries[language]||dictionaries[language.split("-")[0]];
- return dictionary?.[source]||source;
+ return keepBrandTerms(source,dictionary?.[source]||source);
 }
 export function isKnownTranslationOf(source,value){
  if(source===value)return true;

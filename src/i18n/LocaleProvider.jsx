@@ -1,7 +1,7 @@
 import {createContext,useContext,useEffect,useMemo,useState} from 'react';
 import {getPreferences,updatePreferences} from '@/config/runtime.config';
 import {RTL_LANGUAGES,currencyForCountry,priceLocale} from '@/i18n/config';
-import {translateUI,isKnownTranslationOf} from '@/i18n/translations';
+import {translateUI,isKnownTranslationOf,keepBrandTerms} from '@/i18n/translations';
 import {apiRequest} from '@/services/apiClient';
 
 const Context=createContext(null);
@@ -17,7 +17,7 @@ function knownTranslated(source,value){
 // Translate only reviewed exact public UI labels. Private server/account data,
 // invoices, identifiers and credentials never leave this browser.
 function installDOMLanguage(language,machineCatalog){
- const translate=source=>{const reviewed=translateUI(source,language);return reviewed!==source?reviewed:(machineCatalog?.[source]||source)};
+ const translate=source=>{const reviewed=translateUI(source,language);return reviewed!==source?reviewed:keepBrandTerms(source,machineCatalog?.[source]||source)};
  const root=document.getElementById("root");if(!root)return ()=>{};
  function visit(rootNode){
   if(!rootNode)return;
@@ -28,7 +28,7 @@ function installDOMLanguage(language,machineCatalog){
    let source=rawText.get(node);
    if(source==null||current!==source&&!knownTranslated(source,current)){source=current;rawText.set(node,source)}
    const trimmed=source.trim();
-   if(trimmed.length<1||trimmed.length>120)return;
+   if(trimmed.length<1||trimmed.length>1800)return;
    const translated=translate(trimmed);
    const expected=translated===trimmed?source:source.replace(trimmed,translated);
    if(expected!==current)node.nodeValue=expected;
@@ -108,7 +108,7 @@ export function LocaleProvider({children}){
   };
   return {...preferences,language,country,currency,isInternational:country!=="IN",catalogStatus,
    fxStatus:fx?.status||"loading",fxUpdatedAt:fx?.at,
-   t:english=>{const reviewed=translateUI(english,language);return reviewed!==english?reviewed:(remoteCatalog[english]||english)},formatPaise,formatINR,
+   t:english=>{const reviewed=translateUI(english,language);return reviewed!==english?reviewed:keepBrandTerms(english,remoteCatalog[english]||english)},formatPaise,formatINR,
    formatMonthly:rupees=>formatPaise((Number(rupees)||0)*100),
    setLanguage:value=>updatePreferences({language:value}),
    setCountry:value=>updatePreferences({country:value}),
