@@ -630,6 +630,30 @@ Object.assign(dictionaries["id"],{
  "Secure checkout": "Pembayaran aman",
  "Log in": "Masuk"
 });
+Object.assign(dictionaries.hi,{
+  "BabiesIQ Cloud · Preview": "BabiesIQ Cloud · झलक",
+  "Compute-only monthly price. Shared host filesystem is not an allocated disk quota; network speed is not guaranteed. Checkout confirms final payment amount. Three days before expiry, we warn you to renew; the Railway deployment is stopped when validity ends. Renew before expiry to avoid restart and ephemeral data loss.": "मासिक शुल्क केवल CPU और RAM का है। साझा होस्ट स्टोरेज आपकी अलग डिस्क नहीं है और नेटवर्क गति की गारंटी नहीं है। भुगतान से पहले अंतिम राशि दिखाई जाएगी। अवधि समाप्त होने से तीन दिन पहले रिन्यू करने की सूचना मिलेगी। Railway पर अवधि समाप्त होने के बाद सेवा बंद हो सकती है। डेटा सुरक्षित रखने के लिए समय पर रिन्यू करें।",
+  "Monthly compute plan • Railway provisioning requested after payment": "मासिक सर्वर प्लान • भुगतान के बाद Railway पर सर्वर बनाने का अनुरोध",
+  "All VPS domains": "सभी VPS के डोमेन",
+  "Running": "चालू",
+  "Start your web app inside the VPS on": "अपने VPS में वेबसाइट इस पते पर चलाएँ:",
+  "Manage public HTTP application ports separately from your protected SSH connection. Outbound traffic has different provider-level limits.": "वेबसाइट के सार्वजनिक HTTP पोर्ट और सुरक्षित SSH कनेक्शन को अलग-अलग प्रबंधित करें। बाहर जाने वाले नेटवर्क पर सेवा प्रदाता की दूसरी सीमाएँ लागू हो सकती हैं।",
+  "Run your app inside the instance on a chosen TCP port (for example": "अपनी वेबसाइट को सर्वर के चुने हुए TCP पोर्ट पर चलाएँ (जैसे:",
+  "). Railway will assign a public HTTPS hostname that forwards traffic to that HTTP port. DNS/TLS and your app's response should be verified before sharing it.": ")। Railway एक सार्वजनिक HTTPS होस्टनाम देगा, जो उसी HTTP पोर्ट पर अनुरोध भेजेगा। लिंक साझा करने से पहले DNS, TLS और वेबसाइट का जवाब जाँच लें।",
+  "SSH keeps its existing public TCP proxy and port. Railway allows only one public TCP proxy per service, so arbitrary additional inbound TCP/UDP ports are not supported by this control.": "आपका SSH कनेक्शन अपने मौजूदा सार्वजनिक TCP प्रॉक्सी और पोर्ट पर ही रहेगा। Railway एक सेवा को केवल एक सार्वजनिक TCP प्रॉक्सी देता है, इसलिए इस विकल्प से मनचाहे अतिरिक्त TCP/UDP पोर्ट नहीं खोले जा सकते।",
+  "I understand that provider networking changes may redeploy or interrupt a Railway container and its ephemeral files may be lost. I have backed up important data.": "मैं समझता हूँ कि Railway की नेटवर्क सेटिंग बदलने से कंटेनर बाधित या दोबारा डिप्लॉय हो सकता है और अस्थायी फ़ाइलें खो सकती हैं। मैंने ज़रूरी डेटा का बैकअप ले लिया है।",
+  "Manual provider review required. Do not create the same port again.": "सेवा प्रदाता से जाँच ज़रूरी है। यही पोर्ट दोबारा न बनाएँ।",
+  "Provider endpoint creation does not install a web server, open local firewall rules, or prove your app is listening.": "कनेक्शन पता बनने से वेब सर्वर अपने-आप इंस्टॉल नहीं होता, फ़ायरवॉल नहीं खुलता और वेबसाइट चल रही है इसकी पुष्टि नहीं होती।",
+  "An HTTP response confirms this destination is reachable. A failure needs DNS, route, proxy, or destination troubleshooting; it does not mean an outbound rule is missing here.": "HTTP का जवाब आने का मतलब है कि यह वेबसाइट पहुँच में है। जवाब न मिले तो DNS, रूट, प्रॉक्सी या वेबसाइट की जाँच करें; इसका मतलब ज़रूरी नहीं कि आउटबाउंड नियम गायब है।",
+  "An arbitrary outbound allow/deny toggle would not actually change network permissions on Railway, so the interface does not show a misleading enabled switch.": "बिना असली Railway नेटवर्क अनुमति बदले आउटबाउंड चालू/बंद करने वाला स्विच दिखाना भ्रामक होगा, इसलिए ऐसा स्विच नहीं दिया गया है।",
+  "← Dashboard": "← डैशबोर्ड",
+  "Data-safe controls only: Resume checks the existing Railway deployment without restarting it. Pause is blocked while a safe suspend and persistent storage are unavailable; your files are not risked by an automatic stop/redeploy.": "यहाँ केवल डेटा-सुरक्षित नियंत्रण दिए गए हैं। Resume मौजूदा Railway सर्वर को बिना रीस्टार्ट किए जाँचता है। सुरक्षित Pause और स्थायी स्टोरेज उपलब्ध होने तक Pause बंद रखा गया है, ताकि आपकी फ़ाइलें खतरे में न पड़ें।",
+  "The previous provider action needs reconciliation. Do not retry automatically.": "पिछली कार्रवाई की स्थिति की जाँच ज़रूरी है। इसे अपने-आप दोबारा न चलाएँ।",
+  "Permanent deletion could not be confirmed. Contact support; do not retry.": "हमेशा के लिए हटाने की पुष्टि नहीं हो सकी। सहायता टीम से संपर्क करें; दोबारा कोशिश न करें।",
+  "No automatic refund is issued for unused subscription time when you delete a service. Any refund rights under applicable law or the published refund policy still apply. Save all data before proceeding.": "सेवा हटाने पर बची हुई सदस्यता अवधि का पैसा अपने-आप वापस नहीं किया जाता। लागू कानून और प्रकाशित रिफ़ंड नीति के तहत आपके अधिकार बने रहेंगे। आगे बढ़ने से पहले सभी फ़ाइलें सुरक्षित कर लें।",
+  "Unavailable until the service supports suspension without rebuilding its ephemeral filesystem": "जब तक अस्थायी फ़ाइलें सुरक्षित रखकर सेवा रोकना संभव नहीं होगा, यह विकल्प उपलब्ध नहीं रहेगा।",
+  "The public TCP proxy uses a hostname and port, not a dedicated IPv4/IPv6 address. IPv4/IPv6 availability depends on provider routing and DNS. Password is revealed only once after the server is ready; do not share or email it.": "सार्वजनिक TCP प्रॉक्सी एक होस्टनाम और पोर्ट देता है, अलग IPv4/IPv6 पता नहीं। IP की उपलब्धता सेवा प्रदाता के DNS और रूटिंग पर निर्भर करती है। सर्वर तैयार होने के बाद पासवर्ड केवल एक बार दिखेगा; इसे किसी से साझा या ईमेल न करें।"
+});
 export const UI_DICTIONARIES=dictionaries;
 export const PROTECTED_BRANDS=Object.freeze(["BabiesIQ Cloud","BabiesIQ","Railway","Razorpay","PayPal","Cloudflare","Ubuntu","Debian"]);
 export function keepBrandTerms(source,translated){
