@@ -108,7 +108,7 @@ function Header() {
     { to: '/', label: 'Home', icon: '⌂' },
     ...(account ? [{ to: '/dashboard', label: 'Dashboard', icon: '▦' }, { to: '/security', label: 'Security Center', icon: '♢' }] : []),
     { to: '/pricing', label: 'Pricing', icon: '◇' },
-    { to: '/currency', label: 'Currency', icon: '
+    { to: '/currency', label: 'Currency', icon: '¤' },
     ...(account ? [{ to: '/settings', label: 'Preferences', icon: '⚙' }] : []),
     { to: '/docs', label: 'Documentation', icon: '◫' }
   ];
