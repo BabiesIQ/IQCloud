@@ -57,7 +57,7 @@ export default function ServerActions({item,onChanged}){
  return <div className="mt-4 rounded-xl border p-4">
   <div className="mb-3 flex items-center justify-between gap-2"><h4 className="text-sm font-semibold">Server controls</h4><span className="text-xs text-muted-foreground">{item.status==='running'?'Online':item.status}</span></div>
   <div className="flex flex-wrap gap-2">
-   {item.status==='running'&&<button type="button" disabled={!!runningAction} onClick={()=>execute('pause')} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold disabled:opacity-50"><Pause size={15}/> Pause</button>}
+   {item.status==='running'&&<button type="button" disabled title="Unavailable until the service supports suspension without rebuilding its ephemeral filesystem" className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold opacity-50"><Pause size={15}/> Pause</button>}
    {['paused','stopped','resuming'].includes(item.status)&&<button type="button" disabled={!!runningAction} onClick={()=>execute('resume')} className="inline-flex items-center gap-2 rounded-lg border border-emerald-500 px-3 py-2 text-xs font-semibold text-emerald-500 disabled:opacity-50"><Play size={15}/> {item.status==='resuming'?'Check & resume':'Resume'}</button>}
    {eligible&&<button type="button" disabled={!!runningAction} onClick={()=>closeDialog(true)} className="inline-flex items-center gap-2 rounded-lg border border-red-500/40 px-3 py-2 text-xs font-semibold text-red-600 dark:text-red-400 disabled:opacity-50"><Trash2 size={15}/> Delete permanently</button>}
   </div>
