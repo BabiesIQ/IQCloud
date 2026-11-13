@@ -8,9 +8,16 @@ const Context=createContext(null);
 const excluded=new Set(["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","KBD"]);
 const rawText=new WeakMap();
 const rawAttrs=new WeakMap();
+const knownMachineLocales=new Map();
+function knownTranslated(source,value){
+ if(isKnownTranslationOf(source,value))return true;
+ for(const dictionary of knownMachineLocales.values()){if(dictionary[source]===value)return true}
+ return false;
+}
 // Translate only reviewed exact public UI labels. Private server/account data,
 // invoices, identifiers and credentials never leave this browser.
-function installDOMLanguage(language){
+function installDOMLanguage(language,machineCatalog){
+ const translate=source=>machineCatalog?.[source]||translateUI(source,language);
  const root=document.getElementById("root");if(!root)return ()=>{};
  function visit(rootNode){
   if(!rootNode)return;
@@ -19,10 +26,10 @@ function installDOMLanguage(language){
    if(!parent||excluded.has(parent.tagName)||parent.closest("[data-no-translate]"))return;
    const current=node.nodeValue||"";
    let source=rawText.get(node);
-   if(source==null||current!==source&&!isKnownTranslationOf(source,current)){source=current;rawText.set(node,source)}
+   if(source==null||current!==source&&!knownTranslated(source,current)){source=current;rawText.set(node,source)}
    const trimmed=source.trim();
    if(trimmed.length<1||trimmed.length>120)return;
-   const translated=translateUI(trimmed,language);
+   const translated=translate(trimmed);
    const expected=translated===trimmed?source:source.replace(trimmed,translated);
    if(expected!==current)node.nodeValue=expected;
   }
@@ -30,13 +37,13 @@ function installDOMLanguage(language){
   while(walker.nextNode())text(walker.currentNode);
   if(rootNode instanceof Element){
    for(const el of [rootNode,...rootNode.querySelectorAll("[placeholder],[title],[aria-label]")]){
-    if(excluded.has(el.tagName)||el.closest("[data-no-translate]"))continue;
+    if((excluded.has(el.tagName)&&el.tagName!=="INPUT"&&el.tagName!=="TEXTAREA")||el.closest("[data-no-translate]"))continue;
     let original=rawAttrs.get(el);if(!original){original={};rawAttrs.set(el,original)}
     for(const key of ["placeholder","title","aria-label"]){
      const value=el.getAttribute(key);if(value==null)continue;
      const saved=original[key];
-     if(saved==null||value!==saved&&!isKnownTranslationOf(saved,value))original[key]=value;
-     const target=translateUI(original[key],language);
+     if(saved==null||value!==saved&&!knownTranslated(saved,value))original[key]=value;
+     const target=translate(original[key]);
      if(target!==value)el.setAttribute(key,target);
     }
    }
@@ -55,6 +62,8 @@ function installDOMLanguage(language){
 export function LocaleProvider({children}){
  const [preferences,setPreferences]=useState(getPreferences);
  const [fx,setFX]=useState(null);
+ const [remoteCatalog,setRemoteCatalog]=useState({});
+ const [catalogStatus,setCatalogStatus]=useState('original');
  useEffect(()=>{
   const sync=()=>setPreferences(getPreferences());
   addEventListener("iqcloud:preferences",sync);addEventListener("storage",sync);
@@ -63,7 +72,21 @@ export function LocaleProvider({children}){
  useEffect(()=>{
   document.documentElement.lang=preferences.language;
   document.documentElement.dir=RTL_LANGUAGES.has(preferences.language)?"rtl":"ltr";
-  return installDOMLanguage(preferences.language);
+  return installDOMLanguage(preferences.language,remoteCatalog);
+ },[preferences.language,remoteCatalog]);
+ useEffect(()=>{
+  let active=true;
+  setRemoteCatalog({});
+  setCatalogStatus(preferences.language==='en'?'original':'loading');
+  if(preferences.language==='en')return()=>{active=false};
+  apiRequest('/api/v1/localization/catalog/'+encodeURIComponent(preferences.language)).then(data=>{
+   if(!active)return;
+   const entries=data.items&&typeof data.items==='object'?data.items:{};
+   knownMachineLocales.set(preferences.language,entries);
+   setRemoteCatalog(entries);
+   setCatalogStatus(data.status||'unknown');
+  }).catch(()=>{if(active){setCatalogStatus('translator_unavailable');setRemoteCatalog({})}});
+  return()=>{active=false};
  },[preferences.language]);
  useEffect(()=>{
   let active=true;
@@ -83,14 +106,14 @@ export function LocaleProvider({children}){
    try{return "≈"+new Intl.NumberFormat(priceLocale(language,country),{style:"currency",currency,maximumFractionDigits:2}).format((Number(paise)||0)/100*2*fx.rate)}
    catch{return formatINR((Number(paise)||0)*2)}
   };
-  return {...preferences,language,country,currency,isInternational:country!=="IN",
+  return {...preferences,language,country,currency,isInternational:country!=="IN",catalogStatus,
    fxStatus:fx?.status||"loading",fxUpdatedAt:fx?.at,
-   t:english=>translateUI(english,language),formatPaise,formatINR,
+   t:english=>remoteCatalog[english]||translateUI(english,language),formatPaise,formatINR,
    formatMonthly:rupees=>formatPaise((Number(rupees)||0)*100),
    setLanguage:value=>updatePreferences({language:value}),
    setCountry:value=>updatePreferences({country:value}),
   };
- },[preferences,fx]);
+ },[preferences,fx,remoteCatalog,catalogStatus]);
  return <Context.Provider value={values}>{children}</Context.Provider>;
 }
 export function useLocale(){
