@@ -37,7 +37,7 @@ export default function Home() {
             View pricing <ApperIcon name="ArrowRight" size={16} />
           </Link>
         </div>
-        <p className="mt-6 text-xs text-muted-foreground">{isInternational?'International plans use 2× India prices. '+currency+' values are estimates; PayPal checkout is pending business activation.':'Explore plans without paying. Checkout currently uses Razorpay Test Mode; no live subscription auto-debit is enabled.'}</p>
+        <p className="mt-6 text-xs text-muted-foreground">{isInternational?'International compute plans use 2× the India price. '+currency+' figures are estimates. PayPal availability and final USD payable are confirmed during secure checkout.':'Browse plans without paying. Razorpay availability and the final INR payable are confirmed during secure checkout; there is no automatic subscription debit.'}</p>
       </section>
 
       <section className="mx-auto max-w-5xl px-5 pb-24">
