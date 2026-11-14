@@ -66,7 +66,7 @@ export default function ServerCheckout(){
   if(!/^[A-Za-z0-9]{10,40}$/.test(token)){
    setError('PayPal returned without a valid order. Check payment status before paying again.');return;
   }
-  setPaypalReturnProcessing(true);setPaymentUncertain(true);
+  setPayPalReturnProcessing(true);setPaymentUncertain(true);
   (async()=>{
    try{
     const outcome=await apiRequest('/api/v1/payments/paypal/orders/'+encodeURIComponent(token)+'/capture',{method:'POST',body:{}});
@@ -74,7 +74,7 @@ export default function ServerCheckout(){
     setError(outcome.message||'PayPal payment status is being verified. Do not pay again.');
    }catch(e){
     setError('Your payment might have succeeded. Do not pay twice. Check this order in PayPal or contact support. '+(e.message||''));
-   }finally{setPaypalReturnProcessing(false)}
+   }finally{setPayPalReturnProcessing(false)}
   })();
  },[isInternational,draft,loading,instanceId]);
  async function payWithPayPal(){
