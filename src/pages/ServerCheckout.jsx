@@ -23,6 +23,9 @@ export default function ServerCheckout(){
  const [order,setOrder]=useState(null);
  const [paymentUncertain,setPaymentUncertain]=useState(false);
  const [riskAcknowledged,setRiskAcknowledged]=useState(false);
+ const [paypalStatus,setPayPalStatus]=useState({ready:false,loading:false,reason:''});
+ const [paypalReturnProcessing,setPayPalReturnProcessing]=useState(false);
+ const paypalReturnClaimed=useRef(false);
  const busy=useRef(false);
  const quote=draft?termQuote(draft.ram,draft.cpu,months):null;
  const displayedQuote=order?.quote||quote;
@@ -41,9 +44,66 @@ export default function ServerCheckout(){
   }).catch(e=>{if(active)setError(e.message||'Instance unavailable')}).finally(()=>{if(active)setLoading(false)});
   return()=>{active=false};
  },[instanceId,isRenewal]);
+ useEffect(()=>{
+  let live=true;
+  if(!isInternational){setPayPalStatus({ready:false,loading:false,reason:''});return()=>{live=false}};
+  setPayPalStatus({ready:false,loading:true,reason:''});
+  apiRequest('/api/v1/payments/paypal/readiness').then(status=>{
+   if(!live)return;
+   setPayPalStatus({ready:status.checkoutEnabled===true,loading:false,
+    reason:status.checkoutEnabled?'':'PayPal merchant verification or live gateway activation is still pending. No payment will be taken.'});
+  }).catch(()=>{if(live)setPayPalStatus({ready:false,loading:false,reason:'PayPal readiness could not be verified. Checkout is disabled.'})});
+  return()=>{live=false};
+ },[isInternational]);
+ useEffect(()=>{
+  if(!isInternational||!draft||loading||paypalReturnClaimed.current)return;
+  const returned=params.get('paypalReturn');
+  const token=params.get('token')||'';
+  const cancelled=params.get('paypalCancelled');
+  if(cancelled){paypalReturnClaimed.current=true;setError('PayPal approval was cancelled. No capture was requested. If a charge appears, check your PayPal account before trying again.');return}
+  if(returned!=='1')return;
+  paypalReturnClaimed.current=true;
+  if(!/^[A-Za-z0-9]{10,40}$/.test(token)){
+   setError('PayPal returned without a valid order. Check payment status before paying again.');return;
+  }
+  setPaypalReturnProcessing(true);setPaymentUncertain(true);
+  (async()=>{
+   try{
+    const outcome=await apiRequest('/api/v1/payments/paypal/orders/'+encodeURIComponent(token)+'/capture',{method:'POST',body:{}});
+    if(outcome.status==='captured_verified'){navigate('/dashboard',{replace:true});return}
+    setError(outcome.message||'PayPal payment status is being verified. Do not pay again.');
+   }catch(e){
+    setError('Your payment might have succeeded. Do not pay twice. Check this order in PayPal or contact support. '+(e.message||''));
+   }finally{setPaypalReturnProcessing(false)}
+  })();
+ },[isInternational,draft,loading,instanceId]);
+ async function payWithPayPal(){
+  if(!paypalStatus.ready||!draft||!quote){setError(paypalStatus.reason||'PayPal checkout is not ready.');return}
+  if(isRenewal&&draft.status==='expired'&&!riskAcknowledged){
+   setError('Please acknowledge that expired Railway containers may lose temporary files before renewing.');return;
+  }
+  busy.current=true;setPaying(true);setError('');
+  try{
+   const result=await apiRequest('/api/v1/payments/paypal/orders',{method:'POST',
+    body:{draftId:instanceId,billingMonths:months,country,kind:isRenewal?'renewal':'new'}});
+   if(!result.orderId||result.currency!=='USD'||!Number.isInteger(result.amount)||result.amount<100){
+    throw Error('PayPal did not confirm a valid USD amount. No checkout was opened.');
+   }
+   if(result.inrBaseTotalPaise!==quote.totalPaise){
+    setOrder(result);
+    throw Error('The backend price differs from your preview. Do not approve payment. Verify the total with support.');
+   }
+   const link=new URL(result.approvalUrl);
+   if(link.protocol!=='https:'||!['www.paypal.com','www.sandbox.paypal.com','sandbox.paypal.com'].includes(link.hostname)){
+    throw Error('PayPal provided an untrusted checkout URL. No payment was opened.');
+   }
+   setOrder(result);setPaymentUncertain(true);
+   window.location.assign(link.toString());
+  }catch(e){setError(e.message||'PayPal checkout unavailable');busy.current=false;setPaying(false)}
+ }
  async function pay(){
   if(busy.current||!draft||!quote||paymentUncertain)return;
-  if(isInternational){setError('International checkout via PayPal is not active yet. No payment has been created. Please do not use India-only Razorpay checkout for an international billing address.');return;}
+  if(isInternational){await payWithPayPal();return;}
   if(isRenewal&&draft.status==='expired'&&!riskAcknowledged){
    setError('Please confirm that you understand ephemeral data can be lost when a stopped instance is redeployed.');return;
   }
@@ -106,19 +166,23 @@ export default function ServerCheckout(){
    </div>
    <div className="rounded-2xl border bg-card p-6">
     <BillingTermPicker months={months} onChange={value=>{setMonths(value);setError('')}} ram={draft.ram} cpu={draft.cpu} disabled={Boolean(order)||paying}/>
-    {order&&<p className="mt-2 text-xs text-muted-foreground">Your secure Razorpay order is now locked to this term. Do not create another order to change validity.</p>}
+    {order&&<p className="mt-2 text-xs text-muted-foreground">Your secure {order.gateway==='paypal'?'PayPal':'Razorpay'} order is now locked to this billing term. Do not create another order to change validity.</p>}
     <div className="mt-6 space-y-3 rounded-xl bg-muted/50 p-5 text-sm">
      <div className="flex justify-between"><span>Monthly price × {displayedQuote.months} months</span><span>{(order?formatINR:formatPaise)(displayedQuote.subtotalPaise)}</span></div>
      <div className="flex justify-between font-semibold text-emerald-600 dark:text-emerald-400"><span>Discount ({displayedQuote.discountPercent}%)</span><span>- {(order?formatINR:formatPaise)(displayedQuote.discountPaise)}</span></div>
      <div className="flex justify-between border-t pt-3 text-lg font-bold"><span>Total payable</span><span>{(order?formatINR:formatPaise)(displayedQuote.totalPaise)}</span></div>
     </div>
-    {isInternational&&<div className="mt-4 rounded-xl border border-amber-500/40 p-4 text-sm text-muted-foreground">International compute prices are 2× the India rates with the same discount. {currency} values are estimated (FX: {fxStatus}); final supported PayPal capture currency will be USD after merchant approval. Payment is disabled until cross-border checkout is independently verified.</div>}
+    {isInternational&&<div className="mt-4 rounded-xl border border-amber-500/40 p-4 text-sm text-muted-foreground">
+      International compute prices are 2× the India rate, with the same discount. {currency} prices above are estimates (FX: {fxStatus}).
+      PayPal uses the server-verified final USD amount. {order?.gateway==='paypal'&&<p className="mt-2 font-semibold">Locked PayPal total: {new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(order.amount/100)} USD</p>}
+      <p className="mt-2">{paypalStatus.loading?'Checking PayPal availability…':paypalStatus.ready?'PayPal international checkout is available for eligible foreign buyers. Payment will be captured only after your approval.':paypalStatus.reason||'PayPal international checkout is not ready.'}</p>
+     </div>}
     <p className="mt-4 text-xs leading-5 text-muted-foreground">Validity starts after SSH-ready for a new VPS. You will receive a warning 3 days before expiry. At expiry, the Railway deployment is stopped. Renewal requires another verified payment; there is no automatic card debit.</p>
     <div className="mt-4 flex gap-2 rounded-xl border border-amber-500/30 bg-amber-500/5 p-3 text-xs leading-5 text-muted-foreground"><AlertTriangle size={17} className="shrink-0 text-amber-500"/> Railway root storage is ephemeral. Expiry followed by redeployment may erase data. Back up important files and renew before expiry.</div>
     {isRenewal&&draft.status==='expired'&&<label className="mt-4 flex items-start gap-2 text-sm"><input className="mt-1" type="checkbox" checked={riskAcknowledged} onChange={e=>setRiskAcknowledged(e.target.checked)}/><span>I understand restarting an expired Railway container may lose its files.</span></label>}
     <p className="mt-4 text-xs text-muted-foreground">Public SSH uses a provider hostname + port; dedicated IPv4 and IPv6 addresses are not included or guaranteed.</p>
-    <button type="button" disabled={paying||paymentUncertain||isInternational} onClick={pay} className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary p-4 font-semibold text-primary-foreground disabled:opacity-50">
-     <CreditCard size={18}/>{isInternational?'PayPal international checkout pending':paying?'Opening payment…':paymentUncertain?'Verify payment in Dashboard':'Pay '+(order?formatINR:formatPaise)(displayedQuote.totalPaise)}
+    <button type="button" disabled={paying||paymentUncertain||(isInternational&&!paypalStatus.ready)||paypalReturnProcessing} onClick={pay} className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary p-4 font-semibold text-primary-foreground disabled:opacity-50">
+     <CreditCard size={18}/>{isInternational?(paying?'Opening PayPal…':paypalStatus.ready?'Pay with PayPal (USD)':'PayPal checkout not yet active'):paying?'Opening payment…':paymentUncertain?'Verify payment in Dashboard':'Pay '+(order?formatINR:formatPaise)(displayedQuote.totalPaise)}
     </button>
     <p className="mt-3 text-center text-xs text-muted-foreground"><ShieldCheck size={13} className="mr-1 inline"/> The backend verifies the exact amount and gateway capture. Never pay twice for the same order.</p>
    </div>
