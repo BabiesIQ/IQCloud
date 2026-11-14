@@ -654,6 +654,11 @@ Object.assign(dictionaries.hi,{
   "Unavailable until the service supports suspension without rebuilding its ephemeral filesystem": "जब तक अस्थायी फ़ाइलें सुरक्षित रखकर सेवा रोकना संभव नहीं होगा, यह विकल्प उपलब्ध नहीं रहेगा।",
   "The public TCP proxy uses a hostname and port, not a dedicated IPv4/IPv6 address. IPv4/IPv6 availability depends on provider routing and DNS. Password is revealed only once after the server is ready; do not share or email it.": "सार्वजनिक TCP प्रॉक्सी एक होस्टनाम और पोर्ट देता है, अलग IPv4/IPv6 पता नहीं। IP की उपलब्धता सेवा प्रदाता के DNS और रूटिंग पर निर्भर करती है। सर्वर तैयार होने के बाद पासवर्ड केवल एक बार दिखेगा; इसे किसी से साझा या ईमेल न करें।"
 });
+Object.assign(dictionaries.hi,{
+ "International compute plans use 2× the India price.":"अंतरराष्ट्रीय सर्वर प्लानों की कीमत भारत की कीमत से दोगुनी है।",
+ "figures are estimates. PayPal availability and final USD payable are confirmed during secure checkout.":"में दिखाई गई कीमत अनुमानित है। सुरक्षित भुगतान पेज पर PayPal की उपलब्धता और अंतिम USD राशि की पुष्टि होगी।",
+ "Browse plans without paying. Razorpay availability and the final INR payable are confirmed during secure checkout; there is no automatic subscription debit.":"बिना भुगतान किए सभी प्लान देखें। सुरक्षित भुगतान पेज पर Razorpay की उपलब्धता और अंतिम INR राशि की पुष्टि होगी। कोई भी सदस्यता शुल्क अपने-आप नहीं कटेगा।"
+});
 export const UI_DICTIONARIES=dictionaries;
 export const PROTECTED_BRANDS=Object.freeze(["BabiesIQ Cloud","BabiesIQ","Railway","Razorpay","PayPal","Cloudflare","Ubuntu","Debian"]);
 export function keepBrandTerms(source,translated){
