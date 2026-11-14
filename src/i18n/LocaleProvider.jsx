@@ -76,17 +76,36 @@ export function LocaleProvider({children}){
  },[preferences.language,remoteCatalog]);
  useEffect(()=>{
   let active=true;
+  let pendingDelay=null;
   setRemoteCatalog({});
   setCatalogStatus(preferences.language==='en'?'original':'loading');
   if(preferences.language==='en')return()=>{active=false};
-  apiRequest('/api/v1/localization/catalog/'+encodeURIComponent(preferences.language)).then(data=>{
-   if(!active)return;
-   const entries=data.items&&typeof data.items==='object'?data.items:{};
-   knownMachineLocales.set(preferences.language,entries);
-   setRemoteCatalog(entries);
-   setCatalogStatus(data.status||'unknown');
-  }).catch(()=>{if(active){setCatalogStatus('translator_unavailable');setRemoteCatalog({})}});
-  return()=>{active=false};
+  const locale=preferences.language;
+  async function getCatalog(){
+   for(let check=0;active&&check<65;check++){
+    let response;
+    try{response=await apiRequest('/api/v1/localization/catalog/'+encodeURIComponent(locale))}
+    catch{if(active)setCatalogStatus('translator_unavailable');return}
+    if(!active)return;
+    if(response.status==='catalog_generating'){
+     setCatalogStatus('catalog_generating');
+     await new Promise(resolve=>{pendingDelay=setTimeout(resolve,3000)});
+     continue;
+    }
+    if(response.status==='machine_translation_requires_human_review'){
+     const items=response.items&&typeof response.items==='object'?response.items:{};
+     knownMachineLocales.set(locale,items);
+     setRemoteCatalog(items);
+     setCatalogStatus(response.status);
+     return;
+    }
+    setCatalogStatus(response.status||'translator_unavailable');
+    return;
+   }
+   if(active)setCatalogStatus('translation_timeout');
+  }
+  getCatalog();
+  return()=>{active=false;if(pendingDelay!==null)clearTimeout(pendingDelay)};
  },[preferences.language]);
  useEffect(()=>{
   let active=true;
