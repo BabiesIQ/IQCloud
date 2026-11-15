@@ -20,7 +20,7 @@ const blocks = [
 export default function Docs() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-17">
-      <SectionHead eyebrow="Knowledge base / Preview" title="BabiesIQ Cloud documentation" description="Learn how the planned hosting workflow will operate, including important provider constraints and safeguards."/>
+      <SectionHead eyebrow="Knowledge base / Preview" title="BabiesIQ Cloud documentation" description="Learn how BabiesIQ Cloud hosting works, including important provider limitations and safety precautions."/>
       <div className="grid gap-5 md:grid-cols-2">
         {blocks.map(x=>(
           <div key={x.title} className="rounded-md border border-border bg-card p-7">
@@ -39,7 +39,7 @@ export default function Docs() {
           <li>The customer adds the records at their DNS provider and requests a verification refresh.</li>
           <li>The backend checks Railway ownership verification and routing status before marking it verified.</li>
         </ol>
-        <p className="mt-5 text-xs text-warning">This page illustrates a future workflow. The demo does not issue live DNS targets or make Railway API calls.</p>
+        <p className="mt-5 text-xs text-warning">Live DNS targets are shown in your VPS Domain Management page after Railway accepts the custom hostname. Verify those records before changing your DNS.</p>
       </div>
       <div className="mt-9 flex gap-5 text-sm"><Link to="/dashboard/instances/new" className="font-semibold text-primary">Configure an instance →</Link><Link to="/terms" className="font-semibold text-muted-foreground">Read service terms →</Link></div>
     </div>

@@ -696,5 +696,7 @@ export default Object.freeze({
   "Service provisioned": "服務已部署",
   "Error": "錯誤",
   "Success": "成功",
-  "Ubuntu 24.04": "Ubuntu 24.04"
+  "Ubuntu 24.04": "Ubuntu 24.04",
+  "Learn how BabiesIQ Cloud hosting works, including important provider limitations and safety precautions.": "了解 BabiesIQ Cloud 主機服務的使用方式，以及服務提供者的重要限制和安全注意事項。",
+  "Live DNS targets are shown in your VPS Domain Management page after Railway accepts the custom hostname. Verify those records before changing your DNS.": "Railway 接受自訂網域後，您可以在 VPS 網域管理頁面查看實際的 DNS 目標。修改 DNS 前，請先確認這些記錄正確。"
 });
