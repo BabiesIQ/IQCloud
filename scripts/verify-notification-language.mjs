@@ -9,4 +9,7 @@ assert.ok(provider.includes("iqcloud:preferences"),'Sync must run when a user ch
 assert.ok(provider.includes("if(explicit)"),'Chosen local language must not be overwritten by server default');
 const nav=readFileSync('src/components/CloudPreferences.jsx','utf8');
 assert.ok(nav.includes('Language also syncs to your account'),'Settings must explain email localization');
-console.log('Account notification language sync QA passed.');
+const png=readFileSync('public/assets/mail/cloud-logo.png');
+assert.ok(png.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10])),'Hosted email logo must be a real PNG');
+assert.ok(png.length > 500 && png.length < 100000,'Email logo must be lightweight');
+console.log('Account locale sync and public email PNG QA passed.');
