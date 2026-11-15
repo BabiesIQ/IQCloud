@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowUpRight, Globe2, LockKeyhole, Network, RefreshCcw, ShieldCheck, TerminalSquare } from 'lucide-react';
 import { apiRequest } from '@/services/apiClient';
+import {useLocale} from '@/i18n/LocaleProvider';
 
 const modes=[
  {id:'inbound',label:'Inbound',detail:'Expose an HTTP app'},
  {id:'outbound',label:'Outbound',detail:'Egress connections'},
 ];
 export default function CustomPorts(){
+ const {t}=useLocale();
  const navigate=useNavigate();
  const [query]=useSearchParams();
  const [servers,setServers]=useState([]);
@@ -64,11 +66,11 @@ export default function CustomPorts(){
    <div className="flex items-center justify-between gap-3"><label htmlFor="ports-instance" className="text-sm font-semibold">Select instance</label><button type="button" onClick={refreshInstances} aria-label="Refresh server list" className="rounded-lg border p-2"><RefreshCcw size={16}/></button></div>
    <select id="ports-instance" className="mt-3 w-full rounded-xl border bg-background p-3" value={selected} onChange={e=>setSelected(e.target.value)} disabled={loading||working}>
     {!servers.length&&<option value="">No running instance</option>}
-    {servers.map((s,index)=><option key={s._id} value={s._id}>Instance {index+1} · {s.ram} GB RAM · {s.cpu} vCPU</option>)}
+    {servers.map((s,index)=><option key={s._id} value={s._id}>{t('Instance')} {index+1} · {s.ram} GB RAM · {s.cpu} vCPU</option>)}
    </select>
   </div>
   <div className="mt-5 grid grid-cols-2 gap-3" role="group" aria-label="Connection direction">
-   {modes.map(x=><button key={x.id} type="button" aria-pressed={mode===x.id} onClick={()=>setMode(x.id)} className={`rounded-2xl border p-4 text-left ${mode===x.id?'border-emerald-500 bg-emerald-500/10':'bg-card'}`}><strong className="block">{x.label}</strong><span className="mt-1 block text-xs text-muted-foreground">{x.detail}</span></button>)}
+   {modes.map(x=><button key={x.id} type="button" aria-pressed={mode===x.id} onClick={()=>setMode(x.id)} className={`rounded-2xl border p-4 text-left ${mode===x.id?'border-emerald-500 bg-emerald-500/10':'bg-card'}`}><strong className="block">{t(x.label)}</strong><span className="mt-1 block text-xs text-muted-foreground">{t(x.detail)}</span></button>)}
   </div>
   {mode==='inbound'?<section className="mt-5 space-y-5 rounded-2xl border bg-card p-5 sm:p-7">
    <div className="flex items-center gap-2 font-semibold"><Globe2 size={19} className="text-emerald-500"/> Inbound HTTP</div>

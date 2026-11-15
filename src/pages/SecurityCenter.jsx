@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { apiRequest } from '@/services/apiClient';
+import {useLocale} from '@/i18n/LocaleProvider';
 
 export const route = { path: '/security', layout: 'owner', access: 'authenticated' };
 
@@ -9,6 +10,7 @@ function formatTime(value) {
  return new Date(value).toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'});
 }
 export default function SecurityCenter() {
+ const {t,language}=useLocale();
  const [sessions,setSessions]=useState([]);
  const [loading,setLoading]=useState(true);
  const [busy,setBusy]=useState('');
@@ -52,7 +54,7 @@ export default function SecurityCenter() {
   <section className="mt-8 space-y-3" aria-label="Active sessions">
    {loading?<p className="text-sm text-muted-foreground">Loading your sessions…</p>:sessions.length===0?<p className="rounded-2xl border p-6 text-sm text-muted-foreground">No active sessions found.</p>:
    sessions.map(session=><article key={session.id} className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border bg-card p-5">
-    <div className="flex min-w-0 items-start gap-3"><span className="rounded-xl bg-emerald-500/10 p-3 text-xl" aria-hidden="true">▣</span><div><h2 className="font-semibold">{session.device||'Unknown device'} {session.current&&<span className="ml-2 rounded-full bg-emerald-500/10 px-2 py-1 text-xs font-normal text-emerald-500">This device</span>}</h2><p className="mt-1 text-xs text-muted-foreground">Last active: {formatTime(session.lastSeen)}</p><p className="text-xs text-muted-foreground">Signed in: {formatTime(session.createdAt)}</p></div></div>
+    <div className="flex min-w-0 items-start gap-3"><span className="rounded-xl bg-emerald-500/10 p-3 text-xl" aria-hidden="true">▣</span><div><h2 className="font-semibold">{session.device||t('Unknown device')} {session.current&&<span className="ml-2 rounded-full bg-emerald-500/10 px-2 py-1 text-xs font-normal text-emerald-500">This device</span>}</h2><p className="mt-1 text-xs text-muted-foreground">{t('Last active:')} {formatTime(session.lastSeen)}</p><p className="text-xs text-muted-foreground">{t('Signed in:')} {formatTime(session.createdAt)}</p></div></div>
     {!session.current&&<button disabled={!!busy} onClick={()=>revoke(session.id)} className="rounded-xl border px-4 py-2 text-sm hover:bg-muted disabled:opacity-50">{busy===session.id?'Signing out…':'Sign out'}</button>}
    </article>)}
   </section>
