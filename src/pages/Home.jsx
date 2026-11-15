@@ -5,7 +5,6 @@ import NavIcon from '@/components/NavIcon';
 import '@/cloud-motion.css';
 import ApperIcon from '@/components/ApperIcon';
 import SharedInfrastructure from '@/components/cloud/SharedInfrastructure';
-import { BILLING_TERMS, priceINR, termQuote } from '@/config/plans';
 
 
 export const route = { path: '/', layout: 'public', access: 'public' };
@@ -17,13 +16,13 @@ const features = [
 ];
 
 export default function Home() {
- const {formatPaise,formatMonthly,isInternational,currency,t}=useLocale();
+ const {isInternational,currency,t}=useLocale();
   return (
     <main>
       <section className="mx-auto max-w-5xl px-5 pb-20 pt-24 text-center sm:pt-32">
         <div className="mx-auto mb-7 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-xs text-muted-foreground">
           <BrandLogo size={24} className="h-6 w-6" />
-          BabiesIQ Cloud · Preview
+          BabiesIQ Cloud
         </div>
         <h1 className="mx-auto max-w-4xl text-4xl font-semibold leading-[1.13] tracking-[-0.055em] sm:text-6xl md:text-7xl">
           Your cloud. <span className="text-primary">Made simple.</span>
@@ -39,48 +38,25 @@ export default function Home() {
             View pricing <ApperIcon name="ArrowRight" size={16} />
           </Link>
         </div>
+        <div className="mx-auto mt-6 max-w-2xl rounded-2xl border border-border bg-card/80 px-4 py-3 shadow-sm">
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2.5">
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
+              <ApperIcon name="ShieldCheck" size={15} className="text-primary" />{t('Secure checkout')}
+            </span>
+            <span aria-hidden="true" className="hidden h-4 w-px bg-border sm:block" />
+            <span className="rounded-lg border bg-background px-2.5 py-1 text-xs font-extrabold italic tracking-tight text-[#17418b] dark:text-[#9cbcff]" aria-label="Visa cards">VISA</span>
+            <span className="inline-flex items-center gap-1.5 rounded-lg border bg-background px-2.5 py-1 text-xs font-semibold" aria-label="Mastercard cards">
+              <span aria-hidden="true" className="inline-flex"><span className="size-3.5 rounded-full bg-[#eb001b]" /><span className="-ml-1.5 size-3.5 rounded-full bg-[#f79e1b] opacity-90" /></span>
+              Mastercard
+            </span>
+            <span className="rounded-lg border bg-background px-2.5 py-1 text-xs font-semibold">UPI <span className="text-[10px] font-normal text-muted-foreground">India</span></span>
+            <span className="rounded-lg border bg-background px-2.5 py-1 text-xs font-semibold text-[#0070ba] dark:text-[#77b9f6]">PayPal <span className="text-[10px] font-normal text-muted-foreground">International</span></span>
+          </div>
+          <p className="mt-2 text-center text-[11px] leading-4 text-muted-foreground">{t('Payment method availability is confirmed at checkout and depends on your country and gateway activation.')}</p>
+        </div>
         <p className="mt-6 text-xs text-muted-foreground">{isInternational?t('International compute plans use 2× the India price.')+' '+currency+' '+t('figures are estimates. PayPal availability, currency and final amount are confirmed during secure checkout.'):t('Browse plans without paying. Razorpay availability and the final INR payable are confirmed during secure checkout; there is no automatic subscription debit.')}</p>
       </section>
 
-      <section className="mx-auto max-w-5xl px-5 pb-24">
-        <div className="overflow-hidden rounded-3xl border border-border bg-card p-4 shadow-sm sm:p-7">
-          <div className="mb-6 flex items-center justify-between border-b border-border pb-5">
-            <div className="flex items-center gap-3">
-              <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary"><ApperIcon name="Server" size={20} /></span>
-              <div className="text-left"><div className="text-sm font-semibold">Your server</div><div className="text-xs text-muted-foreground">A simple setup, in one place</div></div>
-            </div>
-            <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs text-primary">Preview</span>
-          </div>
-          <div className="grid gap-3 text-left sm:grid-cols-4">
-            {[
-              { label: 'Region', value: 'Singapore', icon: 'MapPin' },
-              { label: 'System', value: 'Ubuntu 24.04', icon: 'Terminal' },
-              { label: 'CPU', value: '2 vCPU', icon: 'Cpu' },
-              { label: 'Memory', value: '4 GB', icon: 'MemoryStick' },
-            ].map(item => (
-              <div key={item.label} className="rounded-2xl border border-border bg-background p-5">
-                <NavIcon name={item.icon==='Globe2'?'domains':item.icon==='LayoutDashboard'?'dashboard':'preferences'} size={29}/>
-                <div className="mt-5 text-xs text-muted-foreground">{t(item.label)}</div>
-                <div className="mt-1 text-sm font-semibold">{item.value}</div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-5 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-5">
-            <div><div className="text-xs text-muted-foreground">Illustrative compute price (4 GB / 2 vCPU)</div><div className="mt-1 text-2xl font-semibold">{formatMonthly(185)}<span className="ml-2 text-sm font-normal text-muted-foreground">/ month</span></div></div>
-            <Link to="/dashboard/instances/new" className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium hover:bg-accent">Customize <ApperIcon name="ArrowRight" size={16}/></Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-5xl px-5 pb-16">
-       <div className="mb-5 flex flex-wrap items-end justify-between gap-3"><div><h2 className="text-2xl font-semibold">Choose your billing period</h2><p className="mt-2 text-sm text-muted-foreground">Start monthly or save more when paying for longer. Recommended 8 GB RAM + 4 vCPU shown below.</p></div><Link to="/pricing" className="text-sm font-semibold text-emerald-500">View all plans</Link></div>
-       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{BILLING_TERMS.map(term=><Link key={term.months} to={`/dashboard/instances/new?ram=8&cpu=4&billingMonths=${term.months}`} className="rounded-2xl border bg-card p-5 transition hover:border-emerald-500">
-        <p className="font-semibold">{t(term.label)}</p>
-        <p className="mt-2 text-xl font-bold">{formatPaise(termQuote(8,4,term.months).totalPaise)}</p>
-        <p className="mt-1 text-xs font-medium text-emerald-500">{term.discountPercent?term.discountPercent+'% '+t('off'):t('Base monthly price')}</p>
-       </Link>)}</div>
-       <p className="mt-4 text-xs leading-5 text-muted-foreground">Validity begins once SSH is ready. We warn you 3 days before expiry; unpaid instances stop at expiry. Renew before expiry and back up ephemeral data.</p>
-      </section>
       <section className="mx-auto max-w-5xl px-5 pb-16"><h2 className="mb-5 text-xl font-semibold">Network & storage details</h2><SharedInfrastructure/></section>
       <section className="border-t border-border bg-card/40 px-5 py-20">
         <div className="mx-auto max-w-5xl">
