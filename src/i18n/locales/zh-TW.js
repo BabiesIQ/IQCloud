@@ -574,5 +574,13 @@ export default Object.freeze({
   "Use matching passwords of 12–72 bytes.": "兩次輸入的密碼必須一致，長度須為 12 至 72 位元組。",
   "Please try again.": "請再試一次。",
   "Enter a password": "請輸入密碼",
-  "Use at least 12 characters and a unique password.": "請使用至少 12 個字元、且未在其他服務使用過的密碼。"
+  "Use at least 12 characters and a unique password.": "請使用至少 12 個字元、且未在其他服務使用過的密碼。",
+  "Shared ephemeral storage": "共用暫時性儲存空間",
+  "Public SSH via TCP proxy": "透過 TCP 代理使用公開 SSH",
+  "PayPal checkout availability is verified when you purchase; the final gateway amount is displayed before approval.": "結帳時會確認 PayPal 付款是否可用；在您同意付款前，系統會清楚顯示實際付款總額。",
+  "The selected domain is invalid.": "您輸入的網域格式不正確。",
+  "Open the domain": "開啟網域",
+  "No payments have been captured.": "尚未完成任何款項請款。",
+  "Live account": "正式帳戶",
+  "No automatic card debit": "不會自動從卡片扣款"
 });
