@@ -81,7 +81,7 @@ const mustTranslate={
   'No automatic refund is issued for unused subscription time when you delete a service. Any refund rights under applicable law or the published refund policy still apply. Save all data before proceeding.',
  ],
  'src/components/cloud/BillingTermPicker.jsx':['Choose your validity','Save up to 30%'],
- 'src/components/CloudPreferences.jsx':['Stored only on this device.','Appearance'],
+ 'src/components/CloudPreferences.jsx':['Language','Appearance'],
 };
 let count=0;
 for(const [file,phrases] of Object.entries(mustTranslate)){
