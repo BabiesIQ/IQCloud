@@ -41,5 +41,5 @@ for(const months of [1,3,6,12]){
  assert.ok(q.totalPaise>0);
  assert.equal(q.totalPaise*2,q.subtotalPaise*2-q.discountPaise*2,'International 2x must keep the term discount');
 }
-console.log('Localization QA: 60 language choices, '+Object.keys(CURRENCY_BY_COUNTRY).length+' currencies/countries, '+Object.keys(UI_DICTIONARIES).length+' reviewed (partial) dictionaries, brand invariance and pricing arithmetic verified.');
+console.log('Localization QA: 60 language choices, '+Object.keys(CURRENCY_BY_COUNTRY).length+' currencies/countries, '+Object.keys(UI_DICTIONARIES).length+' local dictionaries (partial; native review pending), brand invariance and pricing arithmetic verified.');
 console.log('Warning: this DOES NOT mean all 60 language catalogs are fully translated or human reviewed.');
