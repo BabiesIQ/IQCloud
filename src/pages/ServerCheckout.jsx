@@ -28,7 +28,8 @@ export default function ServerCheckout(){
  const suggestedPayPalCurrency=paypalCurrencyForCountry(country);
  const actualPayPalCurrency=order?.gateway==="paypal"?order.currency:suggestedPayPalCurrency;
  const localCurrency=currencyForCountry(country);
- const paypalCurrencyFallback=isInternational&&localCurrency!==actualPayPalCurrency;
+ const legacyUSDPaymentOrder=order?.gateway==="paypal"&&order.currency==="USD"&&suggestedPayPalCurrency!=="USD";
+ const paypalCurrencyFallback=isInternational&&localCurrency!==actualPayPalCurrency&&!legacyUSDPaymentOrder;
  const [paypalReturnProcessing,setPayPalReturnProcessing]=useState(false);
  const paypalReturnClaimed=useRef(false);
  const busy=useRef(false);
@@ -182,7 +183,8 @@ export default function ServerCheckout(){
     </div>
     {isInternational&&<div className="mt-4 rounded-xl border border-amber-500/40 p-4 text-sm text-muted-foreground">
       International compute prices are 2× the India rate with the same discount. {currency} prices above are estimates (FX: {fxStatus}).
-      <p className="mt-2 font-semibold">PayPal checkout currency: {actualPayPalCurrency}{paypalCurrencyFallback?' (your local currency is not available for this PayPal merchant; USD fallback)':''}.</p>
+      <p className="mt-2 font-semibold">PayPal checkout currency: {actualPayPalCurrency}{paypalCurrencyFallback?' (your local currency is not supported by this PayPal merchant; USD fallback)':''}.</p>
+      {legacyUSDPaymentOrder&&<p className="mt-2 text-amber-600">An existing unpaid order was created in USD before the currency update. Its price and currency are locked. Please check that order before approving or starting another payment; do not pay twice.</p>}
       {order?.gateway==='paypal'&&<p className="mt-2 font-semibold">Final PayPal total: {formatPayPalMinorAmount(order.amount,order.currency)} ({order.currency})</p>}
       <p className="mt-2">{paypalStatus.loading?'Checking PayPal availability…':paypalStatus.ready?'PayPal international checkout is available for eligible foreign buyers. Payment will be captured only after your approval.':paypalStatus.reason||'PayPal international checkout is not ready.'}</p>
      </div>}
