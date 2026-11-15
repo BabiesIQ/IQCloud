@@ -26,7 +26,9 @@ export const CURRENCY_BY_COUNTRY = Object.freeze({
 });
 export const RTL_LANGUAGES = new Set(["ar","fa","ur","he"]);
 export function canonicalLanguage(value){
- const tag=String(value||"").trim().replace("_","-");
+ const tag=String(value||"").trim().replaceAll("_","-");
+ if(/^zh-(?:Hant|TW|HK|MO)(?:-|$)/i.test(tag))return "zh-TW";
+ if(/^zh-(?:Hans|CN|SG)(?:-|$)/i.test(tag))return "zh";
  if(LANGUAGE_CODES.includes(tag))return tag;
  const short=tag.split("-")[0].toLowerCase();
  return LANGUAGE_CODES.includes(short)?short:"en";
@@ -34,7 +36,11 @@ export function canonicalLanguage(value){
 export function browserLanguage(){
  if(typeof navigator==="undefined")return "en";
  const options=navigator.languages?.length?navigator.languages:[navigator.language];
- for(const candidate of options||[]){const raw=String(candidate||"").trim();if(LANGUAGE_CODES.includes(raw))return raw;const short=raw.split("-")[0].toLowerCase();if(LANGUAGE_CODES.includes(short))return short}
+ for(const candidate of options||[]){
+  const raw=String(candidate||"").trim();
+  const supported=canonicalLanguage(raw);
+  if(supported!=="en"||/^en(?:[-_]|$)/i.test(raw))return supported;
+ }
  return "en";
 }
 export function browserCountry(){
@@ -73,5 +79,5 @@ export function countryName(country,locale="en"){
 }
 export function priceLocale(lang,country){
  const region=country||LANGUAGE_GROUPS[lang]||"IN";
- return lang.split("-")[0]+"-"+region;
+ return lang==="zh-TW"?"zh-Hant-TW":lang.split("-")[0]+"-"+region;
 }

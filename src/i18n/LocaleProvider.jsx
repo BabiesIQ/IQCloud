@@ -1,23 +1,18 @@
 import {createContext,useContext,useEffect,useMemo,useState} from 'react';
 import {getPreferences,updatePreferences} from '@/config/runtime.config';
 import {RTL_LANGUAGES,currencyForCountry,priceLocale} from '@/i18n/config';
-import {translateUI,isKnownTranslationOf,keepBrandTerms} from '@/i18n/translations';
+import {translateUI,isKnownTranslationOf,translationCompleteness} from '@/i18n/translations';
 import {apiRequest} from '@/services/apiClient';
 
 const Context=createContext(null);
 const excluded=new Set(["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","KBD"]);
 const rawText=new WeakMap();
 const rawAttrs=new WeakMap();
-const knownMachineLocales=new Map();
-function knownTranslated(source,value){
- if(isKnownTranslationOf(source,value))return true;
- for(const dictionary of knownMachineLocales.values()){if(dictionary[source]===value)return true}
- return false;
-}
-// Translate only reviewed exact public UI labels. Private server/account data,
-// invoices, identifiers and credentials never leave this browser.
-function installDOMLanguage(language,machineCatalog){
- const translate=source=>{const reviewed=translateUI(source,language);return reviewed!==source?reviewed:keepBrandTerms(source,machineCatalog?.[source]||source)};
+const knownTranslated=isKnownTranslationOf;
+// All translations are bundled inside the frontend. Never send user content,
+// account details, passwords or rendered DOM text to a third-party service.
+function installDOMLanguage(language){
+ const translate=source=>translateUI(source,language);
  const root=document.getElementById("root");if(!root)return ()=>{};
  function visit(rootNode){
   if(!rootNode)return;
@@ -62,8 +57,6 @@ function installDOMLanguage(language,machineCatalog){
 export function LocaleProvider({children}){
  const [preferences,setPreferences]=useState(getPreferences);
  const [fx,setFX]=useState(null);
- const [remoteCatalog,setRemoteCatalog]=useState({});
- const [catalogStatus,setCatalogStatus]=useState('original');
  useEffect(()=>{
   const sync=()=>setPreferences(getPreferences());
   addEventListener("iqcloud:preferences",sync);addEventListener("storage",sync);
@@ -72,40 +65,7 @@ export function LocaleProvider({children}){
  useEffect(()=>{
   document.documentElement.lang=preferences.language;
   document.documentElement.dir=RTL_LANGUAGES.has(preferences.language)?"rtl":"ltr";
-  return installDOMLanguage(preferences.language,remoteCatalog);
- },[preferences.language,remoteCatalog]);
- useEffect(()=>{
-  let active=true;
-  let pendingDelay=null;
-  setRemoteCatalog({});
-  setCatalogStatus(preferences.language==='en'?'original':'loading');
-  if(preferences.language==='en')return()=>{active=false};
-  const locale=preferences.language;
-  async function getCatalog(){
-   for(let check=0;active&&check<65;check++){
-    let response;
-    try{response=await apiRequest('/api/v1/localization/catalog/'+encodeURIComponent(locale))}
-    catch{if(active)setCatalogStatus('translator_unavailable');return}
-    if(!active)return;
-    if(response.status==='catalog_generating'){
-     setCatalogStatus('catalog_generating');
-     await new Promise(resolve=>{pendingDelay=setTimeout(resolve,3000)});
-     continue;
-    }
-    if(response.status==='machine_translation_requires_human_review'){
-     const items=response.items&&typeof response.items==='object'?response.items:{};
-     knownMachineLocales.set(locale,items);
-     setRemoteCatalog(items);
-     setCatalogStatus(response.status);
-     return;
-    }
-    setCatalogStatus(response.status||'translator_unavailable');
-    return;
-   }
-   if(active)setCatalogStatus('translation_timeout');
-  }
-  getCatalog();
-  return()=>{active=false;if(pendingDelay!==null)clearTimeout(pendingDelay)};
+  return installDOMLanguage(preferences.language);
  },[preferences.language]);
  useEffect(()=>{
   let active=true;
@@ -125,14 +85,14 @@ export function LocaleProvider({children}){
    try{return "≈"+new Intl.NumberFormat(priceLocale(language,country),{style:"currency",currency,maximumFractionDigits:2}).format((Number(paise)||0)/100*2*fx.rate)}
    catch{return formatINR((Number(paise)||0)*2)}
   };
-  return {...preferences,language,country,currency,isInternational:country!=="IN",catalogStatus,
+  return {...preferences,language,country,currency,isInternational:country!=="IN",catalogStatus:translationCompleteness(language),
    fxStatus:fx?.status||"loading",fxUpdatedAt:fx?.at,
-   t:english=>{const reviewed=translateUI(english,language);return reviewed!==english?reviewed:keepBrandTerms(english,remoteCatalog[english]||english)},formatPaise,formatINR,
+   t:english=>translateUI(english,language),formatPaise,formatINR,
    formatMonthly:rupees=>formatPaise((Number(rupees)||0)*100),
    setLanguage:value=>updatePreferences({language:value}),
    setCountry:value=>updatePreferences({country:value}),
   };
- },[preferences,fx,remoteCatalog,catalogStatus]);
+ },[preferences,fx]);
  return <Context.Provider value={values}>{children}</Context.Provider>;
 }
 export function useLocale(){
