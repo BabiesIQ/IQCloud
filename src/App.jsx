@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Toaster } from 'sonner';
-import { Bell } from 'lucide-react';
+import { Bell, MoonStar, SunDim, Sparkles } from 'lucide-react';
+import SiteMotion from '@/components/SiteMotion';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { LocaleProvider, useLocale } from '@/i18n/LocaleProvider';
 import LanguageSelector from '@/components/LanguageSelector';
@@ -52,6 +53,7 @@ function Header() {
   const [loggingOut, setLoggingOut] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [theme, setTheme] = useState(getPreferences().theme);
+  const isDark = theme === 'dark' || (theme === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
   const navigate = useNavigate();
   useEffect(() => {
     let active = true;
@@ -81,12 +83,17 @@ function Header() {
   }, []);
   useEffect(() => {
     if (!menuOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     const closeOnEscape = event => { if (event.key === 'Escape') setMenuOpen(false); };
     window.addEventListener('keydown', closeOnEscape);
-    return () => window.removeEventListener('keydown', closeOnEscape);
+    return () => {
+      window.removeEventListener('keydown', closeOnEscape);
+      document.body.style.overflow = previousOverflow;
+    };
   }, [menuOpen]);
   const toggleTheme = () => {
-    const next = theme === 'dark' ? 'light' : 'dark';
+    const next = isDark ? 'light' : 'dark';
     updatePreferences({ theme: next });
     setTheme(next);
   };
@@ -116,8 +123,8 @@ function Header() {
     <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
         <div className="flex min-w-0 items-center gap-3">
-          <button type="button" onClick={() => setMenuOpen(true)} aria-label="Open navigation menu" aria-expanded={menuOpen} aria-controls="cloud-navigation" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" >
-            <span className="flex flex-col gap-1"><span className="block h-0.5 w-5 rounded bg-current"/><span className="block h-0.5 w-5 rounded bg-current"/><span className="block h-0.5 w-5 rounded bg-current"/></span>
+          <button type="button" onClick={() => setMenuOpen(value => !value)} aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'} aria-expanded={menuOpen} aria-controls="cloud-navigation" className={'iq-hamburger flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-background/90 text-foreground hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2' + (menuOpen ? ' is-active' : '')}>
+            <span aria-hidden="true" className="iq-hamburger-bars"><span/><span/><span/></span>
           </button>
           <Link className="truncate text-base font-semibold tracking-tight sm:text-lg" to="/">☁ BabiesIQ Cloud</Link>
         </div>
@@ -126,14 +133,19 @@ function Header() {
             <Bell size={19} aria-hidden="true" />
             {unreadCount > 0 && <span className="absolute -right-1 -top-1 flex min-h-4 min-w-4 items-center justify-center rounded-full bg-emerald-500 px-1 text-[10px] font-semibold text-black">{unreadCount > 99 ? '99+' : unreadCount}</span>}
           </Link>}
-          <button type="button" onClick={toggleTheme} aria-label="Toggle dark mode" className="flex h-10 w-10 items-center justify-center rounded-xl border">{theme === 'dark' ? '☀' : '☾'}</button>
+          <button type="button" onClick={toggleTheme} aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'} aria-pressed={isDark} title={isDark ? 'Light mode' : 'Dark mode'} className="iq-theme-toggle relative flex h-9 w-[68px] shrink-0 items-center rounded-full border border-border bg-muted/70 p-1 shadow-inner transition-colors duration-300 hover:border-primary/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+            <Sparkles size={14} aria-hidden="true" className="iq-theme-spark pointer-events-none absolute right-2.5 text-primary/70" />
+            <span className={'iq-theme-thumb relative z-10 grid h-7 w-7 place-items-center rounded-full bg-background text-primary shadow-sm ring-1 ring-border/60' + (isDark ? ' is-dark' : '')}>
+              {isDark ? <MoonStar key="night" size={17} strokeWidth={2} className="iq-theme-icon" aria-hidden="true" /> : <SunDim key="day" size={18} strokeWidth={2} className="iq-theme-icon" aria-hidden="true" />}
+            </span>
+          </button>
           {!account && <Link to="/login" className="rounded-xl border px-3 py-2">Log in</Link>}
         </div>
       </nav>
     </header>
-    {menuOpen && <div className="fixed inset-0 z-50">
-      <button type="button" className="absolute inset-0 h-full w-full bg-black/60" aria-label="Close navigation menu" onClick={() => setMenuOpen(false)} />
-      <aside id="cloud-navigation" role="dialog" aria-modal="true" aria-label="Navigation" className="absolute inset-y-0 left-0 flex w-[min(86vw,340px)] flex-col border-r bg-background shadow-2xl">
+    <div aria-hidden={!menuOpen} inert={!menuOpen} className={'iq-nav-layer fixed inset-0 z-50' + (menuOpen ? ' is-open' : '')}>
+      <button type="button" className="iq-nav-backdrop absolute inset-0 h-full w-full bg-black/60" aria-label="Close navigation menu" onClick={() => setMenuOpen(false)} />
+      <aside id="cloud-navigation" role="dialog" aria-modal={menuOpen} aria-label="Navigation" className="iq-nav-panel absolute inset-y-0 left-0 flex w-[min(86vw,340px)] flex-col border-r border-border bg-background shadow-2xl">
         <div className="flex items-center justify-between border-b px-5 py-5">
           <div><p className="font-semibold">☁ BabiesIQ Cloud</p><p className="mt-1 text-xs text-muted-foreground">{account ? (account.email || 'My account') : 'Cloud hosting platform'}</p></div>
           <button type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu" className="rounded-lg border px-3 py-2">✕</button>
@@ -144,7 +156,7 @@ function Header() {
               <span className="flex items-center gap-3"><span aria-hidden="true" className="w-6 text-center text-lg">◎</span>{t('Domains')}</span>
               <span aria-hidden="true">{domainsMenuOpen?'▾':'▸'}</span>
             </button>
-            {domainsMenuOpen&&<div id="cloud-domains-submenu" className="space-y-1 border-t px-3 py-2">
+            {domainsMenuOpen&&<div id="cloud-domains-submenu" className="iq-submenu-enter space-y-1 border-t px-3 py-2">
               {account?<Link to="/domains" onClick={()=>setMenuOpen(false)} className="block rounded-lg px-4 py-3 text-sm font-semibold hover:bg-muted">All my VPS domains</Link>:<Link to="/login" onClick={()=>setMenuOpen(false)} className="block rounded-lg px-4 py-3 text-sm font-semibold hover:bg-muted">Sign in to manage your domains</Link>}
               {domainServersLoading&&<p role="status" className="px-4 py-2 text-xs text-muted-foreground">Loading VPS list…</p>}
               {domainServersError&&<div className="px-4 py-2 text-xs text-red-500">{domainServersError} <button type="button" onClick={refreshDomainServers} className="ml-2 underline">Retry</button></div>}
@@ -152,10 +164,10 @@ function Header() {
               {account&&domainServers.map(({instance,number})=><Link key={instance._id} to={'/domains/'+encodeURIComponent(instance._id)} onClick={()=>setMenuOpen(false)} className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-muted"><span aria-hidden="true">▣</span><span className="min-w-0 flex-1 truncate">Instance {number} · {instance.os==='ubuntu-22'?'Ubuntu 22':instance.os==='ubuntu-26'?'Ubuntu 26':instance.os==='debian-12'?'Debian 12':'Ubuntu 24'}</span><span aria-hidden="true">›</span></Link>)}
             </div>}
           </div>
-          {menuItems.map(item => <Link key={item.to} to={item.to} onClick={() => setMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium hover:bg-muted focus-visible:bg-muted"><span aria-hidden="true" className="w-6 text-center text-lg">{item.icon}</span>{t(item.label)}</Link>)}
+          {menuItems.map(item => <Link key={item.to} to={item.to} onClick={() => setMenuOpen(false)} className="iq-menu-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium hover:bg-muted focus-visible:bg-muted"><span aria-hidden="true" className="w-6 text-center text-lg">{item.icon}</span>{t(item.label)}</Link>)}
           {account&&<div className="mt-2 rounded-xl border">
            <button type="button" onClick={()=>setNetworkMenuOpen(v=>!v)} aria-expanded={networkMenuOpen} className="flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold hover:bg-muted"><span className="flex items-center gap-3"><span aria-hidden="true" className="w-6 text-center text-lg">⇅</span>{t('Networking')}</span><span aria-hidden="true">{networkMenuOpen?'▾':'▸'}</span></button>
-           {networkMenuOpen&&<div className="space-y-1 border-t px-3 py-2"><Link onClick={()=>setMenuOpen(false)} to="/dashboard/networking/ports?tab=inbound" className="block rounded-lg px-4 py-3 text-sm hover:bg-muted">Inbound · HTTP ports</Link><Link onClick={()=>setMenuOpen(false)} to="/dashboard/networking/ports?tab=outbound" className="block rounded-lg px-4 py-3 text-sm hover:bg-muted">Outbound · Connections</Link></div>}
+           {networkMenuOpen&&<div className="iq-submenu-enter space-y-1 border-t px-3 py-2"><Link onClick={()=>setMenuOpen(false)} to="/dashboard/networking/ports?tab=inbound" className="block rounded-lg px-4 py-3 text-sm hover:bg-muted">Inbound · HTTP ports</Link><Link onClick={()=>setMenuOpen(false)} to="/dashboard/networking/ports?tab=outbound" className="block rounded-lg px-4 py-3 text-sm hover:bg-muted">Outbound · Connections</Link></div>}
           </div>}
         </div>
         <div className="border-t p-3">
@@ -163,7 +175,7 @@ function Header() {
           <Link to="/login" onClick={() => setMenuOpen(false)} className="block rounded-xl bg-primary px-4 py-3 text-center text-sm font-medium text-primary-foreground">Log in</Link>}
         </div>
       </aside>
-    </div>}
+    </div>
   </>;
 }
 function Auth({ signup = false }) {
@@ -224,7 +236,7 @@ function StatusPage({ title }) {
   return <main className="mx-auto max-w-4xl px-5 py-20"><h1 className="text-3xl font-semibold">{title}</h1><p className="mt-3 text-muted-foreground">{status}</p><p className="mt-5 text-sm">Account and server operations will become available when the secure backend integration is complete.</p></main>;
 }
 function Shell() {
-  return <div className="min-h-screen bg-background text-foreground"><Header/><Routes>
+  return <div className="iq-shell min-h-screen bg-background text-foreground"><Header/><SiteMotion><Routes>
     <Route path="/" element={<Home/>}/>
     <Route path="/login" element={<Auth key="login"/>}/>
     <Route path="/signup" element={<Auth key="signup" signup/>}/>
@@ -255,7 +267,7 @@ function Shell() {
     <Route path="/dashboard" element={<Dashboard/>}/>
     <Route path="/instances" element={<Navigate to="/dashboard" replace/>}/>
     <Route path="*" element={<StatusPage title="Page not found"/>}/>
-  </Routes><LanguageSelector/><footer className="border-t px-5 py-8 pb-20 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} BabiesIQ Cloud</footer><Toaster position="top-right" richColors/></div>;
+  </Routes></SiteMotion><LanguageSelector/><footer className="border-t px-5 py-8 pb-20 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} BabiesIQ Cloud</footer><Toaster position="top-right" richColors/></div>;
 }
 export default function App() {
   return <ThemeProvider><LocaleProvider><BrowserRouter><Shell/></BrowserRouter></LocaleProvider></ThemeProvider>;

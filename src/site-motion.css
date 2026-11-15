@@ -1,0 +1,136 @@
+/* Shared visual rhythm for the live Cloud SPA. Keep transforms on the compositor. */
+@keyframes iq-page-arrive {
+  from { opacity: 0.62; transform: translate3d(0, 12px, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes iq-theme-pop {
+  from { opacity: .45; transform: rotate(-25deg) scale(.75); }
+  to { opacity: 1; transform: rotate(0) scale(1); }
+}
+@keyframes iq-submenu-appear {
+  from { opacity: .55; transform: translate3d(0, -6px, 0); }
+  to { opacity: 1; transform: none; }
+}
+.iq-page-enter {
+  animation: iq-page-arrive .38s cubic-bezier(.22, 1, .36, 1) both;
+}
+.iq-scroll-reveal {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition: opacity .55s ease, transform .65s cubic-bezier(.22, 1, .36, 1);
+}
+.iq-scroll-reveal.iq-is-visible {
+  opacity: 1;
+  transform: none;
+}
+.iq-shell {
+  isolation: isolate;
+}
+.iq-shell :where(button, a):not(:disabled) {
+  -webkit-tap-highlight-color: transparent;
+}
+@media (hover: hover) {
+  .iq-shell :where(main a.rounded-xl, main a.rounded-2xl, main button.rounded-xl):not(:disabled):hover {
+    filter: brightness(.985);
+  }
+}
+.iq-theme-toggle {
+  transition: background-color .28s ease, border-color .28s ease, box-shadow .28s ease;
+}
+.iq-theme-toggle:hover {
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--primary) 10%, transparent);
+}
+.iq-theme-thumb {
+  transform: translateX(0);
+  transition: transform .36s cubic-bezier(.2, .8, .2, 1), color .25s ease;
+}
+.iq-theme-thumb.is-dark {
+  transform: translateX(32px);
+}
+.iq-theme-icon {
+  animation: iq-theme-pop .35s ease-out both;
+}
+.iq-theme-spark {
+  transition: opacity .25s ease;
+}
+.iq-theme-toggle[aria-pressed="true"] .iq-theme-spark {
+  opacity: .22;
+}
+.iq-hamburger {
+  transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.iq-hamburger-bars {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  width: 21px;
+  height: 20px;
+}
+.iq-hamburger-bars span {
+  display: block;
+  height: 2px;
+  width: 21px;
+  border-radius: 999px;
+  background: currentColor;
+  transition: transform .3s cubic-bezier(.22, 1, .36, 1), opacity .2s ease;
+}
+.iq-hamburger.is-active .iq-hamburger-bars span:first-child {
+  transform: translateY(6px) rotate(45deg);
+}
+.iq-hamburger.is-active .iq-hamburger-bars span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(.2);
+}
+.iq-hamburger.is-active .iq-hamburger-bars span:last-child {
+  transform: translateY(-6px) rotate(-45deg);
+}
+.iq-nav-layer {
+  pointer-events: none;
+  visibility: hidden;
+  transition: visibility 0s linear .34s;
+}
+.iq-nav-layer.is-open {
+  pointer-events: auto;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.iq-nav-backdrop {
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.iq-nav-layer.is-open .iq-nav-backdrop {
+  opacity: 1;
+}
+.iq-nav-panel {
+  transform: translate3d(-102%, 0, 0);
+  transition: transform .36s cubic-bezier(.22, 1, .36, 1);
+}
+.iq-nav-layer.is-open .iq-nav-panel {
+  transform: translate3d(0, 0, 0);
+}
+.iq-nav-panel .iq-menu-link {
+  transition: background-color .2s ease, transform .22s ease;
+}
+@media (hover: hover) {
+  .iq-nav-panel .iq-menu-link:hover {
+    transform: translateX(4px);
+  }
+}
+.iq-submenu-enter {
+  animation: iq-submenu-appear .24s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .iq-page-enter, .iq-theme-icon, .iq-submenu-enter {
+    animation: none !important;
+  }
+  .iq-scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .iq-nav-layer, .iq-nav-panel, .iq-nav-backdrop, .iq-hamburger-bars span, .iq-theme-thumb, .iq-theme-toggle, .iq-nav-panel .iq-menu-link {
+    transition-duration: 0s !important;
+    animation: none !important;
+  }
+}
