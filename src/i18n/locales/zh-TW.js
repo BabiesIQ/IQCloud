@@ -698,5 +698,10 @@ export default Object.freeze({
   "Success": "成功",
   "Ubuntu 24.04": "Ubuntu 24.04",
   "Learn how BabiesIQ Cloud hosting works, including important provider limitations and safety precautions.": "了解 BabiesIQ Cloud 主機服務的使用方式，以及服務提供者的重要限制和安全注意事項。",
-  "Live DNS targets are shown in your VPS Domain Management page after Railway accepts the custom hostname. Verify those records before changing your DNS.": "Railway 接受自訂網域後，您可以在 VPS 網域管理頁面查看實際的 DNS 目標。修改 DNS 前，請先確認這些記錄正確。"
+  "Live DNS targets are shown in your VPS Domain Management page after Railway accepts the custom hostname. Verify those records before changing your DNS.": "Railway 接受自訂網域後，您可以在 VPS 網域管理頁面查看實際的 DNS 目標。修改 DNS 前，請先確認這些記錄正確。",
+  "Card payment without a PayPal account is not available for this country or merchant. You can still use PayPal checkout.": "此國家／地區或商家目前無法提供免登入 PayPal 的信用卡付款。您仍可選擇 PayPal 結帳。",
+  "Checking secure debit and credit card availability…": "正在確認安全的簽帳金融卡與信用卡付款是否可用…",
+  "Debit or credit card — no PayPal account required": "使用簽帳金融卡或信用卡付款，不需 PayPal 帳戶",
+  "Pay securely by card without a PayPal account": "不需登入 PayPal，即可安全地使用信用卡付款",
+  "Card details are entered into a PayPal-hosted secure form. Availability depends on your country and PayPal eligibility.": "卡片資料只會在 PayPal 提供的安全付款表單中輸入。是否可用，取決於您的所在地區及 PayPal 的資格審核。"
 });

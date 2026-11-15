@@ -662,6 +662,13 @@ Object.assign(dictionaries.hi,{
  "figures are estimates. PayPal availability and final USD payable are confirmed during secure checkout.":"में दिखाई गई कीमत अनुमानित है। सुरक्षित भुगतान पेज पर PayPal की उपलब्धता और अंतिम USD राशि की पुष्टि होगी।",
  "Browse plans without paying. Razorpay availability and the final INR payable are confirmed during secure checkout; there is no automatic subscription debit.":"बिना भुगतान किए सभी प्लान देखें। सुरक्षित भुगतान पेज पर Razorpay की उपलब्धता और अंतिम INR राशि की पुष्टि होगी। कोई भी सदस्यता शुल्क अपने-आप नहीं कटेगा।"
 });
+Object.assign(dictionaries.hi,{
+  "Card payment without a PayPal account is not available for this country or merchant. You can still use PayPal checkout.": "आपके देश या इस व्यापारी के लिए बिना PayPal खाते वाला कार्ड भुगतान उपलब्ध नहीं है। आप PayPal से भुगतान कर सकते हैं।",
+  "Checking secure debit and credit card availability…": "सुरक्षित डेबिट और क्रेडिट कार्ड भुगतान की उपलब्धता जाँच रहे हैं…",
+  "Debit or credit card — no PayPal account required": "डेबिट या क्रेडिट कार्ड — PayPal खाता जरूरी नहीं",
+  "Pay securely by card without a PayPal account": "बिना PayPal खाते के कार्ड से सुरक्षित भुगतान करें",
+  "Card details are entered into a PayPal-hosted secure form. Availability depends on your country and PayPal eligibility.": "कार्ड की जानकारी सीधे PayPal के सुरक्षित फ़ॉर्म में भरी जाती है। सुविधा आपके देश और PayPal की अनुमति पर निर्भर है।"
+});
 export const UI_DICTIONARIES=dictionaries;
 export const PROTECTED_BRANDS=Object.freeze(["BabiesIQ Cloud","BabiesIQ","Railway","Razorpay","PayPal","Cloudflare","Ubuntu","Debian"]);
 export function keepBrandTerms(source,translated){
