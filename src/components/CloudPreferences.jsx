@@ -24,7 +24,7 @@ export default function CloudPreferences() {
   };
   return (
     <section className="rounded-2xl border bg-card p-5 space-y-5" aria-label="Cloud preferences">
-      <div><h2 className="text-lg font-semibold">Preferences</h2><p className="text-sm text-muted-foreground">Stored only on this device.</p></div>
+      <div><h2 className="text-lg font-semibold">Preferences</h2><p className="text-sm text-muted-foreground">Theme and billing country stay on this device. Language also syncs to your account for emails and notifications.</p></div>
       <label className="block text-sm space-y-2">Appearance
         <select className="w-full rounded-lg border bg-background p-2" value={prefs.theme} onChange={e => update({ theme: e.target.value })}>
           <option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option>

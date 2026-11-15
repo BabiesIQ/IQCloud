@@ -1,4 +1,4 @@
-import {createContext,useContext,useEffect,useLayoutEffect,useMemo,useState} from 'react';
+import {createContext,useContext,useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {getPreferences,updatePreferences} from '@/config/runtime.config';
 import {RTL_LANGUAGES,currencyForCountry,priceLocale} from '@/i18n/config';
 import {translateUI,isKnownTranslationOf,translationCompleteness} from '@/i18n/translations';
@@ -88,6 +88,44 @@ function installDOMLanguage(language){
 export function LocaleProvider({children}){
  const [preferences,setPreferences]=useState(getPreferences);
  const [fx,setFX]=useState(null);
+ const lastSyncedLanguage=useRef(getPreferences().language);
+ // Locale remains instant on the device, while authenticated users also save
+ // the preference server-side for asynchronous Brevo and app notifications.
+ useEffect(()=>{
+  let active=true;
+  const syncAccountLanguage=async()=>{
+   try{
+    const reply=await apiRequest('/api/v1/auth/language');
+    if(!active)return;
+    const remote=reply?.language;
+    if(!remote)return;
+    let explicit=false;
+    try{const local=JSON.parse(localStorage.getItem('iqcloud:preferences:v1')||'{}');explicit=typeof local.language==='string'&&!!local.language}catch{}
+    const localLanguage=getPreferences().language;
+    if(explicit){
+     if(remote!==localLanguage)await apiRequest('/api/v1/auth/language',{method:'POST',body:{language:localLanguage}});
+    }else if(remote!==localLanguage){
+     updatePreferences({language:remote});
+    }
+   }catch{
+    // Guest sessions, offline devices and temporary API failures keep
+    // localized UI working. Never block login or navigation for preference sync.
+   }
+  };
+  syncAccountLanguage();
+  window.addEventListener('iqcloud:auth-changed',syncAccountLanguage);
+  return()=>{active=false;window.removeEventListener('iqcloud:auth-changed',syncAccountLanguage)};
+ },[]);
+ useEffect(()=>{
+  const sendLanguage=(event)=>{
+   const current=event?.detail?.language||getPreferences().language;
+   if(current===lastSyncedLanguage.current)return;
+   lastSyncedLanguage.current=current;
+   apiRequest('/api/v1/auth/language',{method:'POST',body:{language:current}}).catch(()=>{});
+  };
+  window.addEventListener('iqcloud:preferences',sendLanguage);
+  return()=>window.removeEventListener('iqcloud:preferences',sendLanguage);
+ },[]);
  useEffect(()=>{
   // The current-tab custom event already contains the updated preferences.
   // Reading localStorage again could return stale values or fail in restricted browsers.

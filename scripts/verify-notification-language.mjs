@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const api=readFileSync('src/services/apiClient.js','utf8');
+assert.ok(api.includes("'Accept-Language': getPreferences().language"),'All API requests need the chosen locale');
+const provider=readFileSync('src/i18n/LocaleProvider.jsx','utf8');
+assert.ok(provider.includes("/api/v1/auth/language"),'Language preference must be synced with authenticated account');
+assert.ok(provider.includes("iqcloud:auth-changed"),'Sync must run after login');
+assert.ok(provider.includes("iqcloud:preferences"),'Sync must run when a user chooses another language');
+assert.ok(provider.includes("if(explicit)"),'Chosen local language must not be overwritten by server default');
+const nav=readFileSync('src/components/CloudPreferences.jsx','utf8');
+assert.ok(nav.includes('Language also syncs to your account'),'Settings must explain email localization');
+console.log('Account notification language sync QA passed.');
