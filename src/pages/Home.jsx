@@ -37,7 +37,7 @@ export default function Home() {
             View pricing <ApperIcon name="ArrowRight" size={16} />
           </Link>
         </div>
-        <p className="mt-6 text-xs text-muted-foreground">{isInternational?t('International compute plans use 2× the India price.')+' '+currency+' '+t('figures are estimates. PayPal availability and final USD payable are confirmed during secure checkout.'):t('Browse plans without paying. Razorpay availability and the final INR payable are confirmed during secure checkout; there is no automatic subscription debit.')}</p>
+        <p className="mt-6 text-xs text-muted-foreground">{isInternational?t('International compute plans use 2× the India price.')+' '+currency+' '+t('figures are estimates. PayPal availability, currency and final amount are confirmed during secure checkout.'):t('Browse plans without paying. Razorpay availability and the final INR payable are confirmed during secure checkout; there is no automatic subscription debit.')}</p>
       </section>
 
       <section className="mx-auto max-w-5xl px-5 pb-24">
@@ -75,7 +75,7 @@ export default function Home() {
        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{BILLING_TERMS.map(term=><Link key={term.months} to={`/dashboard/instances/new?ram=8&cpu=4&billingMonths=${term.months}`} className="rounded-2xl border bg-card p-5 transition hover:border-emerald-500">
         <p className="font-semibold">{t(term.label)}</p>
         <p className="mt-2 text-xl font-bold">{formatPaise(termQuote(8,4,term.months).totalPaise)}</p>
-        <p className="mt-1 text-xs font-medium text-emerald-500">{term.discountPercent?term.discountPercent+'% OFF':'Base monthly price'}</p>
+        <p className="mt-1 text-xs font-medium text-emerald-500">{term.discountPercent?term.discountPercent+'% '+t('off'):t('Base monthly price')}</p>
        </Link>)}</div>
        <p className="mt-4 text-xs leading-5 text-muted-foreground">Validity begins once SSH is ready. We warn you 3 days before expiry; unpaid instances stop at expiry. Renew before expiry and back up ephemeral data.</p>
       </section>
