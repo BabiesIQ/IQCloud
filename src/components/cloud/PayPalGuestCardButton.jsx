@@ -110,13 +110,29 @@ export default function PayPalGuestCardButton({
   button.addEventListener('click',click);
   return()=>button.removeEventListener('click',click);
  },[state]);
- if(!enabled||state==='unavailable')return <p className="mt-3 text-sm text-muted-foreground">{t('Card payment without a PayPal account is not available for this country or merchant. You can still use PayPal checkout.')}</p>;
- if(state==='checking')return <p className="mt-4 text-sm text-muted-foreground">{t('Checking secure debit and credit card availability…')}</p>;
- return <div className="mt-4 space-y-2">
-  <p className="text-sm font-semibold">{t('Debit or credit card — no PayPal account required')}</p>
-  <paypal-basic-card-container>
-   <paypal-basic-card-button ref={host} aria-label={t('Pay securely by card without a PayPal account')} style={{display:'block',width:'100%',minHeight:'52px',opacity:disabled?0.55:1,pointerEvents:disabled?'none':'auto'}}/>
-  </paypal-basic-card-container>
-  <p className="text-xs leading-relaxed text-muted-foreground">{t('Card details are entered into a PayPal-hosted secure form. Availability depends on your country and PayPal eligibility.')} </p>
- </div>;
+ // Show the original brand artwork only after the provider verifies card eligibility.
+ // Preserve the exact SVGs and colors, and give the marks a clean white surface.
+ const available=enabled&&state==='eligible';
+ return <section aria-label={t('Pay using card')} className={`rounded-2xl border p-4 transition-colors sm:p-5 ${available?'border-emerald-500/35 bg-emerald-500/[0.035]':'border-border bg-muted/20'}`}>
+  <div className="flex flex-wrap items-start justify-between gap-3">
+   <div className="min-w-0 flex-1">
+    <h3 className="text-base font-bold tracking-tight sm:text-lg">{t('Pay using card')}</h3>
+    <p className="mt-1 text-sm text-muted-foreground">{t('Pay securely with a debit or credit card.')}</p>
+   </div>
+   {available&&<div className="flex shrink-0 items-center gap-2" aria-label="Visa and Mastercard">
+    <span className="flex h-10 w-[70px] items-center justify-center rounded-lg border border-slate-200 bg-white px-2 shadow-sm">
+     <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Visa_Inc._logo_%282021%E2%80%93present%29.svg" alt="Visa" width="53" height="18" className="h-[19px] w-[54px] object-contain" loading="lazy"/>
+    </span>
+    <span className="flex h-10 w-[60px] items-center justify-center rounded-lg border border-slate-200 bg-white px-2 shadow-sm">
+     <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" alt="Mastercard" width="39" height="25" className="h-[26px] w-[42px] object-contain" loading="lazy"/>
+    </span>
+   </div>}
+  </div>
+  {available?<div className="mt-4 space-y-3">
+   <paypal-basic-card-container>
+    <paypal-basic-card-button ref={host} aria-label={t('Pay securely by card without a PayPal account')} style={{display:'block',width:'100%',minHeight:'52px',opacity:disabled?0.55:1,pointerEvents:disabled?'none':'auto'}}/>
+   </paypal-basic-card-container>
+   <p className="text-xs leading-relaxed text-muted-foreground">{t('No PayPal account required. Card details are entered directly in PayPal’s secure form.')}</p>
+  </div>:<p className="mt-3 text-xs leading-relaxed text-muted-foreground" role="status">{t(!enabled||state==='unavailable'?'Card payment without a PayPal account is not available for this country or merchant. You can still use PayPal checkout.':'Checking secure debit and credit card availability…')}</p>}
+ </section>;
 }
