@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Link, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import { Bell, MoonStar, SunDim, Sparkles } from 'lucide-react';
 import SiteMotion from '@/components/SiteMotion';
@@ -29,6 +29,7 @@ import Privacy from '@/pages/Privacy';
 import PasswordRecovery from '@/pages/auth/PasswordRecovery';
 import SecurityCenter from '@/pages/SecurityCenter';
 import Notifications from '@/pages/Notifications';
+import AdminDashboard, {AdminLogin} from '@/pages/AdminConsole';
 
 function Header() {
   const {t} = useLocale();
@@ -238,6 +239,14 @@ function StatusPage({ title }) {
   return <main className="mx-auto max-w-4xl px-5 py-20"><h1 className="text-3xl font-semibold">{title}</h1><p className="mt-3 text-muted-foreground">{status}</p><p className="mt-5 text-sm">Account and server operations will become available when the secure backend integration is complete.</p></main>;
 }
 function Shell() {
+  const location=useLocation();
+  if(location.pathname==='/admin'||location.pathname.startsWith('/admin/')){
+    return <div className="iq-admin-root min-h-screen"><Routes>
+      <Route path="/admin/login" element={<AdminLogin/>}/>
+      <Route path="/admin" element={<AdminDashboard/>}/>
+      <Route path="/admin/*" element={<Navigate to="/admin" replace/>}/>
+    </Routes><Toaster position="top-right" richColors/></div>;
+  }
   return <div className="iq-shell min-h-screen bg-background text-foreground"><Header/><SiteMotion><Routes>
     <Route path="/" element={<Home/>}/>
     <Route path="/login" element={<Auth key="login"/>}/>

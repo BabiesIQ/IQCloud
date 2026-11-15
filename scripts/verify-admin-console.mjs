@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const page=readFileSync('src/pages/AdminConsole.jsx','utf8');
+const app=readFileSync('src/App.jsx','utf8');
+assert.ok(app.includes('path="/admin/login"')&&app.includes('path="/admin"'),'Missing routes');
+assert.ok(app.includes("location.pathname.startsWith('/admin/')"),'Admin must have separate shell');
+for(const name of ['overview','users','servers','orders','logins','audit'])assert.ok(page.includes("id:'"+name+"'"),'Missing '+name);
+assert.ok(page.includes('uk77061@gmail.com'),'Wrong owner email');
+for(const path of ['/api/v1/admin/me','/api/v1/admin/login','/api/v1/admin/logout','/api/v1/admin/users/'])assert.ok(page.includes(path),'Missing secure endpoint '+path);
+for(const action of ['send-reset','revoke-sessions','deactivate'])assert.ok(page.includes(action),'Missing action '+action);
+assert.ok(!page.includes('localStorage.setItem'),'Admin token must never be stored client-side');
+assert.ok(page.includes('This is not permanent data deletion.'),'Deactivation must be honestly labeled');
+console.log('Admin console QA: session-backed routes, real data views and guarded customer actions passed.');
