@@ -703,5 +703,13 @@ export default Object.freeze({
   "Checking secure debit and credit card availability…": "正在確認安全的簽帳金融卡與信用卡付款是否可用…",
   "Debit or credit card — no PayPal account required": "使用簽帳金融卡或信用卡付款，不需 PayPal 帳戶",
   "Pay securely by card without a PayPal account": "不需登入 PayPal，即可安全地使用信用卡付款",
-  "Card details are entered into a PayPal-hosted secure form. Availability depends on your country and PayPal eligibility.": "卡片資料只會在 PayPal 提供的安全付款表單中輸入。是否可用，取決於您的所在地區及 PayPal 的資格審核。"
+  "Card details are entered into a PayPal-hosted secure form. Availability depends on your country and PayPal eligibility.": "卡片資料只會在 PayPal 提供的安全付款表單中輸入。是否可用，取決於您的所在地區及 PayPal 的資格審核。",
+  "Choose a payment method": "選擇付款方式",
+  "Choose the way you would like to pay securely.": "選擇適合您的安全付款方式。",
+  "Pay using card": "使用信用卡或簽帳金融卡付款",
+  "Pay securely with a debit or credit card.": "直接使用信用卡或簽帳金融卡安全付款。",
+  "No PayPal account required. Card details are entered directly in PayPal’s secure form.": "不需要 PayPal 帳戶。卡片資料會直接輸入 PayPal 提供的安全付款表單。",
+  "Continue with PayPal": "前往 PayPal 繼續付款",
+  "Use your PayPal account or a linked payment method.": "使用您的 PayPal 帳戶或已連結的付款方式。",
+  "or": "或"
 });

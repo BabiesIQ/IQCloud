@@ -669,6 +669,72 @@ Object.assign(dictionaries.hi,{
   "Pay securely by card without a PayPal account": "बिना PayPal खाते के कार्ड से सुरक्षित भुगतान करें",
   "Card details are entered into a PayPal-hosted secure form. Availability depends on your country and PayPal eligibility.": "कार्ड की जानकारी सीधे PayPal के सुरक्षित फ़ॉर्म में भरी जाती है। सुविधा आपके देश और PayPal की अनुमति पर निर्भर है।"
 });
+Object.assign(dictionaries.hi,{
+  "Choose a payment method": "भुगतान का तरीका चुनें",
+  "Choose the way you would like to pay securely.": "अपनी पसंद का सुरक्षित भुगतान तरीका चुनें।",
+  "Pay using card": "कार्ड से भुगतान करें",
+  "Pay securely with a debit or credit card.": "डेबिट या क्रेडिट कार्ड से सुरक्षित भुगतान करें।",
+  "No PayPal account required. Card details are entered directly in PayPal’s secure form.": "PayPal खाता जरूरी नहीं है। कार्ड की जानकारी सीधे PayPal के सुरक्षित फ़ॉर्म में भरें।",
+  "Pay with PayPal": "PayPal से भुगतान करें",
+  "Continue with PayPal": "PayPal पर आगे बढ़ें",
+  "Use your PayPal account or a linked payment method.": "अपने PayPal खाते या उससे जुड़े भुगतान के तरीके से पैसे दें।",
+  "or": "या"
+});
+Object.assign(dictionaries.es||{},{
+  "Choose a payment method": "Elige cómo pagar",
+  "Pay using card": "Pagar con tarjeta",
+  "Pay securely with a debit or credit card.": "Paga de forma segura con tarjeta de débito o crédito.",
+  "No PayPal account required. Card details are entered directly in PayPal’s secure form.": "No necesitas una cuenta PayPal. Introduce los datos de tu tarjeta en el formulario seguro de PayPal.",
+  "Pay with PayPal": "Pagar con PayPal",
+  "Continue with PayPal": "Continuar con PayPal",
+  "Use your PayPal account or a linked payment method.": "Utiliza tu cuenta PayPal o un método de pago vinculado.",
+  "or": "o",
+  "Choose the way you would like to pay securely.": "Selecciona la forma de pago que prefieras."
+});
+Object.assign(dictionaries.fr||{},{
+  "Choose a payment method": "Choisissez votre moyen de paiement",
+  "Pay using card": "Payer par carte",
+  "Pay securely with a debit or credit card.": "Payez en toute sécurité par carte bancaire.",
+  "No PayPal account required. Card details are entered directly in PayPal’s secure form.": "Aucun compte PayPal nécessaire. Saisissez les données de votre carte dans le formulaire sécurisé de PayPal.",
+  "Pay with PayPal": "Payer avec PayPal",
+  "Continue with PayPal": "Continuer avec PayPal",
+  "Use your PayPal account or a linked payment method.": "Utilisez votre compte PayPal ou un moyen de paiement associé.",
+  "or": "ou",
+  "Choose the way you would like to pay securely.": "Choisissez la méthode de paiement sécurisée qui vous convient."
+});
+Object.assign(dictionaries.de||{},{
+  "Choose a payment method": "Zahlungsart auswählen",
+  "Pay using card": "Mit Karte bezahlen",
+  "Pay securely with a debit or credit card.": "Bezahlen Sie sicher mit Debit- oder Kreditkarte.",
+  "No PayPal account required. Card details are entered directly in PayPal’s secure form.": "Kein PayPal-Konto nötig. Ihre Kartendaten geben Sie direkt im sicheren PayPal-Formular ein.",
+  "Pay with PayPal": "Mit PayPal bezahlen",
+  "Continue with PayPal": "Weiter mit PayPal",
+  "Use your PayPal account or a linked payment method.": "Nutzen Sie Ihr PayPal-Konto oder eine hinterlegte Zahlungsart.",
+  "or": "oder",
+  "Choose the way you would like to pay securely.": "Wählen Sie Ihre bevorzugte sichere Zahlungsart."
+});
+Object.assign(dictionaries.ar||{},{
+  "Choose a payment method": "اختر طريقة الدفع",
+  "Pay using card": "ادفع بالبطاقة",
+  "Pay securely with a debit or credit card.": "ادفع بأمان باستخدام بطاقة خصم أو ائتمان.",
+  "No PayPal account required. Card details are entered directly in PayPal’s secure form.": "لا تحتاج إلى حساب PayPal. أدخل بيانات بطاقتك مباشرةً في نموذج PayPal الآمن.",
+  "Pay with PayPal": "ادفع باستخدام PayPal",
+  "Continue with PayPal": "المتابعة عبر PayPal",
+  "Use your PayPal account or a linked payment method.": "استخدم حساب PayPal أو وسيلة دفع مرتبطة به.",
+  "or": "أو",
+  "Choose the way you would like to pay securely.": "اختر طريقة الدفع الآمنة التي تناسبك."
+});
+Object.assign(dictionaries.pt||{},{
+  "Choose a payment method": "Escolha como pagar",
+  "Pay using card": "Pagar com cartão",
+  "Pay securely with a debit or credit card.": "Pague com segurança usando cartão de débito ou crédito.",
+  "No PayPal account required. Card details are entered directly in PayPal’s secure form.": "Não precisa de conta PayPal. Introduza os dados do cartão diretamente no formulário seguro do PayPal.",
+  "Pay with PayPal": "Pagar com PayPal",
+  "Continue with PayPal": "Continuar com PayPal",
+  "Use your PayPal account or a linked payment method.": "Use a sua conta PayPal ou um método de pagamento associado.",
+  "or": "ou",
+  "Choose the way you would like to pay securely.": "Escolha a forma de pagamento segura que preferir."
+});
 export const UI_DICTIONARIES=dictionaries;
 export const PROTECTED_BRANDS=Object.freeze(["BabiesIQ Cloud","BabiesIQ","Railway","Razorpay","PayPal","Cloudflare","Ubuntu","Debian"]);
 export function keepBrandTerms(source,translated){
