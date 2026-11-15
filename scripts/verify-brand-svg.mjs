@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 const svg=readFileSync('public/babiesiq-cloud-logo.svg','utf8');
 assert.ok(svg.startsWith('<svg ') && svg.includes('viewBox="0 0 512 512"'));
 assert.ok(svg.includes('<linearGradient') && svg.includes('<path') && svg.includes('<circle'));
-assert.ok(!/<script\b|<foreignObject\b|https?:\/\/|xlink:href|<image\b/i.test(svg), 'Brand SVG must be standalone, native vector shapes with no remote assets');
+assert.ok(!/<script\b|<foreignObject\b|<image\b|xlink:href|(?:href|src)\s*=\s*["']https?:\/\//i.test(svg), 'Brand SVG must be standalone, native vector shapes with no remote assets');
 const component=readFileSync('src/components/BrandLogo.jsx','utf8');
 assert.ok(component.includes('/babiesiq-cloud-logo.svg'));
 for(const file of ['src/App.jsx','src/pages/Dashboard.jsx','src/pages/Home.jsx','src/components/LanguageSelector.jsx']){
