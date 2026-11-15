@@ -13,6 +13,9 @@ export default function LanguageSelector(){
  const [search,setSearch]=useState('');
  const inputRef=useRef(null);
  const dragStart=useRef(null);
+ const sheetRef=useRef(null);
+ const listRef=useRef(null);
+ const touchStart=useRef(null);
  const [dragY,setDragY]=useState(0);
  const [dragging,setDragging]=useState(false);
  const choices=useMemo(()=>{
@@ -27,15 +30,21 @@ export default function LanguageSelector(){
   setDragY(0);
   setDragging(false);
   dragStart.current=null;
+  touchStart.current=null;
  }
  function openDrawer(){
   setTab('language');
   setSearch('');
   setDragY(0);
+  setDragging(false);
+  dragStart.current=null;
+  touchStart.current=null;
   setOpen(true);
  }
+ // Mouse / pen support on the grip. Touch uses native non-passive listeners
+ // below because mobile browsers cancel pointer gestures while scrolling.
  function onSwipeStart(event){
-  if(!event.isPrimary||(event.pointerType==='mouse'&&event.button!==0))return;
+  if(event.pointerType==='touch'||!event.isPrimary||event.button!==0)return;
   dragStart.current={id:event.pointerId,y:event.clientY,at:performance.now()};
   event.currentTarget.setPointerCapture(event.pointerId);
   setDragging(true);
@@ -63,6 +72,80 @@ export default function LanguageSelector(){
   setDragY(0);
   setDragging(false);
  }
+ // The whole sheet can be pulled down. Pulling from the options area only
+ // takes over when it is already at the top; upward gestures keep normal
+ // native list scrolling intact. Do not steal touches from the search input.
+ useEffect(()=>{
+  if(!open)return;
+  const element=sheetRef.current;
+  if(!element)return;
+  function start(event){
+   if(event.touches.length!==1)return;
+   const target=event.target;
+   if(!(target instanceof Element)||target.closest('input,textarea,select'))return;
+   const fromList=Boolean(target.closest('[data-language-options]'));
+   touchStart.current={
+    x:event.touches[0].clientX,
+    y:event.touches[0].clientY,
+    at:performance.now(),
+    fromList,
+    active:false,
+   };
+  }
+  function move(event){
+   const gesture=touchStart.current;
+   if(!gesture||event.touches.length!==1)return;
+   const deltaX=event.touches[0].clientX-gesture.x;
+   const deltaY=event.touches[0].clientY-gesture.y;
+   if(!gesture.active&&Math.abs(deltaX)>Math.abs(deltaY)+8){
+    touchStart.current=null;
+    return;
+   }
+   if(gesture.fromList&&listRef.current?.scrollTop>1&&!gesture.active){
+    touchStart.current=null;
+    return;
+   }
+   if(deltaY<=0){
+    if(gesture.active){event.preventDefault();setDragY(0)}
+    return;
+   }
+   if(deltaY<8&&!gesture.active)return;
+   // This listener must be non-passive for Android Chrome to let the sheet
+   // follow a downward drag instead of rubber-banding the page behind it.
+   if(event.cancelable)event.preventDefault();
+   gesture.active=true;
+   setDragging(true);
+   setDragY(Math.min(deltaY,window.innerHeight));
+  }
+  function finish(event){
+   const gesture=touchStart.current;
+   touchStart.current=null;
+   if(!gesture)return;
+   if(!gesture.active){setDragging(false);setDragY(0);return}
+   const changed=event.changedTouches?.[0];
+   const distance=Math.max(0,(changed?.clientY??gesture.y)-gesture.y);
+   const speed=distance/Math.max(1,performance.now()-gesture.at);
+   if(distance>=90||(distance>=36&&speed>0.65))closeDrawer();
+   else{setDragging(false);setDragY(0)}
+  }
+  function cancel(){
+   touchStart.current=null;
+   setDragging(false);
+   setDragY(0);
+  }
+  element.addEventListener('touchstart',start,{passive:true});
+  element.addEventListener('touchmove',move,{passive:false});
+  element.addEventListener('touchend',finish,{passive:true});
+  element.addEventListener('touchcancel',cancel,{passive:true});
+  return()=>{
+   touchStart.current=null;
+   element.removeEventListener('touchstart',start);
+   element.removeEventListener('touchmove',move);
+   element.removeEventListener('touchend',finish);
+   element.removeEventListener('touchcancel',cancel);
+  };
+ },[open]);
+
  useEffect(()=>{
   if(!open)return;
   const old=document.body.style.overflow;
@@ -87,7 +170,7 @@ export default function LanguageSelector(){
   </div>
   <div data-no-translate aria-hidden={!open} inert={!open} className={'fixed inset-0 z-[120] flex items-end justify-center '+(!open?'pointer-events-none':'')}>
    <button type="button" tabIndex={open?0:-1} aria-label="Close language selector" className={'absolute inset-0 bg-black/60 transition-opacity duration-300 '+(open?'opacity-100':'opacity-0')} onClick={closeDrawer}/>
-   <section role="dialog" aria-modal={open} aria-label="Choose language and currency" className={'relative flex max-h-[86dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-[30px] border bg-background text-foreground shadow-2xl sm:mb-6 sm:max-h-[84dvh] sm:rounded-3xl '+(dragging?'transition-none':'transition-transform duration-300 ease-out')} style={{transform:open?'translateY('+dragY+'px)':'translateY(110%)'}}>
+   <section ref={sheetRef} role="dialog" aria-modal={open} aria-label="Choose language and currency" className={'relative flex max-h-[86dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-[30px] border bg-background text-foreground shadow-2xl sm:mb-6 sm:max-h-[84dvh] sm:rounded-3xl '+(dragging?'transition-none':'transition-transform duration-300 ease-out')} style={{transform:open?'translateY('+dragY+'px)':'translateY(110%)'}}>
     <div className="touch-none select-none border-b px-6 pb-5 pt-3 sm:px-8" onPointerDown={onSwipeStart} onPointerMove={onSwipeMove} onPointerUp={onSwipeEnd} onPointerCancel={onSwipeCancel}>
      <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-muted-foreground/40" aria-hidden="true"/>
      <div><p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-emerald-500"><BrandLogo size={28} className="h-7 w-7" />BabiesIQ Cloud</p><h2 className="mt-1 text-2xl font-bold sm:text-3xl">{t('Choose a language')}</h2></div>
@@ -101,7 +184,7 @@ export default function LanguageSelector(){
      <input ref={inputRef} type="search" value={search} onChange={e=>setSearch(e.target.value)} placeholder={t(tab==='language'?'Search languages':'Choose your billing country')} className="min-w-0 flex-1 bg-transparent text-sm outline-none"/>
     </label>
     <p className="px-6 py-3 text-xs text-muted-foreground sm:px-8">{tab==='language'?t('All languages (60)'):t('Choose your billing country')}</p>
-    <div className="grid min-h-0 grid-cols-2 gap-1 overflow-y-auto px-5 pb-8 sm:grid-cols-3 sm:px-7" role="listbox">
+    <div ref={listRef} data-language-options className="grid min-h-0 grid-cols-2 gap-1 overflow-y-auto overscroll-contain px-5 pb-8 sm:grid-cols-3 sm:px-7" style={{WebkitOverflowScrolling:'touch'}} role="listbox">
      {choices.map(item=>{
       const code=tab==='language'?item.code:item;
       const label=tab==='language'?item.nativeName:nativeCountryName(code);
