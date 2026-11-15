@@ -12,6 +12,8 @@ for(const [name,url] of [['Music API','https://babiesiq.tech'],['Instagram','htt
 }
 assert.ok(panel.includes('rel="noopener noreferrer"'),'External links must be safe');
 assert.ok(panel.includes('socialLinks.map'),'Social links must share one component layout');
+assert.ok(logo.includes('baby mascot with headphones')&&logo.includes('music-note hair curl'),'Music icon must show new baby headphone mascot');
+assert.ok(panel.includes('baby-headphones-2'),'Use versioned asset to avoid cached old logo');
 assert.ok(logo.startsWith('<svg')&&logo.includes('viewBox="0 0 320 320"')&&logo.includes('<linearGradient')&&logo.includes('</svg>'),'Music logo is not a standalone SVG');
 assert.ok(!/<script\b|<foreignObject\b|<image\b|xlink:href/i.test(logo),'Music logo must not load embedded or external content');
 assert.ok(panel.includes('prefers-reduced-motion')||readFileSync('src/cloud-motion.css','utf8').includes('.iq-music-eq'),'Music animation should have motion styling');

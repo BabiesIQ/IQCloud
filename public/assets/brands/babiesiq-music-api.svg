@@ -1,35 +1,46 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
-<title id="title">BabiesIQ Music API</title>
-<desc id="desc">Glossy silver and teal music note over a purple sound record, surrounded by a luminous audio orbit</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="musicTitle musicDesc">
+<title id="musicTitle">BabiesIQ Music API</title>
+<desc id="musicDesc">Happy baby mascot with headphones and a music-note hair curl in a glossy blue, purple and pink gradient</desc>
 <defs>
-<linearGradient id="case" x1=".15" y1="0" x2=".85" y2="1"><stop stop-color="#27366a"/><stop offset=".43" stop-color="#121831"/><stop offset="1" stop-color="#050a1e"/></linearGradient>
-<linearGradient id="chrome" x1=".1" y1="0" x2=".85" y2="1"><stop stop-color="#fff"/><stop offset=".28" stop-color="#e4f8ff"/><stop offset=".55" stop-color="#95b3d7"/><stop offset=".83" stop-color="#e8f9ff"/><stop offset="1" stop-color="#507d9c"/></linearGradient>
-<linearGradient id="teal" x1=".1" y1=".1" x2=".9" y2=".9"><stop stop-color="#bffff9"/><stop offset=".36" stop-color="#3bf7d8"/><stop offset=".65" stop-color="#00cfba"/><stop offset="1" stop-color="#147aa0"/></linearGradient>
-<linearGradient id="violet" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e6b5ff"/><stop offset=".45" stop-color="#8e7dff"/><stop offset="1" stop-color="#1bd2df"/></linearGradient>
-<radialGradient id="disk" cx=".32" cy=".23" r=".88"><stop stop-color="#3c4f8f"/><stop offset=".45" stop-color="#1c2653"/><stop offset="1" stop-color="#070e23"/></radialGradient>
-<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
-<filter id="shadow" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="9" stdDeviation="9" flood-color="#080d28" flood-opacity=".58"/></filter>
+ <linearGradient id="halo" x1=".1" y1="0" x2=".84" y2="1"><stop stop-color="#1acfff"/><stop offset=".28" stop-color="#4f8cff"/><stop offset=".61" stop-color="#9658f5"/><stop offset="1" stop-color="#df68eb"/></linearGradient>
+ <linearGradient id="hair" x1=".15" y1="0" x2=".9" y2="1"><stop stop-color="#2de1ff"/><stop offset=".3" stop-color="#4595fd"/><stop offset=".68" stop-color="#7971f8"/><stop offset="1" stop-color="#ba62ea"/></linearGradient>
+ <linearGradient id="face" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#9b59f5"/><stop offset=".26" stop-color="#d65ddc"/><stop offset=".61" stop-color="#f56dba"/><stop offset="1" stop-color="#ffb578"/></linearGradient>
+ <linearGradient id="ear" x1="0" y1="0" x2=".95" y2="1"><stop stop-color="#8f79fe"/><stop offset=".42" stop-color="#b767f7"/><stop offset=".77" stop-color="#de64db"/><stop offset="1" stop-color="#fa6db8"/></linearGradient>
+ <linearGradient id="eye" x1=".15" y1=".1" x2=".8" y2=".98"><stop stop-color="#f288ff"/><stop offset=".52" stop-color="#c467ec"/><stop offset="1" stop-color="#984de0"/></linearGradient>
+ <linearGradient id="smile" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#ff74d7"/><stop offset=".5" stop-color="#ff69b6"/><stop offset="1" stop-color="#ff9ea4"/></linearGradient>
+ <filter id="softShadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="1" dy="3" stdDeviation="3" flood-color="#5d3eb2" flood-opacity=".30"/></filter>
+ <filter id="outerGlow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2.2"/></filter>
 </defs>
-<rect x="26" y="26" width="268" height="268" rx="72" fill="url(#case)" stroke="#9b9bf6" stroke-width="3" filter="url(#shadow)"/>
-<path d="M67 60Q140 20 223 65" fill="none" stroke="#e9ffff" opacity=".48" stroke-width="5" stroke-linecap="round"/>
-<circle cx="158" cy="158" r="95" fill="url(#disk)" stroke="url(#violet)" stroke-width="5"/>
-<circle cx="158" cy="158" r="81" fill="none" stroke="#89a0e3" stroke-opacity=".42" stroke-width="2"/>
-<circle cx="158" cy="158" r="64" fill="none" stroke="#7d8bd9" stroke-opacity=".34" stroke-width="2"/>
-<circle cx="158" cy="158" r="47" fill="none" stroke="#a2aff2" stroke-opacity=".27" stroke-width="2"/>
-<circle cx="158" cy="158" r="22" fill="url(#teal)" opacity=".43"/>
-<path d="M50 205C77 265 214 289 277 167" fill="none" stroke="#12ffe4" opacity=".42" stroke-width="19" filter="url(#glow)"/>
-<path d="M50 205C77 265 214 289 277 167" fill="none" stroke="url(#teal)" stroke-linecap="round" stroke-width="8"/>
-<path d="M52 200C101 266 219 270 272 169" fill="none" stroke="#d9ffff" opacity=".8" stroke-width="2"/>
-<g fill="none" stroke="url(#violet)" stroke-width="6" stroke-linecap="round">
-<path d="M69 131v34M82 119v57M95 137v22M226 128v44M240 112v77M253 132v36"/>
+<!-- The headband, note curl, round ears and happy face are designed as one recognizable baby-music mark. -->
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+ <path d="M73 192 C76 103 111 67 165 67 C221 67 264 111 267 192" stroke="#5e53e8" stroke-width="31" opacity=".20" filter="url(#outerGlow)"/>
+ <path d="M73 192 C76 103 111 67 165 67 C221 67 264 111 267 192" stroke="url(#halo)" stroke-width="27"/>
+ <path d="M83 158 C107 84 137 75 167 79" stroke="#b6efff" stroke-width="3.5" opacity=".48"/>
 </g>
-<path d="M170 95l68-17v90" fill="none" stroke="#202d59" stroke-width="23" stroke-linejoin="round" stroke-linecap="round" opacity=".55"/>
-<path d="M174 96l63-17v89" fill="none" stroke="url(#chrome)" stroke-width="18" stroke-linejoin="round" stroke-linecap="round"/>
-<path d="M174 110l64-16" fill="none" stroke="url(#teal)" stroke-width="9" stroke-linecap="round"/>
-<path d="M174 105v106" fill="none" stroke="url(#chrome)" stroke-width="17" stroke-linecap="round"/>
-<ellipse cx="144" cy="220" rx="34" ry="24" transform="rotate(-24 144 220)" fill="url(#chrome)" stroke="#c4ffff" stroke-width="2"/>
-<ellipse cx="211" cy="181" rx="34" ry="24" transform="rotate(-24 211 181)" fill="url(#chrome)" stroke="#c4ffff" stroke-width="2"/>
-<ellipse cx="143" cy="214" rx="23" ry="13" transform="rotate(-24 143 214)" fill="url(#teal)" opacity=".78"/>
-<ellipse cx="210" cy="175" rx="23" ry="13" transform="rotate(-24 210 175)" fill="url(#teal)" opacity=".78"/>
-<circle cx="57" cy="205" r="8" fill="#adfff7"/><circle cx="276" cy="167" r="7" fill="#c5c7ff"/>
+<!-- Music note as the playful hair curl -->
+<g filter="url(#softShadow)">
+ <path d="M171 121 L170 35 C173 24 187 26 203 37 C219 47 229 60 220 67 C208 76 197 64 183 56 L183 122" fill="url(#hair)" stroke="#806af3" stroke-width="2" stroke-linejoin="round"/>
+ <ellipse cx="157" cy="128" rx="28" ry="20" transform="rotate(-27 157 128)" fill="url(#hair)"/>
+ <path d="M179 41 L180 104 M177 117 C166 134 147 143 134 137" fill="none" stroke="#bceaff" stroke-width="2.7" opacity=".35" stroke-linecap="round"/>
+</g>
+<!-- Oversized glossy headphone ear pads -->
+<g filter="url(#softShadow)">
+ <rect x="42" y="174" width="72" height="84" rx="36" fill="url(#ear)" transform="rotate(-8 78 216)"/>
+ <rect x="218" y="174" width="72" height="84" rx="36" fill="url(#ear)" transform="rotate(8 254 216)"/>
+ <path d="M63 181 C48 194 47 222 59 237" fill="none" stroke="#d6beff" stroke-width="3" opacity=".55" stroke-linecap="round"/>
+ <path d="M260 182 C275 195 274 220 266 236" fill="none" stroke="#dfc5ff" stroke-width="3" opacity=".5" stroke-linecap="round"/>
+</g>
+<!-- Pink lower face ring matches BabiesIQ's original baby mascot -->
+<path d="M83 204 C71 243 100 281 132 294 C168 309 208 300 234 282 C256 266 269 237 254 202" fill="none" stroke="#c75ae5" stroke-width="35" stroke-linecap="round" opacity=".18" filter="url(#outerGlow)"/>
+<path d="M83 205 C71 245 100 281 132 294 C168 309 208 300 234 282 C256 266 269 238 254 202" fill="none" stroke="url(#face)" stroke-width="31" stroke-linecap="round"/>
+<path d="M81 218 C77 256 102 282 137 295" stroke="#ffd2db" stroke-width="3.5" stroke-linecap="round" opacity=".45" fill="none"/>
+<path d="M161 305 C203 306 239 284 254 251" stroke="#ffe0b9" stroke-width="3" stroke-linecap="round" opacity=".38" fill="none"/>
+<!-- Baby's dot eyes and broad little smile -->
+<circle cx="130" cy="217" r="14" fill="url(#eye)" stroke="#b957e6" stroke-opacity=".35" stroke-width="1.3"/>
+<circle cx="208" cy="217" r="14" fill="url(#eye)" stroke="#b957e6" stroke-opacity=".35" stroke-width="1.3"/>
+<circle cx="125" cy="210" r="3.2" fill="#ffe8ff" opacity=".5"/>
+<circle cx="203" cy="210" r="3.2" fill="#ffe8ff" opacity=".5"/>
+<path d="M137 258 Q168 284 201 258" fill="none" stroke="#cd55bd" stroke-width="20" stroke-linecap="round" opacity=".23" filter="url(#outerGlow)"/>
+<path d="M137 258 Q168 283 201 258" fill="none" stroke="url(#smile)" stroke-width="17" stroke-linecap="round"/>
+<path d="M143 252 Q167 271 195 252" fill="none" stroke="#ffbce9" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>
 </svg>

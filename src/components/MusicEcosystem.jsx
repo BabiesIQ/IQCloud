@@ -26,7 +26,7 @@ export default function MusicEcosystem(){
       </div>
       <div className="flex items-center gap-4">
        <span className="iq-protected-icon inline-flex shrink-0" onContextMenu={e=>e.preventDefault()} onDragStart={e=>e.preventDefault()}>
-        <img src="/assets/brands/babiesiq-music-api.svg" alt="" width="90" height="90" decoding="async" draggable={false} className="pointer-events-none size-[78px] object-contain drop-shadow-[0_10px_22px_rgba(40,225,209,.22)] sm:size-[90px]"/>
+        <img src="/assets/brands/babiesiq-music-api.svg?v=baby-headphones-2" alt="" width="90" height="90" decoding="async" draggable={false} className="pointer-events-none size-[78px] object-contain drop-shadow-[0_10px_22px_rgba(40,225,209,.22)] sm:size-[90px]"/>
        </span>
        <div className="min-w-0">
         <p className="text-[11px] font-semibold uppercase tracking-[.20em] text-cyan-200/80">{t('Our music developer platform')}</p>
