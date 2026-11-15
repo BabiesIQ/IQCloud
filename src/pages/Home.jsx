@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import {useLocale} from '@/i18n/LocaleProvider';
 import BrandLogo from '@/components/BrandLogo';
 import NavIcon from '@/components/NavIcon';
+import MusicEcosystem from '@/components/MusicEcosystem';
 import '@/cloud-motion.css';
 import ApperIcon from '@/components/ApperIcon';
 import SharedInfrastructure from '@/components/cloud/SharedInfrastructure';
@@ -100,11 +101,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-t border-border px-5 py-20 text-center">
-        <h2 className="text-3xl font-semibold tracking-tight">Ready to get started?</h2>
-        <p className="mt-3 text-sm text-muted-foreground">Set up your first server in a few simple steps.</p>
-        <Link to="/dashboard/instances/new" className="mt-7 inline-flex h-12 items-center gap-2 rounded-full bg-foreground px-6 text-sm font-semibold text-background">Build your server <ApperIcon name="ArrowUpRight" size={17}/></Link>
-      </section>
+      <MusicEcosystem/>
     </main>
   );
 }

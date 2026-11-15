@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {translateUI} from '../src/i18n/translations.js';
 const checks={
- 'src/pages/Home.jsx':['Your cloud.','Made simple.','Create a server your way. Pick a region, choose your resources, and manage it all in one simple dashboard.','Create a server','View pricing','Secure checkout','Everything in one place.','Ready to get started?','Build your server','Connect your domain'],
+ 'src/pages/Home.jsx':['Your cloud.','Made simple.','Create a server your way. Pick a region, choose your resources, and manage it all in one simple dashboard.','Create a server','View pricing','Secure checkout','Everything in one place.','More ways to host.','Build your server','Connect your domain'],
  'src/pages/Pricing.jsx':['Choose RAM and CPU. See your price.','Monthly compute price','Complete RAM × CPU price list','Configure instance'],
  'src/pages/CreateInstance.jsx':['Cloud configuration','Operating system','VPS root password','Passwords do not match.','Total payable'],
  'src/pages/ServerCheckout.jsx':['Secure checkout','Loading your configuration…','Total payable','Railway root storage is ephemeral. Expiry followed by redeployment may erase data. Back up important files and renew before expiry.'],

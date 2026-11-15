@@ -736,6 +736,55 @@ Object.assign(dictionaries.pt||{},{
   "or": "ou",
   "Choose the way you would like to pay securely.": "Escolha a forma de pagamento segura que preferir."
 });
+// Human-authored copy for the Music API sibling-project showcase.
+Object.assign(dictionaries.hi||{},{
+  "MORE FROM BABIESIQ": "BABIESIQ की दूसरी खास सेवा",
+  "Our music developer platform": "हमारा म्यूज़िक डेवलपर प्लेटफ़ॉर्म",
+  "Stream music and video, search tracks, and build with simple developer-friendly APIs.": "संगीत और वीडियो स्ट्रीम करें, गाने खोजें और आसान API से अपने ऐप या प्रोजेक्ट बनाएँ।",
+  "Audio streaming": "ऑडियो स्ट्रीमिंग",
+  "Video streaming": "वीडियो स्ट्रीमिंग",
+  "Developer APIs": "डेवलपर API",
+  "Explore Music API": "Music API देखें",
+  "Connect with BabiesIQ": "BabiesIQ से जुड़ें",
+  "Updates, open-source projects, and our community.": "नए अपडेट, ओपन-सोर्स प्रोजेक्ट और हमारी कम्युनिटी से जुड़ें।",
+  "Find us online": "सोशल मीडिया पर मिलें"
+});
+Object.assign(dictionaries.es||{},{
+  "MORE FROM BABIESIQ": "MÁS DE BABIESIQ",
+  "Our music developer platform": "Nuestra plataforma de música para desarrolladores",
+  "Stream music and video, search tracks, and build with simple developer-friendly APIs.": "Transmite música y vídeo, busca canciones y crea aplicaciones con API fáciles de usar.",
+  "Audio streaming": "Audio en streaming",
+  "Video streaming": "Vídeo en streaming",
+  "Developer APIs": "API para desarrolladores",
+  "Explore Music API": "Explorar Music API",
+  "Connect with BabiesIQ": "Conecta con BabiesIQ",
+  "Updates, open-source projects, and our community.": "Novedades, proyectos de código abierto y nuestra comunidad.",
+  "Find us online": "Síguenos"
+});
+Object.assign(dictionaries.fr||{},{
+  "MORE FROM BABIESIQ": "DÉCOUVREZ AUSSI BABIESIQ",
+  "Our music developer platform": "Notre plateforme musicale pour les développeurs",
+  "Stream music and video, search tracks, and build with simple developer-friendly APIs.": "Diffusez de la musique et des vidéos, recherchez des titres et créez facilement avec nos API.",
+  "Audio streaming": "Streaming audio",
+  "Video streaming": "Streaming vidéo",
+  "Developer APIs": "API développeur",
+  "Explore Music API": "Découvrir Music API",
+  "Connect with BabiesIQ": "Rejoignez BabiesIQ",
+  "Updates, open-source projects, and our community.": "Actualités, projets open source et communauté.",
+  "Find us online": "Retrouvez-nous"
+});
+Object.assign(dictionaries.de||{},{
+  "MORE FROM BABIESIQ": "MEHR VON BABIESIQ",
+  "Our music developer platform": "Unsere Musikplattform für Entwickler",
+  "Stream music and video, search tracks, and build with simple developer-friendly APIs.": "Streame Musik und Videos, finde Songs und entwickle mit einfachen APIs.",
+  "Audio streaming": "Audio-Streaming",
+  "Video streaming": "Video-Streaming",
+  "Developer APIs": "Entwickler-APIs",
+  "Explore Music API": "Music API entdecken",
+  "Connect with BabiesIQ": "Mit BabiesIQ verbinden",
+  "Updates, open-source projects, and our community.": "Neuigkeiten, Open-Source-Projekte und unsere Community.",
+  "Find us online": "Besuch uns online"
+});
 // Localize the greeting only. Customer-provided names are never dictionary input.
 for(const [locale,greeting] of Object.entries(WELCOME_BACK_TRANSLATIONS)){
  if(dictionaries[locale])dictionaries[locale]["Welcome back,"]=greeting;

@@ -35,7 +35,7 @@ assert.equal(translateUI('user@example.com','zh-TW'),'user@example.com','User da
 const mustTranslate={
  'src/pages/Home.jsx':[
   'Create a server your way. Pick a region, choose your resources, and manage it all in one simple dashboard.',
-  'Everything in one place.','Secure checkout','Ready to get started?',
+  'Everything in one place.','Secure checkout','More ways to host.',
  ],
  'src/pages/Pricing.jsx':[
   '64 compute combinations. No SSD selector or per-plan disk size; Railway containers use shared, ephemeral host storage.',

@@ -5,3 +5,8 @@
 .cloud-float-b {animation:cloudFloatB 7s ease-in-out infinite;}
 .theme-icon-enter {animation:themeIconEnter .45s ease-out both;}
 @media (prefers-reduced-motion:reduce) {.cloud-float-a,.cloud-float-b,.theme-icon-enter {animation:none;}}
+
+
+@keyframes iqMusicPulse {0%,100%{transform:scaleY(.77);opacity:.76}50%{transform:scaleY(1.06);opacity:1}}
+.iq-music-eq{transform-origin:50% 50%;animation:iqMusicPulse 1.45s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.iq-music-eq{animation:none!important}}

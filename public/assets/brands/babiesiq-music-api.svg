@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+<title id="title">BabiesIQ Music API</title>
+<desc id="desc">Glossy silver and teal music note over a purple sound record, surrounded by a luminous audio orbit</desc>
+<defs>
+<linearGradient id="case" x1=".15" y1="0" x2=".85" y2="1"><stop stop-color="#27366a"/><stop offset=".43" stop-color="#121831"/><stop offset="1" stop-color="#050a1e"/></linearGradient>
+<linearGradient id="chrome" x1=".1" y1="0" x2=".85" y2="1"><stop stop-color="#fff"/><stop offset=".28" stop-color="#e4f8ff"/><stop offset=".55" stop-color="#95b3d7"/><stop offset=".83" stop-color="#e8f9ff"/><stop offset="1" stop-color="#507d9c"/></linearGradient>
+<linearGradient id="teal" x1=".1" y1=".1" x2=".9" y2=".9"><stop stop-color="#bffff9"/><stop offset=".36" stop-color="#3bf7d8"/><stop offset=".65" stop-color="#00cfba"/><stop offset="1" stop-color="#147aa0"/></linearGradient>
+<linearGradient id="violet" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e6b5ff"/><stop offset=".45" stop-color="#8e7dff"/><stop offset="1" stop-color="#1bd2df"/></linearGradient>
+<radialGradient id="disk" cx=".32" cy=".23" r=".88"><stop stop-color="#3c4f8f"/><stop offset=".45" stop-color="#1c2653"/><stop offset="1" stop-color="#070e23"/></radialGradient>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+<filter id="shadow" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="9" stdDeviation="9" flood-color="#080d28" flood-opacity=".58"/></filter>
+</defs>
+<rect x="26" y="26" width="268" height="268" rx="72" fill="url(#case)" stroke="#9b9bf6" stroke-width="3" filter="url(#shadow)"/>
+<path d="M67 60Q140 20 223 65" fill="none" stroke="#e9ffff" opacity=".48" stroke-width="5" stroke-linecap="round"/>
+<circle cx="158" cy="158" r="95" fill="url(#disk)" stroke="url(#violet)" stroke-width="5"/>
+<circle cx="158" cy="158" r="81" fill="none" stroke="#89a0e3" stroke-opacity=".42" stroke-width="2"/>
+<circle cx="158" cy="158" r="64" fill="none" stroke="#7d8bd9" stroke-opacity=".34" stroke-width="2"/>
+<circle cx="158" cy="158" r="47" fill="none" stroke="#a2aff2" stroke-opacity=".27" stroke-width="2"/>
+<circle cx="158" cy="158" r="22" fill="url(#teal)" opacity=".43"/>
+<path d="M50 205C77 265 214 289 277 167" fill="none" stroke="#12ffe4" opacity=".42" stroke-width="19" filter="url(#glow)"/>
+<path d="M50 205C77 265 214 289 277 167" fill="none" stroke="url(#teal)" stroke-linecap="round" stroke-width="8"/>
+<path d="M52 200C101 266 219 270 272 169" fill="none" stroke="#d9ffff" opacity=".8" stroke-width="2"/>
+<g fill="none" stroke="url(#violet)" stroke-width="6" stroke-linecap="round">
+<path d="M69 131v34M82 119v57M95 137v22M226 128v44M240 112v77M253 132v36"/>
+</g>
+<path d="M170 95l68-17v90" fill="none" stroke="#202d59" stroke-width="23" stroke-linejoin="round" stroke-linecap="round" opacity=".55"/>
+<path d="M174 96l63-17v89" fill="none" stroke="url(#chrome)" stroke-width="18" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M174 110l64-16" fill="none" stroke="url(#teal)" stroke-width="9" stroke-linecap="round"/>
+<path d="M174 105v106" fill="none" stroke="url(#chrome)" stroke-width="17" stroke-linecap="round"/>
+<ellipse cx="144" cy="220" rx="34" ry="24" transform="rotate(-24 144 220)" fill="url(#chrome)" stroke="#c4ffff" stroke-width="2"/>
+<ellipse cx="211" cy="181" rx="34" ry="24" transform="rotate(-24 211 181)" fill="url(#chrome)" stroke="#c4ffff" stroke-width="2"/>
+<ellipse cx="143" cy="214" rx="23" ry="13" transform="rotate(-24 143 214)" fill="url(#teal)" opacity=".78"/>
+<ellipse cx="210" cy="175" rx="23" ry="13" transform="rotate(-24 210 175)" fill="url(#teal)" opacity=".78"/>
+<circle cx="57" cy="205" r="8" fill="#adfff7"/><circle cx="276" cy="167" r="7" fill="#c5c7ff"/>
+</svg>
