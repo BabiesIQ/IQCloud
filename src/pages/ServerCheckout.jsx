@@ -6,6 +6,7 @@ import { apiRequest } from '@/services/apiClient';
 import { billingTerm, termQuote, priceINR } from '@/config/plans';
 import {paypalCurrencyForCountry,currencyForCountry,formatPayPalMinorAmount,PAYPAL_PRESENTMENT_CURRENCIES} from '@/i18n/config';
 import BillingTermPicker from '@/components/cloud/BillingTermPicker';
+import PayPalGuestCardButton from '@/components/cloud/PayPalGuestCardButton';
 
 export const route={path:'/dashboard/checkout',layout:'owner',access:'authenticated'};
 export default function ServerCheckout(){
@@ -24,7 +25,7 @@ export default function ServerCheckout(){
  const [order,setOrder]=useState(null);
  const [paymentUncertain,setPaymentUncertain]=useState(false);
  const [riskAcknowledged,setRiskAcknowledged]=useState(false);
- const [paypalStatus,setPayPalStatus]=useState({ready:false,loading:false,reason:''});
+ const [paypalStatus,setPayPalStatus]=useState({ready:false,loading:false,reason:'',guestCardEnabled:false,clientId:'',mode:'live'});
  const suggestedPayPalCurrency=paypalCurrencyForCountry(country);
  const actualPayPalCurrency=order?.gateway==="paypal"?order.currency:suggestedPayPalCurrency;
  const localCurrency=currencyForCountry(country);
@@ -57,6 +58,9 @@ export default function ServerCheckout(){
   apiRequest('/api/v1/payments/paypal/readiness').then(status=>{
    if(!live)return;
    setPayPalStatus({ready:status.checkoutEnabled===true,loading:false,
+    clientId:status.checkoutEnabled&&typeof status.clientId==='string'?status.clientId:'',
+    mode:status.mode==='sandbox'?'sandbox':'live',
+    guestCardEnabled:status.checkoutEnabled===true&&status.guestCardEnabled===true,
     reason:status.checkoutEnabled?'':'PayPal merchant verification or live gateway activation is still pending. No payment will be taken.'});
   }).catch(()=>{if(live)setPayPalStatus({ready:false,loading:false,reason:'PayPal readiness could not be verified. Checkout is disabled.'})});
   return()=>{live=false};
@@ -91,7 +95,7 @@ export default function ServerCheckout(){
   busy.current=true;setPaying(true);setError('');
   try{
    const result=await apiRequest('/api/v1/payments/paypal/orders',{method:'POST',
-    body:{draftId:instanceId,billingMonths:months,country,kind:isRenewal?'renewal':'new'}});
+    body:{draftId:instanceId,billingMonths:months,country,kind:isRenewal?'renewal':'new',paymentMethod:'paypal'}});
    if(!result.orderId||!PAYPAL_PRESENTMENT_CURRENCIES.has(result.currency)||!Number.isInteger(result.amount)||result.amount<1){
     throw Error('PayPal did not confirm a valid supported payment currency and amount. No checkout was opened.');
    }
@@ -195,6 +199,18 @@ export default function ServerCheckout(){
     <button type="button" disabled={paying||paymentUncertain||(isInternational&&!paypalStatus.ready)||paypalReturnProcessing} onClick={pay} className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary p-4 font-semibold text-primary-foreground disabled:opacity-50">
      <CreditCard size={18}/>{isInternational?(paying?t('Opening PayPal…'):paypalStatus.ready?t('Pay with PayPal')+' ('+actualPayPalCurrency+')':t('PayPal checkout not yet active')):paying?t('Opening payment…'):paymentUncertain?t('Verify payment in Dashboard'):t('Pay')+' '+(order?formatINR:formatPaise)(displayedQuote.totalPaise)}
     </button>
+    {isInternational&&paypalStatus.ready&&<PayPalGuestCardButton
+      enabled={paypalStatus.guestCardEnabled}
+      clientId={paypalStatus.clientId}
+      mode={paypalStatus.mode}
+      country={country} currency={actualPayPalCurrency}
+      draftId={instanceId} billingMonths={months} kind={isRenewal?'renewal':'new'}
+      totalINRPaise={quote.totalPaise}
+      disabled={paying||paymentUncertain||paypalReturnProcessing||loading||(isRenewal&&draft.status==='expired'&&!riskAcknowledged)}
+      onOrder={result=>setOrder(result)}
+      onCapture={()=>navigate('/dashboard',{replace:true})}
+      onFailure={message=>{setPaymentUncertain(true);setError(message)}}
+    />}
     <p className="mt-3 text-center text-xs text-muted-foreground"><ShieldCheck size={13} className="mr-1 inline"/> The backend verifies the exact amount and gateway capture. Never pay twice for the same order.</p>
    </div>
   </div>:null}
