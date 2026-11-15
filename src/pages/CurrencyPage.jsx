@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {ArrowLeft,Globe2,ShieldAlert,Wallet,CheckCircle2} from 'lucide-react';
 import {useLocale} from '@/i18n/LocaleProvider';
-import {CURRENCY_BY_COUNTRY,COUNTRY_OPTIONS,countryName,paypalCurrencyForCountry} from '@/i18n/config';
+import {CURRENCY_BY_COUNTRY,COUNTRY_OPTIONS,nativeCountryName,paypalCurrencyForCountry} from '@/i18n/config';
 
 export default function CurrencyPage(){
  const locale=useLocale();
@@ -15,8 +15,8 @@ export default function CurrencyPage(){
   <div className="mt-6 flex items-center gap-3"><div className="rounded-xl bg-emerald-500/10 p-3 text-emerald-500"><Globe2 size={24}/></div><div><p className="text-xs font-semibold uppercase tracking-widest text-emerald-500">International</p><h1 className="text-3xl font-bold">{t('Currency')}</h1><p className="mt-2 text-sm text-muted-foreground">Choose the country used to preview local prices. Your browser language and billing residence are separate settings.</p></div></div>
   <section className="mt-8 space-y-4 rounded-2xl border bg-card p-6">
    <label className="block text-sm font-semibold">{t('Billing country')}
-    <select value={country} onChange={e=>setCountry(e.target.value)} className="mt-2 w-full rounded-xl border bg-background px-4 py-3">
-     {COUNTRY_OPTIONS.map(code=><option key={code} value={code}>{countryName(code,language)} · {CURRENCY_BY_COUNTRY[code]}</option>)}
+    <select data-no-translate value={country} onChange={e=>setCountry(e.target.value)} className="mt-2 w-full rounded-xl border bg-background px-4 py-3">
+     {COUNTRY_OPTIONS.map(code=><option key={code} value={code}>{nativeCountryName(code)} · {CURRENCY_BY_COUNTRY[code]}</option>)}
     </select>
    </label>
    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"><span>Display currency</span><strong className="text-lg">{currency}</strong></div>

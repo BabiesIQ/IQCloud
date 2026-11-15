@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getPreferences, updatePreferences } from '@/config/runtime.config';
-import { LANGUAGES,COUNTRY_OPTIONS,CURRENCY_BY_COUNTRY,countryName } from '@/i18n/config';
+import { LANGUAGES,COUNTRY_OPTIONS,CURRENCY_BY_COUNTRY,nativeCountryName } from '@/i18n/config';
 
 // Can be mounted in account settings or the global header.
 export default function CloudPreferences() {
@@ -36,8 +36,8 @@ export default function CloudPreferences() {
         </select>
       </label>
       <label className="block text-sm space-y-2">Billing country / preview currency
-        <select className="w-full rounded-lg border bg-background p-2" value={prefs.country} onChange={e=>update({country:e.target.value})}>
-          {COUNTRY_OPTIONS.map(code=><option key={code} value={code}>{countryName(code,prefs.language)} · {CURRENCY_BY_COUNTRY[code]}</option>)}
+        <select data-no-translate className="w-full rounded-lg border bg-background p-2" value={prefs.country} onChange={e=>update({country:e.target.value})}>
+          {COUNTRY_OPTIONS.map(code=><option key={code} value={code}>{nativeCountryName(code)} · {CURRENCY_BY_COUNTRY[code]}</option>)}
         </select>
       </label>
       <p className="text-xs text-muted-foreground">Your billing country is a display preference, not payment verification. Local-currency estimates may differ from the final supported gateway amount.</p>

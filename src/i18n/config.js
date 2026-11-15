@@ -73,6 +73,23 @@ export function formatPayPalMinorAmount(amount,currency,locale="en"){
  catch{return String(value)+" "+currency}
 }
 export const COUNTRY_OPTIONS = Object.freeze(Object.keys(CURRENCY_BY_COUNTRY).sort());
+// The billing-country picker is self-localized: each country is written in a
+// commonly used official/local language, independent of the website UI language.
+// Multilingual countries use one widely used local official language.
+export const COUNTRY_NATIVE_LOCALES = Object.freeze(Object.fromEntries(
+ "IN:hi US:en GB:en CA:en AU:en NZ:en DE:de FR:fr IT:it ES:es PT:pt IE:en NL:nl BE:nl AT:de FI:fi GR:el EE:et LV:lv LT:lt SK:sk SI:sl LU:fr MT:mt CY:el HR:hr AE:ar SA:ar QA:ar KW:ar BH:ar OM:ar IL:he JP:ja CN:zh HK:zh-Hant TW:zh-Hant KR:ko SG:en MY:ms TH:th ID:id PH:fil VN:vi BD:bn PK:ur NP:ne LK:si ZA:zu NG:en KE:sw GH:en TZ:sw UG:en EG:ar MA:ar DZ:ar TN:ar BR:pt-BR MX:es AR:es CL:es CO:es PE:es UY:es PY:es BO:es CR:es DO:es CH:de SE:sv NO:no DK:da IS:is PL:pl CZ:cs HU:hu RO:ro BG:bg RS:sr UA:uk TR:tr GE:ka AZ:az KZ:kk UZ:uz RU:ru BY:be AM:hy MD:ro IR:fa MU:en SC:fr ET:am ZM:en BW:en NA:en AO:pt FJ:en PG:en SB:en PA:es GT:es HN:es NI:es SV:es EC:es JM:en TT:en BS:en BB:en BZ:en".split(" ").map(entry=>entry.split(":"))
+));
+export function nativeCountryLocale(country){
+ return COUNTRY_NATIVE_LOCALES[String(country||"").toUpperCase()]||"en";
+}
+export function nativeCountryName(country){
+ const code=String(country||"").toUpperCase();
+ try{
+  const name=new Intl.DisplayNames([nativeCountryLocale(code)],{type:"region"}).of(code);
+  return name&&name!==code?name:countryName(code,"en");
+ }catch{return countryName(code,"en")}
+}
+
 export function countryName(country,locale="en"){
  try{return new Intl.DisplayNames([locale],{type:"region"}).of(country)||country}
  catch{return country}

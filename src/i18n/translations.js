@@ -1,4 +1,5 @@
 import {additionalLocales} from './locales/essentials.js';
+import {WELCOME_BACK_TRANSLATIONS} from './locales/welcome.js';
 import traditionalChinese from './locales/zh-TW.js';
 // Brand names and technical identifiers stay in their original language.
 // All unsupported phrases are shown in the original English; no invented
@@ -735,6 +736,10 @@ Object.assign(dictionaries.pt||{},{
   "or": "ou",
   "Choose the way you would like to pay securely.": "Escolha a forma de pagamento segura que preferir."
 });
+// Localize the greeting only. Customer-provided names are never dictionary input.
+for(const [locale,greeting] of Object.entries(WELCOME_BACK_TRANSLATIONS)){
+ if(dictionaries[locale])dictionaries[locale]["Welcome back,"]=greeting;
+}
 export const UI_DICTIONARIES=dictionaries;
 export const PROTECTED_BRANDS=Object.freeze(["BabiesIQ Cloud","BabiesIQ","Railway","Razorpay","PayPal","Cloudflare","Ubuntu","Debian"]);
 export function keepBrandTerms(source,translated){

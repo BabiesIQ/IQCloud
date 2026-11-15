@@ -1,6 +1,6 @@
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {Globe2,Search,Check,ChevronDown} from 'lucide-react';
-import {LANGUAGES,countryName,COUNTRY_OPTIONS,CURRENCY_BY_COUNTRY} from '@/i18n/config';
+import {LANGUAGES,countryName,nativeCountryName,nativeCountryLocale,COUNTRY_OPTIONS,CURRENCY_BY_COUNTRY} from '@/i18n/config';
 import {translationCompleteness} from '@/i18n/translations';
 import {useLocale} from '@/i18n/LocaleProvider';
 
@@ -17,7 +17,7 @@ export default function LanguageSelector(){
  const choices=useMemo(()=>{
   const searchTerm=search.trim().toLowerCase();
   if(tab==='language')return LANGUAGES.filter(x=>x.nativeName.toLowerCase().includes(searchTerm)||x.code.toLowerCase().includes(searchTerm));
-  return COUNTRY_OPTIONS.filter(c=>c.toLowerCase().includes(searchTerm)||countryName(c,language).toLowerCase().includes(searchTerm)||CURRENCY_BY_COUNTRY[c].toLowerCase().includes(searchTerm));
+  return COUNTRY_OPTIONS.filter(c=>c.toLowerCase().includes(searchTerm)||nativeCountryName(c).toLowerCase().includes(searchTerm)||countryName(c,"en").toLowerCase().includes(searchTerm)||countryName(c,language).toLowerCase().includes(searchTerm)||CURRENCY_BY_COUNTRY[c].toLowerCase().includes(searchTerm));
  },[search,tab,language]);
  function closeDrawer(){
   inputRef.current?.blur();
@@ -103,10 +103,10 @@ export default function LanguageSelector(){
     <div className="grid min-h-0 grid-cols-2 gap-1 overflow-y-auto px-5 pb-8 sm:grid-cols-3 sm:px-7" role="listbox">
      {choices.map(item=>{
       const code=tab==='language'?item.code:item;
-      const label=tab==='language'?item.nativeName:countryName(code,language);
+      const label=tab==='language'?item.nativeName:nativeCountryName(code);
       const selected=tab==='language'?language===code:country===code;
       return <button type="button" role="option" aria-selected={selected} key={code} onClick={()=>choose(code)} className={'min-h-14 rounded-xl border px-4 py-3 text-left text-sm transition hover:bg-muted '+(selected?'border-emerald-500 bg-emerald-500/10 font-semibold':'border-transparent')}>
-       <span className="flex items-center justify-between gap-2"><span lang={tab==='language'?code:undefined} className="min-w-0 break-words">{label}</span>{selected&&<Check size={15} className="shrink-0 text-emerald-500"/>}</span>
+       <span className="flex items-center justify-between gap-2"><span lang={tab==='language'?code:nativeCountryLocale(code)} className="min-w-0 break-words">{label}</span>{selected&&<Check size={15} className="shrink-0 text-emerald-500"/>}</span>
        {tab==='country'&&<span className="mt-1 block text-[11px] text-muted-foreground">{CURRENCY_BY_COUNTRY[code]}</span>}
       </button>;
      })}
