@@ -1,4 +1,4 @@
-import {ArrowUpRight, AudioLines, Github, Instagram, Code2, Clapperboard} from 'lucide-react';
+import {ArrowUpRight, AudioLines, Code2, Clapperboard} from 'lucide-react';
 import {useLocale} from '@/i18n/LocaleProvider';
 import '@/cloud-motion.css';
 
@@ -8,8 +8,8 @@ const socialLinks=[
  {name:'Telegram',handle:'@babiesiq',href:'https://t.me/babiesiq',kind:'telegram'}
 ];
 function SocialIcon({kind}){
- if(kind==='instagram')return <Instagram size={21} strokeWidth={2.1}/>;
- if(kind==='github')return <Github size={21} strokeWidth={2.1}/>;
+ if(kind==='instagram')return <svg aria-hidden="true" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.3"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.65" cy="6.5" r="1.05" fill="currentColor" stroke="none"/></svg>;
+ if(kind==='github')return <svg aria-hidden="true" viewBox="0 0 24 24" width="21" height="21" fill="currentColor"><path d="M12 .9A11.1 11.1 0 0 0 8.49 22.5c.56.1.77-.24.77-.53v-2.09c-3.15.69-3.81-1.34-3.81-1.34-.51-1.3-1.25-1.64-1.25-1.64-1.02-.7.08-.69.08-.69 1.13.08 1.73 1.15 1.73 1.15 1 .1.2 1.39 2.73.99.1-.73.4-1.23.74-1.52-2.51-.29-5.15-1.26-5.15-5.57 0-1.23.44-2.24 1.15-3.04-.12-.28-.5-1.45.1-3.01 0 0 .94-.3 3.06 1.16a10.6 10.6 0 0 1 5.57 0c2.12-1.44 3.05-1.16 3.05-1.16.61 1.56.23 2.73.11 3.01.72.8 1.14 1.81 1.14 3.04 0 4.32-2.64 5.28-5.16 5.57.41.36.78 1.06.78 2.13v3.15c0 .3.2.64.78.53A11.11 11.11 0 0 0 12 .9Z"/></svg>;
  return <svg aria-hidden="true" viewBox="0 0 24 24" width="21" height="21" fill="currentColor"><path d="M21.43 3.38a1.1 1.1 0 0 0-1.16-.14L2.72 10.58c-.93.4-.9 1.3.04 1.59l4.79 1.5 1.72 5.36c.3.96 1.17 1.13 1.84.43l2.54-2.67 4.93 3.61c.78.57 1.71.17 1.86-.78l2.3-15.1c.1-.65-.12-1.04-.7-1.14-.21-.03-.41-.03-.61 0Zm-3.19 3.48-8.53 7.83-.3 2.64-1.2-3.79 10.03-6.68Z"/></svg>;
 }
 export default function MusicEcosystem(){
