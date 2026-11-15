@@ -9,7 +9,7 @@ import BillingTermPicker from '@/components/cloud/BillingTermPicker';
 
 export const route={path:'/dashboard/checkout',layout:'owner',access:'authenticated'};
 export default function ServerCheckout(){
- const {formatPaise,formatINR,isInternational,currency,country,fxStatus}=useLocale();
+ const {formatPaise,formatINR,isInternational,currency,country,fxStatus,t}=useLocale();
  const [params]=useSearchParams();
  const draftId=params.get('draftId')||'';
  const renewInstanceId=params.get('renewInstanceId')||'';
@@ -164,28 +164,28 @@ export default function ServerCheckout(){
  return <main className="mx-auto max-w-3xl px-5 py-8 pb-24">
   <Link to={isRenewal?'/dashboard':'/dashboard/instances/new'} className="inline-flex items-center gap-2 text-sm text-muted-foreground"><ArrowLeft size={16}/> Back</Link>
   <p className="mt-7 text-xs font-bold uppercase tracking-widest text-emerald-500">Secure checkout</p>
-  <h1 className="mt-2 text-3xl font-semibold">{isRenewal?'Renew your instance':'Review and checkout'}</h1>
-  <p className="mt-3 text-sm text-muted-foreground">{isRenewal?'Renew the SAME VPS without creating a second service. Your existing validity is extended only after captured payment verification.':'Your root password is already encrypted with your draft; it is not required again after checkout.'}</p>
+  <h1 className="mt-2 text-3xl font-semibold">{t(isRenewal?'Renew your instance':'Review and checkout')}</h1>
+  <p className="mt-3 text-sm text-muted-foreground">{t(isRenewal?'Renew the SAME VPS without creating a second service. Your existing validity is extended only after captured payment verification.':'Your root password is already encrypted with your draft; it is not required again after checkout.')}</p>
   {loading?<p className="mt-7">Loading your configuration…</p>:draft&&quote?<div className="mt-7 space-y-5">
    <div className="rounded-2xl border bg-card p-6">
     <div className="grid gap-4 sm:grid-cols-2">
-     {[['Operating system',draft.os==='debian-12'?'Debian 12':draft.os==='ubuntu-22'?'Ubuntu 22.04 LTS':draft.os==='ubuntu-26'?'Ubuntu 26.04 LTS':'Ubuntu 24.04 LTS'],['RAM',draft.ram+' GB'],['CPU',draft.cpu+' vCPU'],['Region',draft.region],['SSH login','root'],['Storage','Shared ephemeral, no dedicated SSD']].map(([label,value])=><div key={label}><p className="text-xs text-muted-foreground">{label}</p><p className="mt-1 font-semibold">{value}</p></div>)}
+     {[['Operating system',draft.os==='debian-12'?'Debian 12':draft.os==='ubuntu-22'?'Ubuntu 22.04 LTS':draft.os==='ubuntu-26'?'Ubuntu 26.04 LTS':'Ubuntu 24.04 LTS'],['RAM',draft.ram+' GB'],['CPU',draft.cpu+' vCPU'],['Region',draft.region],['SSH login','root'],['Storage','Shared ephemeral, no dedicated SSD']].map(([label,value])=><div key={label}><p className="text-xs text-muted-foreground">{t(label)}</p><p className="mt-1 font-semibold">{t(value)}</p></div>)}
     </div>
-    {isRenewal&&draft.validUntil&&<p className="mt-4 rounded-xl bg-muted p-3 text-sm">Current validity ends: <strong>{new Date(draft.validUntil).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</strong>. Renewals extend from the later of now or the current expiry.</p>}
+    {isRenewal&&draft.validUntil&&<p className="mt-4 rounded-xl bg-muted p-3 text-sm">{t('Current validity ends:')} <strong>{new Date(draft.validUntil).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</strong>{t('. Renewals extend from the later of now or the current expiry.')}</p>}
    </div>
    <div className="rounded-2xl border bg-card p-6">
     <BillingTermPicker months={months} onChange={value=>{setMonths(value);setError('')}} ram={draft.ram} cpu={draft.cpu} disabled={Boolean(order)||paying}/>
-    {order&&<p className="mt-2 text-xs text-muted-foreground">Your secure {order.gateway==='paypal'?'PayPal':'Razorpay'} order is now locked to this billing term. Do not create another order to change validity.</p>}
+    {order&&<p className="mt-2 text-xs text-muted-foreground">{t('Your secure order is locked to this billing term. Do not create another order to change validity.')} ({order.gateway==='paypal'?'PayPal':'Razorpay'})</p>}
     <div className="mt-6 space-y-3 rounded-xl bg-muted/50 p-5 text-sm">
-     <div className="flex justify-between"><span>Monthly price × {displayedQuote.months} months</span><span>{(order?formatINR:formatPaise)(displayedQuote.subtotalPaise)}</span></div>
-     <div className="flex justify-between font-semibold text-emerald-600 dark:text-emerald-400"><span>Discount ({displayedQuote.discountPercent}%)</span><span>- {(order?formatINR:formatPaise)(displayedQuote.discountPaise)}</span></div>
+     <div className="flex justify-between"><span>{t('Monthly price')} × {displayedQuote.months} {t(displayedQuote.months===1?'month':'months')}</span><span>{(order?formatINR:formatPaise)(displayedQuote.subtotalPaise)}</span></div>
+     <div className="flex justify-between font-semibold text-emerald-600 dark:text-emerald-400"><span>{t('Discount')} ({displayedQuote.discountPercent}%)</span><span>- {(order?formatINR:formatPaise)(displayedQuote.discountPaise)}</span></div>
      <div className="flex justify-between border-t pt-3 text-lg font-bold"><span>Total payable</span><span>{(order?formatINR:formatPaise)(displayedQuote.totalPaise)}</span></div>
     </div>
     {isInternational&&<div className="mt-4 rounded-xl border border-amber-500/40 p-4 text-sm text-muted-foreground">
-      International compute prices are 2× the India rate with the same discount. {currency} prices above are estimates (FX: {fxStatus}).
-      <p className="mt-2 font-semibold">PayPal checkout currency: {actualPayPalCurrency}{paypalCurrencyFallback?' (your local currency is not supported by this PayPal merchant; USD fallback)':''}.</p>
+      {t('International compute prices are 2× the India rate with the same discount.')} {currency} {t('prices above are estimates')} ({t('Rate status:')} {t(fxStatus)}).
+      <p className="mt-2 font-semibold">{t('PayPal checkout currency')}: {actualPayPalCurrency}{paypalCurrencyFallback?' ('+t('Local currency unavailable; USD fallback')+')':''}.</p>
       {legacyUSDPaymentOrder&&<p className="mt-2 text-amber-600">An existing unpaid order was created in USD before the currency update. Its price and currency are locked. Please check that order before approving or starting another payment; do not pay twice.</p>}
-      {order?.gateway==='paypal'&&<p className="mt-2 font-semibold">Final PayPal total: {formatPayPalMinorAmount(order.amount,order.currency)} ({order.currency})</p>}
+      {order?.gateway==='paypal'&&<p className="mt-2 font-semibold">{t('Final PayPal total:')} {formatPayPalMinorAmount(order.amount,order.currency)} ({order.currency})</p>}
       <p className="mt-2">{paypalStatus.loading?'Checking PayPal availability…':paypalStatus.ready?'PayPal international checkout is available for eligible foreign buyers. Payment will be captured only after your approval.':paypalStatus.reason||'PayPal international checkout is not ready.'}</p>
      </div>}
     <p className="mt-4 text-xs leading-5 text-muted-foreground">Validity starts after SSH-ready for a new VPS. You will receive a warning 3 days before expiry. At expiry, the Railway deployment is stopped. Renewal requires another verified payment; there is no automatic card debit.</p>
@@ -193,7 +193,7 @@ export default function ServerCheckout(){
     {isRenewal&&draft.status==='expired'&&<label className="mt-4 flex items-start gap-2 text-sm"><input className="mt-1" type="checkbox" checked={riskAcknowledged} onChange={e=>setRiskAcknowledged(e.target.checked)}/><span>I understand restarting an expired Railway container may lose its files.</span></label>}
     <p className="mt-4 text-xs text-muted-foreground">Public SSH uses a provider hostname + port; dedicated IPv4 and IPv6 addresses are not included or guaranteed.</p>
     <button type="button" disabled={paying||paymentUncertain||(isInternational&&!paypalStatus.ready)||paypalReturnProcessing} onClick={pay} className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary p-4 font-semibold text-primary-foreground disabled:opacity-50">
-     <CreditCard size={18}/>{isInternational?(paying?'Opening PayPal…':paypalStatus.ready?'Pay with PayPal ('+actualPayPalCurrency+')':'PayPal checkout not yet active'):paying?'Opening payment…':paymentUncertain?'Verify payment in Dashboard':'Pay '+(order?formatINR:formatPaise)(displayedQuote.totalPaise)}
+     <CreditCard size={18}/>{isInternational?(paying?t('Opening PayPal…'):paypalStatus.ready?t('Pay with PayPal')+' ('+actualPayPalCurrency+')':t('PayPal checkout not yet active')):paying?t('Opening payment…'):paymentUncertain?t('Verify payment in Dashboard'):t('Pay')+' '+(order?formatINR:formatPaise)(displayedQuote.totalPaise)}
     </button>
     <p className="mt-3 text-center text-xs text-muted-foreground"><ShieldCheck size={13} className="mr-1 inline"/> The backend verifies the exact amount and gateway capture. Never pay twice for the same order.</p>
    </div>
