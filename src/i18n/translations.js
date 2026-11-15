@@ -1,3 +1,4 @@
+import {additionalLocales} from './locales/essentials.js';
 import traditionalChinese from './locales/zh-TW.js';
 // Brand names and technical identifiers stay in their original language.
 // All unsupported phrases are shown in the original English; no invented
@@ -36,6 +37,7 @@ const dictionaries={
  id:{"Home":"Beranda","Dashboard":"Dasbor","Pricing":"Harga","Preferences":"Preferensi","Domains":"Domain","Language":"Bahasa","Choose a language":"Pilih bahasa","Currency":"Mata uang","Log out":"Keluar","Log in":"Masuk","Refresh":"Segarkan","Cancel":"Batal","Close":"Tutup","Create server":"Buat server","Total payable":"Total pembayaran","Discount":"Diskon","Apple":"apel"}
 };
 dictionaries["pt-BR"]=dictionaries.pt;dictionaries["fr-CA"]=dictionaries.fr;dictionaries["es-MX"]=dictionaries.es;dictionaries["zh-TW"]={...dictionaries.zh,...traditionalChinese};
+for(const [code,essential] of Object.entries(additionalLocales))dictionaries[code]={...essential,...(dictionaries[code]||{})};
 // Reviewed human-style Hindi website copy. UI texts are keyed by their
 // original English source so every page can share the same translation.
 Object.assign(dictionaries.hi,{
