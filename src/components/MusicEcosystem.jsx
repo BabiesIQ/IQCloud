@@ -3,7 +3,7 @@ import {useLocale} from '@/i18n/LocaleProvider';
 import '@/cloud-motion.css';
 
 const socialLinks=[
- {name:'Instagram',handle:'@babaiesiq',href:'https://www.instagram.com/babaiesiq/',kind:'instagram'},
+ {name:'Instagram',handle:'@babaiesiq',href:'https://www.instagram.com/babaiesiq.tech/',kind:'instagram'},
  {name:'GitHub',handle:'@babiesiq',href:'https://github.com/BabiesIQ',kind:'github'},
  {name:'Telegram',handle:'@babiesiq',href:'https://t.me/babiesiq',kind:'telegram'}
 ];
