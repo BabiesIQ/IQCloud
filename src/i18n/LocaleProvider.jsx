@@ -68,13 +68,22 @@ function installDOMLanguage(language){
  }
  visit(root);
  let scheduled=false;
+ let disposed=false;
+ let frame=0;
  const observer=new MutationObserver(()=>{
-  if(scheduled)return;
+  if(disposed||scheduled)return;
   scheduled=true;
-  requestAnimationFrame(()=>{scheduled=false;visit(root)});
+  frame=requestAnimationFrame(()=>{
+   scheduled=false;
+   if(!disposed)visit(root);
+  });
  });
  observer.observe(root,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["placeholder","title","aria-label"]});
- return ()=>observer.disconnect();
+ return ()=>{
+  disposed=true;
+  observer.disconnect();
+  if(frame)cancelAnimationFrame(frame);
+ };
 }
 export function LocaleProvider({children}){
  const [preferences,setPreferences]=useState(getPreferences);
