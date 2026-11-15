@@ -582,5 +582,14 @@ export default Object.freeze({
   "Open the domain": "開啟網域",
   "No payments have been captured.": "尚未完成任何款項請款。",
   "Live account": "正式帳戶",
-  "No automatic card debit": "不會自動從卡片扣款"
+  "No automatic card debit": "不會自動從卡片扣款",
+  "PayPal and Razorpay checkouts may collect real payments for eligible orders. This is a draft refund-policy overview, not a finalized policy. Keep your payment reference and check the amount and billing term before approving a purchase.": "PayPal 與 Razorpay 的結帳功能可能向符合資格的訂單收取真實款項。本頁為退款政策的草稿說明，並非正式的最終政策。請妥善保存付款編號，並在同意付款前再次確認金額和服務期限。",
+  "Customer protections and refunds": "消費者保障與退款",
+  "The operator must clearly publish refund eligibility, cancellation procedures, taxes and dispute-resolution contacts. This draft does not limit any statutory consumer rights.": "營運者應清楚公布退款資格、取消程序、適用稅費及爭議處理聯絡方式。本草稿不限制任何法律保障的消費者權利。",
+  "If payment is confirmed but a VPS cannot be provisioned, the order must be reconciled and the customer informed of applicable refund or reversal options through the original payment method where supported. Do not pay twice for the same order.": "如果已確認付款，但 VPS 無法成功部署，營運者應核對訂單並告知客戶適用的退款或撤銷付款方式；付款管道支援時，應透過原付款方式處理。相同訂單請勿重複付款。",
+  "Renewing a VPS requires a new verified payment; recurring auto-debits are not enabled. The dashboard shows service validity. Expiry, redeployment or permanent deletion can erase ephemeral files, so back up important data.": "續約 VPS 必須重新完成付款驗證，系統不會自動定期扣款。您可以在控制台查看服務期限。到期、重新部署或永久刪除，都可能清除暫存檔案，請務必備份重要資料。",
+  "BabiesIQ Cloud provides Railway-backed Linux containers for eligible verified orders. These are shared-kernel containers, not fully virtualized VMs or Windows RDP. Provider capacity, availability and service-level commitments depend on the actual offering.": "BabiesIQ Cloud 為符合資格且已完成驗證的訂單提供以 Railway 為基礎的 Linux 容器。這些容器與主機共用核心，並非完整虛擬化的 VM 或 Windows RDP。提供者資源、服務可用性與服務水準承諾，依實際方案而定。",
+  "Compute prices are based on INR monthly rates, with 1 month (0% off), 3 months (7% off), 6 months (14% off) and 12 months (30% off). Discounts apply to the full term subtotal. Razorpay handles eligible India checkout and PayPal supports eligible international buyers in provider-supported currencies. The payment gateway confirms the final payable currency and amount. Renewals require a new verified payment and do not create automatic recurring debits.": "運算資源的價格以每月印度盧比費率為基礎，可選擇 1 個月（無折扣）、3 個月（省 7%）、6 個月（省 14%）或 12 個月（省 30%）。折扣套用於整個服務期限的原價總額。Razorpay 處理符合資格的印度付款，PayPal 則支援符合資格的國際買家使用付款服務支援的幣別。最終應付幣別與金額以付款服務確認為準。續約必須重新驗證付款，不會自動定期扣款。",
+  "Some preview elements may contain illustrative data, but real account, billing and server operations can process the information listed here.": "部分預覽畫面可能使用示例資料，但實際帳戶、付款與伺服器操作可能處理上述資訊。",
+  "Razorpay or PayPal handles payments depending on the eligible buyer and selected gateway; full card details are not stored by BabiesIQ Cloud.": "Razorpay 或 PayPal 會依符合資格的買家與所選付款方式處理款項；BabiesIQ Cloud 不會儲存完整信用卡資料。"
 });
