@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">BabiesIQ Cloud</title>
+  <desc id="logoDesc">Silver three-dimensional cloud enclosing three servers, with an emerald orbital ring and connected nodes</desc>
+  <defs>
+    <linearGradient id="silver" x1=".12" y1="0" x2=".85" y2="1">
+      <stop offset="0" stop-color="#fcffff"/><stop offset=".22" stop-color="#d8ecfa"/><stop offset=".46" stop-color="#f2fbff"/><stop offset=".69" stop-color="#9cb8cd"/><stop offset="1" stop-color="#486a7a"/>
+    </linearGradient>
+    <linearGradient id="chrome" x1="0" y1="0" x2=".6" y2="1">
+      <stop stop-color="#fff"/><stop offset=".25" stop-color="#e7f8ff"/><stop offset=".48" stop-color="#bfd9e9"/><stop offset=".72" stop-color="#7298ab"/><stop offset="1" stop-color="#244e5b"/>
+    </linearGradient>
+    <linearGradient id="well" x1=".2" y1="0" x2=".85" y2="1">
+      <stop stop-color="#1c4854"/><stop offset=".4" stop-color="#092e34"/><stop offset=".8" stop-color="#012922"/><stop offset="1" stop-color="#047e67"/>
+    </linearGradient>
+    <linearGradient id="server" x1=".1" y1="0" x2=".95" y2="1">
+      <stop stop-color="#fff"/><stop offset=".24" stop-color="#e1f1fe"/><stop offset=".53" stop-color="#91b8d0"/><stop offset=".82" stop-color="#416879"/><stop offset="1" stop-color="#0c4550"/>
+    </linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2=".7" y2="1">
+      <stop stop-color="#506f7c"/><stop offset=".28" stop-color="#203b47"/><stop offset="1" stop-color="#072b32"/>
+    </linearGradient>
+    <linearGradient id="neon" x1="0" y1="0" x2="1" y2=".2">
+      <stop stop-color="#00b78d"/><stop offset=".34" stop-color="#10ffb7"/><stop offset=".7" stop-color="#92fff4"/><stop offset="1" stop-color="#00ceb0"/>
+    </linearGradient>
+    <radialGradient id="orb" cx=".3" cy=".2" r=".8">
+      <stop stop-color="#b5fff5"/><stop offset=".45" stop-color="#15f9cd"/><stop offset="1" stop-color="#00a988"/>
+    </radialGradient>
+    <filter id="glow" x="-45%" y="-45%" width="190%" height="190%">
+      <feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur"/><feOffset in="blur" dx="1" dy="6" result="offset"/><feComponentTransfer in="offset" result="fade"><feFuncA type="linear" slope=".3"/></feComponentTransfer><feMerge><feMergeNode in="fade"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Orbit behind the silver shell -->
+  <path d="M342 185 C469 140 523 193 461 274" fill="none" stroke="#00beab" stroke-width="14" opacity=".75" filter="url(#glow)"/>
+  <path d="M342 185 C469 140 523 193 461 274" fill="none" stroke="url(#neon)" stroke-width="8" stroke-linecap="round"/>
+  <path d="M84 371 C47 360 30 333 34 298 C38 262 59 237 96 229 C105 188 138 163 177 163 C192 163 204 167 216 172 C236 121 278 102 321 110 C373 119 403 156 407 204 C444 198 474 218 480 251 C504 268 501 321 474 352 C457 373 434 381 397 384 L128 385 C110 385 96 381 84 371Z" fill="url(#silver)" stroke="#bddbe8" stroke-width="4" filter="url(#shadow)"/>
+  <path d="M104 353 C72 341 68 307 91 274 C107 251 130 246 157 248 C168 219 187 208 216 212 C242 163 273 144 311 151 C360 160 379 194 371 246 C412 229 443 249 453 284 C476 328 445 358 403 362 C307 373 208 369 104 353Z" fill="url(#well)" stroke="#18ebca" stroke-width="3"/>
+  <path d="M45 300 C55 251 83 244 111 239 C124 198 152 181 183 185 C197 185 208 191 218 193" fill="none" stroke="#fff" stroke-opacity=".77" stroke-width="6" stroke-linecap="round"/>
+  <path d="M219 169 C242 117 286 115 317 121 C364 128 393 166 394 216" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="5" stroke-linecap="round"/>
+  <path d="M400 217 C434 209 460 232 465 259" fill="none" stroke="#fff" stroke-opacity=".62" stroke-width="5" stroke-linecap="round"/>
+  <path d="M59 317 C58 346 79 369 125 373 L405 374 C458 373 483 344 479 305" fill="none" stroke="#02edb9" stroke-opacity=".55" stroke-width="5"/>
+  <!-- Polished 3D servers -->
+  <g filter="url(#shadow)">
+    <path d="M189 242 L314 223 Q331 221 342 231 L354 242 Q358 247 358 259 L358 276 Q356 293 339 296 L195 308 Q171 305 171 287 L171 263 Q171 247 189 242Z" fill="url(#server)" stroke="#e6faff" stroke-width="2"/>
+    <path d="M232 248 L333 235 Q350 234 351 252 L351 278 Q350 288 338 290 L231 300 Q214 301 214 285 L214 264 Q214 252 232 248Z" fill="url(#face)" stroke="#88b5c7" stroke-width="1.5"/>
+    <path d="M180 251 Q196 246 221 247 L330 232" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="3"/>
+    <rect x="234" y="265" width="49" height="6" rx="3" fill="#061d26" stroke="#628e9a" stroke-width=".9"/>
+    <circle cx="306" cy="262" r="5.2" fill="url(#orb)" filter="url(#glow)"/><circle cx="323" cy="260" r="5.2" fill="url(#orb)" filter="url(#glow)"/><circle cx="340" cy="258" r="5.2" fill="url(#orb)" filter="url(#glow)"/>
+    <path d="M187 291 L341 280 Q358 281 357 302 L357 311 Q353 325 338 326 L190 338 Q172 335 171 318 L171 305 Q173 293 187 291Z" fill="url(#server)" stroke="#d5f8ff" stroke-width="2"/>
+    <path d="M232 300 L337 291 Q350 290 351 305 L351 311 Q350 317 338 319 L230 328 Q215 329 214 316 L214 311 Q216 302 232 300Z" fill="url(#face)" stroke="#7fb6c1" stroke-width="1.2"/>
+    <path d="M177 300 L343 285" fill="none" stroke="#0dffbc" stroke-width="3" opacity=".9" filter="url(#glow)"/>
+    <rect x="235" y="310" width="48" height="5" rx="2.5" fill="#031820" stroke="#527886" stroke-width=".7"/>
+    <circle cx="306" cy="302" r="5" fill="url(#orb)" filter="url(#glow)"/><circle cx="323" cy="300" r="5" fill="url(#orb)" filter="url(#glow)"/><circle cx="340" cy="299" r="5" fill="url(#orb)" filter="url(#glow)"/>
+    <path d="M187 326 L341 315 Q358 317 357 335 L357 346 Q354 362 337 363 L189 372 Q171 368 171 352 L171 340 Q174 329 187 326Z" fill="url(#server)" stroke="#d8f8ff" stroke-width="2"/>
+    <path d="M229 335 L336 326 Q350 326 350 339 L350 347 Q349 355 336 356 L231 364 Q214 365 214 353 L214 345 Q214 337 229 335Z" fill="url(#face)" stroke="#76a7b4" stroke-width="1.2"/>
+    <path d="M176 335 L340 321" fill="none" stroke="#18ffca" stroke-width="3" opacity=".9" filter="url(#glow)"/>
+    <rect x="235" y="345" width="48" height="5" rx="2.5" fill="#061b24" stroke="#628e9a" stroke-width=".7"/>
+    <circle cx="306" cy="338" r="5" fill="url(#orb)" filter="url(#glow)"/><circle cx="323" cy="336" r="5" fill="url(#orb)" filter="url(#glow)"/><circle cx="340" cy="335" r="5" fill="url(#orb)" filter="url(#glow)"/>
+  </g>
+  <!-- Front side of the global orbit -->
+  <path d="M66 350 C145 411 375 351 460 251" fill="none" stroke="#00dcbc" stroke-width="18" stroke-linecap="round" opacity=".48" filter="url(#glow)"/>
+  <path d="M66 350 C145 411 375 351 460 251" fill="none" stroke="url(#neon)" stroke-width="10" stroke-linecap="round"/>
+  <path d="M67 346 C148 398 368 343 454 252" fill="none" stroke="#d6fffb" stroke-width="2.5" stroke-linecap="round" opacity=".85"/>
+  <!-- Connected network terminals -->
+  <path d="M209 380 V397 Q209 412 194 412 H187 Q175 412 175 424 V436 M255 379 V441 M303 380 V398 Q303 412 318 412 H329 Q341 412 341 424 V436" fill="none" stroke="#073e40" stroke-width="16" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M209 380 V397 Q209 412 194 412 H187 Q175 412 175 424 V436 M255 379 V441 M303 380 V398 Q303 412 318 412 H329 Q341 412 341 424 V436" fill="none" stroke="url(#neon)" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" filter="url(#glow)"/>
+  <g stroke="#a5fff8" stroke-width="2.5" fill="url(#orb)" filter="url(#glow)">
+    <circle cx="175" cy="449" r="17"/><circle cx="255" cy="453" r="18"/><circle cx="341" cy="449" r="17"/>
+  </g>
+</svg>

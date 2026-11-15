@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import {useLocale} from '@/i18n/LocaleProvider';
+import BrandLogo from '@/components/BrandLogo';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Bell, Cloud, Plus, RefreshCw, Server, Settings2, ShieldCheck } from 'lucide-react';
 import { apiRequest } from '@/services/apiClient';
@@ -151,7 +152,7 @@ export default function Dashboard() {
   {to:'/notifications',title:'Notifications',detail:'Review account activity',Icon:Bell},
  ];
  return <main className="mx-auto max-w-6xl px-5 pb-20 pt-10 sm:pt-14">
-  <div className="flex flex-wrap items-start justify-between gap-4"><div><div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-emerald-500"><Cloud size={15}/> Cloud workspace <span className="rounded border px-2 py-0.5 text-[10px] text-muted-foreground" title="Frontend deployment version">WEB-20261109-4</span></div><h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{loading?t('Loading workspace…'):<><span>{t('Welcome back,')}</span>{' '}<span data-no-translate>{name}</span></>}</h1><p className="mt-3 text-sm text-muted-foreground">Your infrastructure and account, in one place.</p></div><button type="button" onClick={refresh} disabled={loading} className="flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm hover:bg-muted disabled:opacity-50"><RefreshCw size={16}/> Refresh</button></div>
+  <div className="flex flex-wrap items-start justify-between gap-4"><div><div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-emerald-500"><BrandLogo size={25} className="h-6 w-6" /> Cloud workspace <span className="rounded border px-2 py-0.5 text-[10px] text-muted-foreground" title="Frontend deployment version">WEB-20261109-4</span></div><h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{loading?t('Loading workspace…'):<><span>{t('Welcome back,')}</span>{' '}<span data-no-translate>{name}</span></>}</h1><p className="mt-3 text-sm text-muted-foreground">Your infrastructure and account, in one place.</p></div><button type="button" onClick={refresh} disabled={loading} className="flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm hover:bg-muted disabled:opacity-50"><RefreshCw size={16}/> Refresh</button></div>
   {checkoutMessage&&!checkoutErrorDraft&&<div role="status" className="mt-6 rounded-xl border border-amber-500/30 p-4 text-sm">{checkoutMessage}</div>}
   {error&&<div role="alert" className="mt-7 rounded-xl border border-red-500/30 p-4 text-sm">{error} <button onClick={refresh} className="ml-2 underline">Try again</button></div>}
   <div className="mt-9 grid gap-4 sm:grid-cols-1">

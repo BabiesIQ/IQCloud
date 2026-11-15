@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import {useLocale} from '@/i18n/LocaleProvider';
+import BrandLogo from '@/components/BrandLogo';
 import '@/cloud-motion.css';
 import ApperIcon from '@/components/ApperIcon';
 import SharedInfrastructure from '@/components/cloud/SharedInfrastructure';
@@ -20,7 +21,7 @@ export default function Home() {
     <main>
       <section className="mx-auto max-w-5xl px-5 pb-20 pt-24 text-center sm:pt-32">
         <div className="mx-auto mb-7 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-xs text-muted-foreground">
-          <span className="size-2 rounded-full bg-primary" />
+          <BrandLogo size={24} className="h-6 w-6" />
           BabiesIQ Cloud · Preview
         </div>
         <h1 className="mx-auto max-w-4xl text-4xl font-semibold leading-[1.13] tracking-[-0.055em] sm:text-6xl md:text-7xl">

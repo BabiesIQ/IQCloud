@@ -3,6 +3,7 @@ import {Globe2,Search,Check,ChevronDown} from 'lucide-react';
 import {LANGUAGES,countryName,nativeCountryName,nativeCountryLocale,COUNTRY_OPTIONS,CURRENCY_BY_COUNTRY} from '@/i18n/config';
 import {translationCompleteness} from '@/i18n/translations';
 import {useLocale} from '@/i18n/LocaleProvider';
+import BrandLogo from '@/components/BrandLogo';
 
 export default function LanguageSelector(){
  const locale=useLocale();
@@ -89,7 +90,7 @@ export default function LanguageSelector(){
    <section role="dialog" aria-modal={open} aria-label="Choose language and currency" className={'relative flex max-h-[86dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-[30px] border bg-background text-foreground shadow-2xl sm:mb-6 sm:max-h-[84dvh] sm:rounded-3xl '+(dragging?'transition-none':'transition-transform duration-300 ease-out')} style={{transform:open?'translateY('+dragY+'px)':'translateY(110%)'}}>
     <div className="touch-none select-none border-b px-6 pb-5 pt-3 sm:px-8" onPointerDown={onSwipeStart} onPointerMove={onSwipeMove} onPointerUp={onSwipeEnd} onPointerCancel={onSwipeCancel}>
      <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-muted-foreground/40" aria-hidden="true"/>
-     <div><p className="text-xs font-semibold uppercase tracking-widest text-emerald-500">BabiesIQ Cloud</p><h2 className="mt-1 text-2xl font-bold sm:text-3xl">{t('Choose a language')}</h2></div>
+     <div><p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-emerald-500"><BrandLogo size={28} className="h-7 w-7" />BabiesIQ Cloud</p><h2 className="mt-1 text-2xl font-bold sm:text-3xl">{t('Choose a language')}</h2></div>
     </div>
     <div className="grid grid-cols-2 gap-2 border-b px-6 py-3 sm:px-8">
      <button type="button" onClick={()=>{setTab('language');setSearch('')}} className={'rounded-xl px-4 py-3 text-sm font-semibold '+(tab==='language'?'bg-emerald-500/15 text-emerald-500':'hover:bg-muted')}>{t('Language')} · 60</button>
