@@ -22,7 +22,7 @@ assert.equal(nativeCountryLocale('IN'), 'hi');
 assert.equal(nativeCountryName('AM'), new Intl.DisplayNames(['hy'], { type: 'region' }).of('AM'));
 assert.notEqual(nativeCountryName('AM'), countryName('AM', 'si'), 'Country labels must ignore the website language');
 const dashboard = readFileSync('src/pages/Dashboard.jsx', 'utf8');
-assert.ok(dashboard.includes('<span data-no-translate>{name}</span>'), 'A user's name must never be translated');
+assert.ok(dashboard.includes('<span data-no-translate>{name}</span>'), "A user's name must never be translated");
 assert.ok(dashboard.includes("t('Welcome back,')"), 'Greeting must be localized through the locale provider');
 for (const path of ['src/components/LanguageSelector.jsx','src/pages/CurrencyPage.jsx','src/components/CloudPreferences.jsx']) {
   const content = readFileSync(path, 'utf8');
