@@ -113,7 +113,7 @@ export default function AdminDashboard(){
    if(tab==='users')await load('users',page,query);
   }catch(e){onError(e)}finally{setActing(false)}
  }
- async function logout(){try{await apiRequest('/api/v1/admin/logout',{method:'POST'})}catch{}navigate('/admin/login',{replace:true})}
+ async function logout(){try{await apiRequest('/api/v1/admin/logout',{method:'POST'});navigate('/admin/login',{replace:true})}catch(e){onError(e)}}
  if(loading)return <div className="min-h-screen bg-background"><Spinner text="Checking admin session…"/></div>;
  if(!admin)return <div className="grid min-h-screen place-items-center bg-background"><Button onClick={()=>navigate('/admin/login')}>Admin sign in</Button></div>;
  const stats=overview||{};
