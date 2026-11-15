@@ -196,21 +196,39 @@ export default function ServerCheckout(){
     <div className="mt-4 flex gap-2 rounded-xl border border-amber-500/30 bg-amber-500/5 p-3 text-xs leading-5 text-muted-foreground"><AlertTriangle size={17} className="shrink-0 text-amber-500"/> Railway root storage is ephemeral. Expiry followed by redeployment may erase data. Back up important files and renew before expiry.</div>
     {isRenewal&&draft.status==='expired'&&<label className="mt-4 flex items-start gap-2 text-sm"><input className="mt-1" type="checkbox" checked={riskAcknowledged} onChange={e=>setRiskAcknowledged(e.target.checked)}/><span>I understand restarting an expired Railway container may lose its files.</span></label>}
     <p className="mt-4 text-xs text-muted-foreground">Public SSH uses a provider hostname + port; dedicated IPv4 and IPv6 addresses are not included or guaranteed.</p>
-    <button type="button" disabled={paying||paymentUncertain||(isInternational&&!paypalStatus.ready)||paypalReturnProcessing} onClick={pay} className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary p-4 font-semibold text-primary-foreground disabled:opacity-50">
-     <CreditCard size={18}/>{isInternational?(paying?t('Opening PayPal…'):paypalStatus.ready?t('Pay with PayPal')+' ('+actualPayPalCurrency+')':t('PayPal checkout not yet active')):paying?t('Opening payment…'):paymentUncertain?t('Verify payment in Dashboard'):t('Pay')+' '+(order?formatINR:formatPaise)(displayedQuote.totalPaise)}
-    </button>
-    {isInternational&&paypalStatus.ready&&<PayPalGuestCardButton
-      enabled={paypalStatus.guestCardEnabled}
-      clientId={paypalStatus.clientId}
-      mode={paypalStatus.mode}
-      country={country} currency={suggestedPayPalCurrency}
-      draftId={instanceId} billingMonths={months} kind={isRenewal?'renewal':'new'}
-      totalINRPaise={quote.totalPaise}
-      disabled={paying||paymentUncertain||paypalReturnProcessing||loading||(isRenewal&&draft.status==='expired'&&!riskAcknowledged)}
-      onOrder={result=>setOrder(result)}
-      onCapture={()=>navigate('/dashboard',{replace:true})}
-      onFailure={message=>{setPaymentUncertain(true);setError(message)}}
-    />}
+    {isInternational?<div className="mt-6 space-y-4">
+      <div>
+       <h2 className="text-lg font-bold tracking-tight">{t('Choose a payment method')}</h2>
+       <p className="mt-1 text-sm text-muted-foreground">{t('Choose the way you would like to pay securely.')}</p>
+      </div>
+      {paypalStatus.ready&&<PayPalGuestCardButton
+       enabled={paypalStatus.guestCardEnabled}
+       clientId={paypalStatus.clientId}
+       mode={paypalStatus.mode}
+       country={country} currency={suggestedPayPalCurrency}
+       draftId={instanceId} billingMonths={months} kind={isRenewal?'renewal':'new'}
+       totalINRPaise={quote.totalPaise}
+       disabled={paying||paymentUncertain||paypalReturnProcessing||loading||(isRenewal&&draft.status==='expired'&&!riskAcknowledged)}
+       onOrder={result=>setOrder(result)}
+       onCapture={()=>navigate('/dashboard',{replace:true})}
+       onFailure={message=>{setPaymentUncertain(true);setError(message)}}
+      />}
+      <div className="flex items-center gap-3 py-0.5" aria-hidden="true"><span className="h-px flex-1 bg-border"/><span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('or')}</span><span className="h-px flex-1 bg-border"/></div>
+      <section aria-label={t('Pay with PayPal')} className="rounded-2xl border bg-card p-4 sm:p-5">
+       <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+         <h3 className="text-base font-bold tracking-tight sm:text-lg">{t('Pay with PayPal')}</h3>
+         <p className="mt-1 text-sm text-muted-foreground">{t('Use your PayPal account or a linked payment method.')}</p>
+        </div>
+        <span className="inline-flex items-center rounded-lg bg-[#e6f2ff] px-3 py-1.5 text-lg font-black italic tracking-tight text-[#003087]" aria-label="PayPal">PayPal</span>
+       </div>
+       <button type="button" disabled={paying||paymentUncertain||!paypalStatus.ready||paypalReturnProcessing} onClick={payWithPayPal} className="mt-4 flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-[#0070ba] px-4 py-3 font-semibold text-white transition-colors hover:bg-[#005c99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0070ba] disabled:cursor-not-allowed disabled:opacity-50">
+        {paying?t('Opening PayPal…'):paypalStatus.ready?t('Continue with PayPal')+' · '+actualPayPalCurrency:t('PayPal checkout not yet active')}
+       </button>
+      </section>
+     </div>:<button type="button" disabled={paying||paymentUncertain||paypalReturnProcessing} onClick={pay} className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary p-4 font-semibold text-primary-foreground disabled:opacity-50">
+      <CreditCard size={18}/>{paying?t('Opening payment…'):paymentUncertain?t('Verify payment in Dashboard'):t('Pay')+' '+(order?formatINR:formatPaise)(displayedQuote.totalPaise)}
+     </button>}
     <p className="mt-3 text-center text-xs text-muted-foreground"><ShieldCheck size={13} className="mr-1 inline"/> The backend verifies the exact amount and gateway capture. Never pay twice for the same order.</p>
    </div>
   </div>:null}
