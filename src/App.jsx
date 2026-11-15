@@ -4,6 +4,7 @@ import { Toaster } from 'sonner';
 import { Bell, MoonStar, SunDim, Sparkles } from 'lucide-react';
 import SiteMotion from '@/components/SiteMotion';
 import BrandLogo from '@/components/BrandLogo';
+import NavIcon from '@/components/NavIcon';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { LocaleProvider, useLocale } from '@/i18n/LocaleProvider';
 import LanguageSelector from '@/components/LanguageSelector';
@@ -113,12 +114,12 @@ function Header() {
     } finally { setLoggingOut(false); }
   }
   const menuItems = [
-    { to: '/', label: 'Home', icon: '⌂' },
-    ...(account ? [{ to: '/dashboard', label: 'Dashboard', icon: '▦' }, { to: '/security', label: 'Security Center', icon: '♢' }] : []),
-    { to: '/pricing', label: 'Pricing', icon: '◇' },
-    { to: '/currency', label: 'Currency', icon: '¤' },
-    ...(account ? [{ to: '/settings', label: 'Preferences', icon: '⚙' }] : []),
-    { to: '/docs', label: 'Documentation', icon: '◫' }
+    { to: '/', label: 'Home', icon: 'home' },
+    ...(account ? [{ to: '/dashboard', label: 'Dashboard', icon: 'dashboard' }, { to: '/security', label: 'Security Center', icon: 'security' }] : []),
+    { to: '/pricing', label: 'Pricing', icon: 'pricing' },
+    { to: '/currency', label: 'Currency', icon: 'currency' },
+    ...(account ? [{ to: '/settings', label: 'Preferences', icon: 'preferences' }] : []),
+    { to: '/docs', label: 'Documentation', icon: 'documentation' }
   ];
   return <>
     <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
@@ -154,7 +155,7 @@ function Header() {
         <div className="flex-1 space-y-1 overflow-y-auto p-3">
                     <div className="mt-2 rounded-xl border border-primary/20 bg-primary/5">
             <button type="button" onClick={toggleDomainMenu} aria-expanded={domainsMenuOpen} aria-controls="cloud-domains-submenu" className="flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold hover:bg-muted">
-              <span className="flex items-center gap-3"><span aria-hidden="true" className="w-6 text-center text-lg">◎</span>{t('Domains')}</span>
+              <span className="flex items-center gap-3"><NavIcon name="domains" size={30}/>{t('Domains')}</span>
               <span aria-hidden="true">{domainsMenuOpen?'▾':'▸'}</span>
             </button>
             {domainsMenuOpen&&<div id="cloud-domains-submenu" className="iq-submenu-enter space-y-1 border-t px-3 py-2">
@@ -165,14 +166,14 @@ function Header() {
               {account&&domainServers.map(({instance,number})=><Link key={instance._id} to={'/domains/'+encodeURIComponent(instance._id)} onClick={()=>setMenuOpen(false)} className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-muted"><span aria-hidden="true">▣</span><span className="min-w-0 flex-1 truncate">Instance {number} · {instance.os==='ubuntu-22'?'Ubuntu 22':instance.os==='ubuntu-26'?'Ubuntu 26':instance.os==='debian-12'?'Debian 12':'Ubuntu 24'}</span><span aria-hidden="true">›</span></Link>)}
             </div>}
           </div>
-          {menuItems.map(item => <Link key={item.to} to={item.to} onClick={() => setMenuOpen(false)} className="iq-menu-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium hover:bg-muted focus-visible:bg-muted"><span aria-hidden="true" className="w-6 text-center text-lg">{item.icon}</span>{t(item.label)}</Link>)}
+          {menuItems.map(item => <Link key={item.to} to={item.to} onClick={() => setMenuOpen(false)} className="iq-menu-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium hover:bg-muted focus-visible:bg-muted"><NavIcon name={item.icon} size={30}/>{t(item.label)}</Link>)}
           {account&&<div className="mt-2 rounded-xl border">
-           <button type="button" onClick={()=>setNetworkMenuOpen(v=>!v)} aria-expanded={networkMenuOpen} className="flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold hover:bg-muted"><span className="flex items-center gap-3"><span aria-hidden="true" className="w-6 text-center text-lg">⇅</span>{t('Networking')}</span><span aria-hidden="true">{networkMenuOpen?'▾':'▸'}</span></button>
+           <button type="button" onClick={()=>setNetworkMenuOpen(v=>!v)} aria-expanded={networkMenuOpen} className="flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold hover:bg-muted"><span className="flex items-center gap-3"><NavIcon name="networking" size={30}/>{t('Networking')}</span><span aria-hidden="true">{networkMenuOpen?'▾':'▸'}</span></button>
            {networkMenuOpen&&<div className="iq-submenu-enter space-y-1 border-t px-3 py-2"><Link onClick={()=>setMenuOpen(false)} to="/dashboard/networking/ports?tab=inbound" className="block rounded-lg px-4 py-3 text-sm hover:bg-muted">Inbound · HTTP ports</Link><Link onClick={()=>setMenuOpen(false)} to="/dashboard/networking/ports?tab=outbound" className="block rounded-lg px-4 py-3 text-sm hover:bg-muted">Outbound · Connections</Link></div>}
           </div>}
         </div>
         <div className="border-t p-3">
-          {account ? <button type="button" onClick={signOut} disabled={loggingOut} className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium text-red-500 hover:bg-red-500/10 disabled:opacity-50"><span aria-hidden="true" className="w-6 text-center">⇥</span>{loggingOut ? 'Logging out…' : 'Log out'}</button> :
+          {account ? <button type="button" onClick={signOut} disabled={loggingOut} className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium text-red-500 hover:bg-red-500/10 disabled:opacity-50"><NavIcon name="logout" size={30}/>{loggingOut ? 'Logging out…' : 'Log out'}</button> :
           <Link to="/login" onClick={() => setMenuOpen(false)} className="block rounded-xl bg-primary px-4 py-3 text-center text-sm font-medium text-primary-foreground">Log in</Link>}
         </div>
       </aside>

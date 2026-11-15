@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import {useLocale} from '@/i18n/LocaleProvider';
 import BrandLogo from '@/components/BrandLogo';
+import NavIcon from '@/components/NavIcon';
 import '@/cloud-motion.css';
 import ApperIcon from '@/components/ApperIcon';
 import SharedInfrastructure from '@/components/cloud/SharedInfrastructure';
@@ -58,7 +59,7 @@ export default function Home() {
               { label: 'Memory', value: '4 GB', icon: 'MemoryStick' },
             ].map(item => (
               <div key={item.label} className="rounded-2xl border border-border bg-background p-5">
-                <ApperIcon name={item.icon} size={19} className="text-primary" />
+                <NavIcon name={item.icon==='Globe2'?'domains':item.icon==='LayoutDashboard'?'dashboard':'preferences'} size={29}/>
                 <div className="mt-5 text-xs text-muted-foreground">{t(item.label)}</div>
                 <div className="mt-1 text-sm font-semibold">{item.value}</div>
               </div>
@@ -88,7 +89,7 @@ export default function Home() {
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             {features.map(item => (
               <div key={item.title} className="rounded-2xl border border-border bg-card p-6">
-                <span className="grid size-11 place-items-center rounded-xl bg-muted text-foreground"><ApperIcon name={item.icon} size={20}/></span>
+                <span className="grid size-11 place-items-center rounded-xl bg-muted text-foreground"><NavIcon name={item.icon==='Globe2'?'domains':item.icon==='LayoutDashboard'?'dashboard':'preferences'} size={30}/></span>
                 <h3 className="mt-6 text-base font-semibold">{t(item.title)}</h3>
                 <p className="mt-3 text-sm leading-7 text-muted-foreground">{t(item.description)}</p>
               </div>
