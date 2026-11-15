@@ -138,3 +138,16 @@
 .iq-nav-icon {filter:drop-shadow(0 1px 2px rgba(0,202,178,.25));transition:transform .24s ease,filter .24s ease}
 @media(hover:hover){.iq-nav-panel a:hover .iq-nav-icon,.iq-nav-panel button:hover .iq-nav-icon,main a:hover .iq-nav-icon{transform:translateY(-1px) scale(1.07);filter:drop-shadow(0 2px 4px rgba(0,226,182,.44))}}
 @media(prefers-reduced-motion:reduce){.iq-nav-icon{transition:none!important;transform:none!important}}
+
+/* Stop the native "Save image" callout when a visitor long-presses UI logos.
+   The image itself never takes pointer hits; outer links/buttons remain clickable. */
+.iq-protected-icon,
+.iq-protected-icon > .iq-protected-image {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.iq-protected-icon > .iq-protected-image {
+  pointer-events: none;
+}

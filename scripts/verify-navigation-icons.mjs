@@ -16,3 +16,6 @@ assert.ok(app.includes('<NavIcon name={item.icon}'),'Menu must use the shared co
 assert.ok(readFileSync('src/pages/Home.jsx','utf8').includes('<NavIcon'),'Home must match');
 assert.ok(readFileSync('src/pages/Dashboard.jsx','utf8').includes('<NavIcon'),'Dashboard must match');
 console.log('Navigation icon QA: 10 vector assets and shared sidebar, home and dashboard placements passed.');
+
+assert.ok(nav.includes('draggable={false}') && nav.includes('onContextMenu={blockMediaMenu}'), 'Navigation media must suppress drag and long-press image menu');
+assert.ok(app.includes('onContextMenu={event => event.preventDefault()} role="dialog"'), 'Navigation drawer should prevent native long-press context menu');

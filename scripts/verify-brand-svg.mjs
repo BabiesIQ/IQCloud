@@ -13,3 +13,8 @@ for(const file of ['src/App.jsx','src/pages/Dashboard.jsx','src/pages/Home.jsx',
 const html=readFileSync('index.html','utf8');
 assert.ok(html.includes('type="image/svg+xml" href="/babiesiq-cloud-logo.svg"'), 'Favicon must use the same SVG as the website');
 console.log('BabiesIQ brand QA: standalone vector logo, favicon and cross-site brand placements verified.');
+
+const brandComponentProtection=readFileSync('src/components/BrandLogo.jsx','utf8');
+assert.ok(brandComponentProtection.includes('draggable={false}') && brandComponentProtection.includes('onContextMenu={blockMediaMenu}'), 'Brand image must not allow long-press image menu or drag');
+const motion=readFileSync('src/site-motion.css','utf8');
+assert.ok(motion.includes('.iq-protected-icon > .iq-protected-image') && motion.includes('pointer-events: none') && motion.includes('-webkit-touch-callout: none'), 'Mobile image callout styles missing');

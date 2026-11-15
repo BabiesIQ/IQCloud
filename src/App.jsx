@@ -128,7 +128,7 @@ function Header() {
           <button type="button" onClick={() => setMenuOpen(value => !value)} aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'} aria-expanded={menuOpen} aria-controls="cloud-navigation" className={'iq-hamburger flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-background/90 text-foreground hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2' + (menuOpen ? ' is-active' : '')}>
             <span aria-hidden="true" className="iq-hamburger-bars"><span/><span/><span/></span>
           </button>
-          <Link className="flex min-w-0 items-center gap-1.5 text-sm font-semibold tracking-tight sm:gap-2 sm:text-lg" to="/" aria-label="BabiesIQ Cloud home"><BrandLogo size={36} className="h-9 w-9 sm:h-10 sm:w-10" /><span className="min-w-0 truncate whitespace-nowrap">BabiesIQ Cloud</span></Link>
+          <Link className="flex min-w-0 items-center gap-1.5 text-sm font-semibold tracking-tight sm:gap-2 sm:text-lg" to="/" aria-label="BabiesIQ Cloud home" onContextMenu={event => event.preventDefault()}><BrandLogo size={36} className="h-9 w-9 sm:h-10 sm:w-10" /><span className="min-w-0 truncate whitespace-nowrap">BabiesIQ Cloud</span></Link>
         </div>
         <div className="flex shrink-0 items-center gap-2 text-sm">
           {account && <Link to="/notifications" aria-label={unreadCount ? `Notifications, ${unreadCount} unread` : 'Notifications'} title="Notifications" className="relative flex h-10 w-10 items-center justify-center rounded-xl border hover:bg-muted">
@@ -147,7 +147,7 @@ function Header() {
     </header>
     <div aria-hidden={!menuOpen} inert={!menuOpen} className={'iq-nav-layer fixed inset-0 z-50' + (menuOpen ? ' is-open' : '')}>
       <button type="button" className="iq-nav-backdrop absolute inset-0 h-full w-full bg-black/60" aria-label="Close navigation menu" onClick={() => setMenuOpen(false)} />
-      <aside id="cloud-navigation" role="dialog" aria-modal={menuOpen} aria-label="Navigation" className="iq-nav-panel absolute inset-y-0 left-0 flex w-[min(86vw,340px)] flex-col border-r border-border bg-background shadow-2xl">
+      <aside id="cloud-navigation" onContextMenu={event => event.preventDefault()} role="dialog" aria-modal={menuOpen} aria-label="Navigation" className="iq-nav-panel absolute inset-y-0 left-0 flex w-[min(86vw,340px)] flex-col border-r border-border bg-background shadow-2xl">
         <div className="flex items-center justify-between border-b px-5 py-5">
           <div className="flex min-w-0 items-center gap-2.5"><BrandLogo size={42} className="h-11 w-11" /><div className="min-w-0"><p className="truncate font-semibold">BabiesIQ Cloud</p><p className="mt-1 truncate text-xs text-muted-foreground">{account ? (account.email || 'My account') : 'Cloud hosting platform'}</p></div></div>
           <button type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu" className="rounded-lg border px-3 py-2">✕</button>
