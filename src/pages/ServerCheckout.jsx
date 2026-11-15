@@ -222,7 +222,7 @@ export default function ServerCheckout(){
         </div>
         <span className="inline-flex items-center rounded-lg bg-[#e6f2ff] px-3 py-1.5 text-lg font-black italic tracking-tight text-[#003087]" aria-label="PayPal">PayPal</span>
        </div>
-       <button type="button" disabled={paying||paymentUncertain||!paypalStatus.ready||paypalReturnProcessing} onClick={payWithPayPal} className="mt-4 flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-[#0070ba] px-4 py-3 font-semibold text-white transition-colors hover:bg-[#005c99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0070ba] disabled:cursor-not-allowed disabled:opacity-50">
+       <button type="button" disabled={paying||paymentUncertain||!paypalStatus.ready||paypalReturnProcessing} onClick={pay} className="mt-4 flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-[#0070ba] px-4 py-3 font-semibold text-white transition-colors hover:bg-[#005c99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0070ba] disabled:cursor-not-allowed disabled:opacity-50">
         {paying?t('Opening PayPal…'):paypalStatus.ready?t('Continue with PayPal')+' · '+actualPayPalCurrency:t('PayPal checkout not yet active')}
        </button>
       </section>
