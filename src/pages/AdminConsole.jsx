@@ -14,6 +14,11 @@ const SECTIONS=[
  {id:'audit',label:'Audit log',icon:FileClock},
 ];
 const money=value=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR'}).format((Number(value)||0)/100);
+const orderMoney=(value,currency)=>{
+ const code=/^[A-Z]{3}$/.test(String(currency||''))?String(currency):'INR';
+ try{return new Intl.NumberFormat('en-IN',{style:'currency',currency:code}).format((Number(value)||0)/100)}
+ catch{return code+' '+((Number(value)||0)/100).toFixed(2)}
+};
 const when=value=>value?new Intl.DateTimeFormat('en-IN',{dateStyle:'medium',timeStyle:'short'}).format(new Date(value)):'—';
 const shortID=id=>id?(id.length>22?id.slice(0,13)+'…'+id.slice(-5):id):'—';
 function Status({value}){
@@ -161,6 +166,7 @@ export default function AdminDashboard(){
        </div>
        <div className="my-4 flex justify-around rounded-xl bg-muted p-3 text-center"><div><p className="text-2xl font-bold">{detail.instances?.length??0}</p><p className="text-xs text-muted-foreground">VPS records</p></div><div><p className="text-2xl font-bold">{detail.orders?.length??0}</p><p className="text-xs text-muted-foreground">Orders</p></div></div>
        <div className="mb-4 space-y-2">{(detail.instances||[]).slice(0,6).map(v=><div key={v.id} className="flex items-center justify-between gap-2 rounded-lg border border-border p-3 text-xs"><span>{v.ram||'—'} GB · {v.cpu||'—'} vCPU · {v.region}</span><Status value={v.status}/></div>)}</div>
+       <div className="mb-4 space-y-2">{(detail.orders||[]).slice(0,6).map(order=><div key={order.id} className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border p-3 text-xs"><span className="min-w-0"><span className="block break-all font-semibold">{orderMoney(order.amount,order.currency)} · {order.kind||'VPS purchase'}</span><span className="text-muted-foreground">{shortID(order.id)} · {when(order.createdAt)}</span></span><Status value={order.status}/></div>)}</div>
        <div className="flex flex-wrap gap-2"><Button kind="ghost" disabled={acting} onClick={()=>action('send-reset')}><KeyRound size={16}/>Send reset link</Button><Button kind="ghost" disabled={acting} onClick={()=>action('revoke-sessions')}><LogOut size={16}/>Revoke sessions</Button><Button kind="danger" disabled={acting||Boolean(detail.user?.accountDisabledAt)} onClick={()=>{setConfirm('deactivate');setPhrase('');setAdminPassword('')}}><Trash2 size={16}/>Deactivate</Button>{(detail.instances||[]).length===0&&(detail.orders||[]).length===0&&detail.user?.email!==ADMIN_EMAIL&&<Button kind="danger" disabled={acting||Boolean(detail.user?.accountDisabledAt)} onClick={()=>{setConfirm('delete');setPhrase('');setAdminPassword('')}}><Trash2 size={16}/>Delete unused account</Button>}</div>
        {confirm&&<div className="mt-4 space-y-3 rounded-xl border border-red-400/35 bg-red-500/5 p-4">
         <p className="font-semibold text-red-600 dark:text-red-300">{confirm==='delete'?'Permanent account deletion':'Confirm deactivation'}</p>
@@ -175,7 +181,7 @@ export default function AdminDashboard(){
     </Card>}
     {['servers','orders','logins','audit'].includes(tab)&&<Card title={tab==='servers'?'All customer VPS records':tab==='orders'?'Gateway payment orders':tab==='logins'?'Successful logins':'Admin audit events'} info={tab==='logins'?'Older logins cannot be reconstructed; only sign-ins since tracking was enabled are shown.':undefined}>
       {busy?<Spinner/>:<div className="space-y-2">{rows.map(x=><div key={x.id} className="rounded-xl border border-border p-3 text-sm sm:p-4">
-       <div className="flex flex-wrap justify-between gap-2"><div className="min-w-0"><p className="break-all font-semibold">{tab==='servers'?String(x.ram||'—')+' GB / '+String(x.cpu||'—')+' vCPU · '+(x.region||'—'):tab==='orders'?shortID(x.id):tab==='logins'?x.email:x.action}</p><p className="mt-1 break-all text-xs text-muted-foreground">{tab==='orders'?money(x.amount)+' · '+(x.currency||'INR'):tab==='logins'?x.method+' · '+x.device:tab==='audit'?shortID(x.targetId):shortID(x.id)}</p></div>{tab==='servers'?<Status value={x.status}/>:tab==='orders'?<Status value={x.status}/>:tab==='audit'?<Status value={x.result}/>:<span className="text-xs text-muted-foreground">{x.method}</span>}</div>
+       <div className="flex flex-wrap justify-between gap-2"><div className="min-w-0"><p className="break-all font-semibold">{tab==='servers'?String(x.ram||'—')+' GB / '+String(x.cpu||'—')+' vCPU · '+(x.region||'—'):tab==='orders'?shortID(x.id):tab==='logins'?x.email:x.action}</p><p className="mt-1 break-all text-xs text-muted-foreground">{tab==='orders'?orderMoney(x.amount,x.currency):tab==='logins'?x.method+' · '+x.device:tab==='audit'?shortID(x.targetId):shortID(x.id)}</p></div>{tab==='servers'?<Status value={x.status}/>:tab==='orders'?<Status value={x.status}/>:tab==='audit'?<Status value={x.result}/>:<span className="text-xs text-muted-foreground">{x.method}</span>}</div>
        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground"><span>{when(x.createdAt)}</span>{x.userId&&<button className="break-all font-semibold text-emerald-600 dark:text-emerald-400" onClick={()=>{changeTab('users');inspectUser(x.userId)}}>View customer {shortID(x.userId)} →</button>}</div>
       </div>)}{rows.length===0&&<p className="p-4 text-center text-sm text-muted-foreground">No records.</p>}</div>}<Pagination page={page} total={total} onChange={setPage}/>
     </Card>}
