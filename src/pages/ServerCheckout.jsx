@@ -203,7 +203,7 @@ export default function ServerCheckout(){
       enabled={paypalStatus.guestCardEnabled}
       clientId={paypalStatus.clientId}
       mode={paypalStatus.mode}
-      country={country} currency={actualPayPalCurrency}
+      country={country} currency={suggestedPayPalCurrency}
       draftId={instanceId} billingMonths={months} kind={isRenewal?'renewal':'new'}
       totalINRPaise={quote.totalPaise}
       disabled={paying||paymentUncertain||paypalReturnProcessing||loading||(isRenewal&&draft.status==='expired'&&!riskAcknowledged)}
