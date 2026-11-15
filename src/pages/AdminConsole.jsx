@@ -106,10 +106,11 @@ export default function AdminDashboard(){
   if(!selected)return;
   setActing(true);setError('');setMessage('');
   try{
-   const body=name==='deactivate'?{confirmation:phrase,password:adminPassword}:undefined;
+   const body=['deactivate','delete'].includes(name)?{confirmation:phrase,password:adminPassword}:undefined;
    const r=await apiRequest('/api/v1/admin/users/'+encodeURIComponent(selected)+'/'+name,{method:'POST',body});
    setMessage(r.message||'Action completed');setConfirm(false);setPhrase('');setAdminPassword('');
-   await inspectUser(selected);if(tab==='users')await load('users',page,query);
+   if(name==='delete'){setSelected(null);setDetail(null)}else{await inspectUser(selected)}
+   if(tab==='users')await load('users',page,query);
   }catch(e){onError(e)}finally{setActing(false)}
  }
  async function logout(){try{await apiRequest('/api/v1/admin/logout',{method:'POST'})}catch{}navigate('/admin/login',{replace:true})}
@@ -160,8 +161,15 @@ export default function AdminDashboard(){
        </div>
        <div className="my-4 flex justify-around rounded-xl bg-muted p-3 text-center"><div><p className="text-2xl font-bold">{detail.instances?.length??0}</p><p className="text-xs text-muted-foreground">VPS records</p></div><div><p className="text-2xl font-bold">{detail.orders?.length??0}</p><p className="text-xs text-muted-foreground">Orders</p></div></div>
        <div className="mb-4 space-y-2">{(detail.instances||[]).slice(0,6).map(v=><div key={v.id} className="flex items-center justify-between gap-2 rounded-lg border border-border p-3 text-xs"><span>{v.ram||'—'} GB · {v.cpu||'—'} vCPU · {v.region}</span><Status value={v.status}/></div>)}</div>
-       <div className="flex flex-wrap gap-2"><Button kind="ghost" disabled={acting} onClick={()=>action('send-reset')}><KeyRound size={16}/>Send reset link</Button><Button kind="ghost" disabled={acting} onClick={()=>action('revoke-sessions')}><LogOut size={16}/>Revoke sessions</Button><Button kind="danger" disabled={acting||Boolean(detail.user?.accountDisabledAt)} onClick={()=>setConfirm(v=>!v)}><Trash2 size={16}/>Deactivate</Button></div>
-       {confirm&&<div className="mt-4 space-y-3 rounded-xl border border-red-400/35 bg-red-500/5 p-4"><p className="font-semibold text-red-600 dark:text-red-300">Confirm deactivation</p><p className="text-xs text-muted-foreground">Accounts with paid purchases or live servers cannot be deactivated. This is not permanent data deletion.</p><p className="break-all text-xs">Type exactly: <strong>DEACTIVATE {detail.user?.email}</strong></p><input value={phrase} onChange={e=>setPhrase(e.target.value)} placeholder="Exact confirmation" className="w-full rounded-lg border border-border bg-background p-3 text-sm"/><input value={adminPassword} onChange={e=>setAdminPassword(e.target.value)} type="password" autoComplete="off" placeholder="Confirm with admin password" className="w-full rounded-lg border border-border bg-background p-3 text-sm"/><Button kind="danger" disabled={acting||phrase!=='DEACTIVATE '+detail.user?.email||!adminPassword} onClick={()=>action('deactivate')}>Confirm deactivation</Button></div>}
+       <div className="flex flex-wrap gap-2"><Button kind="ghost" disabled={acting} onClick={()=>action('send-reset')}><KeyRound size={16}/>Send reset link</Button><Button kind="ghost" disabled={acting} onClick={()=>action('revoke-sessions')}><LogOut size={16}/>Revoke sessions</Button><Button kind="danger" disabled={acting||Boolean(detail.user?.accountDisabledAt)} onClick={()=>{setConfirm('deactivate');setPhrase('');setAdminPassword('')}}><Trash2 size={16}/>Deactivate</Button>{(detail.instances||[]).length===0&&(detail.orders||[]).length===0&&detail.user?.email!==ADMIN_EMAIL&&<Button kind="danger" disabled={acting||Boolean(detail.user?.accountDisabledAt)} onClick={()=>{setConfirm('delete');setPhrase('');setAdminPassword('')}}><Trash2 size={16}/>Delete unused account</Button>}</div>
+       {confirm&&<div className="mt-4 space-y-3 rounded-xl border border-red-400/35 bg-red-500/5 p-4">
+        <p className="font-semibold text-red-600 dark:text-red-300">{confirm==='delete'?'Permanent account deletion':'Confirm deactivation'}</p>
+        <p className="text-xs leading-5 text-muted-foreground">{confirm==='delete'?'This permanently removes an unused account and its sessions, notifications and login events. Only accounts with no server records, no payment orders and no pending provider operations are eligible.':'Accounts with paid purchases or live servers cannot be deactivated. This is not permanent data deletion.'}</p>
+        <p className="break-all text-xs">Type exactly: <strong>{confirm==='delete'?'DELETE '+detail.user?.email+' PERMANENTLY':'DEACTIVATE '+detail.user?.email}</strong></p>
+        <input value={phrase} onChange={e=>setPhrase(e.target.value)} placeholder="Exact confirmation" className="w-full rounded-lg border border-border bg-background p-3 text-sm"/>
+        <input value={adminPassword} onChange={e=>setAdminPassword(e.target.value)} type="password" autoComplete="off" placeholder="Confirm with admin password" className="w-full rounded-lg border border-border bg-background p-3 text-sm"/>
+        <div className="flex flex-wrap gap-2"><Button kind="danger" disabled={acting||phrase!==(confirm==='delete'?'DELETE '+detail.user?.email+' PERMANENTLY':'DEACTIVATE '+detail.user?.email)||!adminPassword} onClick={()=>action(confirm)}><Trash2 size={16}/>{confirm==='delete'?'Permanently delete':'Confirm deactivation'}</Button><Button kind="ghost" onClick={()=>{setConfirm(false);setPhrase('');setAdminPassword('')}}>Cancel</Button></div>
+       </div>}
        <p className="mt-4 text-xs text-muted-foreground">Passwords and root credentials cannot be viewed. Reset links go only to verified customer email addresses; financial records are retained.</p>
       </>}
     </Card>}
