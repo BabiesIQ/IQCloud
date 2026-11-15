@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {ArrowLeft,Globe2,ShieldAlert,Wallet,CheckCircle2} from 'lucide-react';
 import {useLocale} from '@/i18n/LocaleProvider';
-import {CURRENCY_BY_COUNTRY,COUNTRY_OPTIONS,countryName} from '@/i18n/config';
+import {CURRENCY_BY_COUNTRY,COUNTRY_OPTIONS,countryName,paypalCurrencyForCountry} from '@/i18n/config';
 
 export default function CurrencyPage(){
  const locale=useLocale();
@@ -19,7 +19,9 @@ export default function CurrencyPage(){
      {COUNTRY_OPTIONS.map(code=><option key={code} value={code}>{countryName(code,language)} · {CURRENCY_BY_COUNTRY[code]}</option>)}
     </select>
    </label>
-   <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"><span>Currency</span><strong className="text-lg">{currency}</strong></div>
+   <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"><span>Display currency</span><strong className="text-lg">{currency}</strong></div>
+   {isInternational&&<div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"><span>PayPal checkout currency</span><strong className="text-lg">{paypalCurrencyForCountry(country)}</strong></div>}
+   {isInternational&&paypalCurrencyForCountry(country)!==currency&&<p className="text-sm text-amber-600">PayPal does not support {currency} for this merchant. Your local prices are indicative; the checkout will clearly show its USD total before approval.</p>}
    <p className="text-sm text-muted-foreground">Exchange rates are indicative only. Source: ExchangeRate-API public exchange-rate feed. The final payment currency and total must be confirmed by the gateway.</p>
    <p className="text-sm">{isInternational?'International plans are priced at 2× the India compute rate. The existing 0%, 7%, 14% and 30% billing-period discounts remain unchanged.':'India plans use their standard INR compute prices.'}</p>
    <div className="flex items-start gap-2 rounded-xl border p-3 text-xs leading-5 text-muted-foreground"><ShieldAlert size={17} className="shrink-0 text-amber-500"/> Browser language and country selectors do not verify your legal country of residence. International payments will be supported through PayPal only after merchant verification and secure capture are complete.</div>
@@ -33,7 +35,7 @@ export default function CurrencyPage(){
    </label>
    <p className="mt-3 text-xs text-muted-foreground">The examples below are before multi-month discounts; <Link to="/pricing" className="underline">Pricing</Link> shows the exact 7%, 14% and 30% term reductions.</p>
    <div className="mt-4 space-y-3">{[{ram:1,cpu:1,inr:49},{ram:2,cpu:2,inr:99},{ram:4,cpu:4,inr:220},{ram:8,cpu:4,inr:350}].map(x=><div key={x.ram} className="flex flex-wrap items-center justify-between gap-2 rounded-xl border p-4"><span>{x.ram} GB RAM · {x.cpu} vCPU</span><strong>{showPrice(x.inr)}</strong></div>)}</div>
-   <p className="mt-4 text-xs text-muted-foreground">Rate status: {fxStatus}{fxUpdatedAt?', published '+new Date(fxUpdatedAt).toLocaleString():''}. International PayPal checkout is not enabled yet.</p>
+   <p className="mt-4 text-xs text-muted-foreground">Rate status: {fxStatus}{fxUpdatedAt?', published '+new Date(fxUpdatedAt).toLocaleString():''}. PayPal checkout availability is verified when you purchase; the final gateway amount is displayed before approval.</p>
    <Link to="/pricing" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-emerald-500">View all plans →</Link>
   </section>
  </main>;

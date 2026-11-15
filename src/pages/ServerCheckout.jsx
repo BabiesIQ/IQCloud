@@ -4,6 +4,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ShieldCheck, CreditCard, AlertTriangle } from 'lucide-react';
 import { apiRequest } from '@/services/apiClient';
 import { billingTerm, termQuote, priceINR } from '@/config/plans';
+import {paypalCurrencyForCountry,currencyForCountry,formatPayPalMinorAmount,PAYPAL_PRESENTMENT_CURRENCIES} from '@/i18n/config';
 import BillingTermPicker from '@/components/cloud/BillingTermPicker';
 
 export const route={path:'/dashboard/checkout',layout:'owner',access:'authenticated'};
@@ -24,6 +25,10 @@ export default function ServerCheckout(){
  const [paymentUncertain,setPaymentUncertain]=useState(false);
  const [riskAcknowledged,setRiskAcknowledged]=useState(false);
  const [paypalStatus,setPayPalStatus]=useState({ready:false,loading:false,reason:''});
+ const suggestedPayPalCurrency=paypalCurrencyForCountry(country);
+ const actualPayPalCurrency=order?.gateway==="paypal"?order.currency:suggestedPayPalCurrency;
+ const localCurrency=currencyForCountry(country);
+ const paypalCurrencyFallback=isInternational&&localCurrency!==actualPayPalCurrency;
  const [paypalReturnProcessing,setPayPalReturnProcessing]=useState(false);
  const paypalReturnClaimed=useRef(false);
  const busy=useRef(false);
@@ -86,8 +91,11 @@ export default function ServerCheckout(){
   try{
    const result=await apiRequest('/api/v1/payments/paypal/orders',{method:'POST',
     body:{draftId:instanceId,billingMonths:months,country,kind:isRenewal?'renewal':'new'}});
-   if(!result.orderId||result.currency!=='USD'||!Number.isInteger(result.amount)||result.amount<100){
-    throw Error('PayPal did not confirm a valid USD amount. No checkout was opened.');
+   if(!result.orderId||!PAYPAL_PRESENTMENT_CURRENCIES.has(result.currency)||!Number.isInteger(result.amount)||result.amount<1){
+    throw Error('PayPal did not confirm a valid supported payment currency and amount. No checkout was opened.');
+   }
+   if(result.currency!==suggestedPayPalCurrency&&result.currency!=='USD'){
+    throw Error('PayPal returned an unexpected currency for your billing country. Check order status before paying.');
    }
    if(result.inrBaseTotalPaise!==quote.totalPaise){
     setOrder(result);
@@ -173,8 +181,9 @@ export default function ServerCheckout(){
      <div className="flex justify-between border-t pt-3 text-lg font-bold"><span>Total payable</span><span>{(order?formatINR:formatPaise)(displayedQuote.totalPaise)}</span></div>
     </div>
     {isInternational&&<div className="mt-4 rounded-xl border border-amber-500/40 p-4 text-sm text-muted-foreground">
-      International compute prices are 2× the India rate, with the same discount. {currency} prices above are estimates (FX: {fxStatus}).
-      PayPal uses the server-verified final USD amount. {order?.gateway==='paypal'&&<p className="mt-2 font-semibold">Locked PayPal total: {new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(order.amount/100)} USD</p>}
+      International compute prices are 2× the India rate with the same discount. {currency} prices above are estimates (FX: {fxStatus}).
+      <p className="mt-2 font-semibold">PayPal checkout currency: {actualPayPalCurrency}{paypalCurrencyFallback?' (your local currency is not available for this PayPal merchant; USD fallback)':''}.</p>
+      {order?.gateway==='paypal'&&<p className="mt-2 font-semibold">Final PayPal total: {formatPayPalMinorAmount(order.amount,order.currency)} ({order.currency})</p>}
       <p className="mt-2">{paypalStatus.loading?'Checking PayPal availability…':paypalStatus.ready?'PayPal international checkout is available for eligible foreign buyers. Payment will be captured only after your approval.':paypalStatus.reason||'PayPal international checkout is not ready.'}</p>
      </div>}
     <p className="mt-4 text-xs leading-5 text-muted-foreground">Validity starts after SSH-ready for a new VPS. You will receive a warning 3 days before expiry. At expiry, the Railway deployment is stopped. Renewal requires another verified payment; there is no automatic card debit.</p>
@@ -182,7 +191,7 @@ export default function ServerCheckout(){
     {isRenewal&&draft.status==='expired'&&<label className="mt-4 flex items-start gap-2 text-sm"><input className="mt-1" type="checkbox" checked={riskAcknowledged} onChange={e=>setRiskAcknowledged(e.target.checked)}/><span>I understand restarting an expired Railway container may lose its files.</span></label>}
     <p className="mt-4 text-xs text-muted-foreground">Public SSH uses a provider hostname + port; dedicated IPv4 and IPv6 addresses are not included or guaranteed.</p>
     <button type="button" disabled={paying||paymentUncertain||(isInternational&&!paypalStatus.ready)||paypalReturnProcessing} onClick={pay} className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary p-4 font-semibold text-primary-foreground disabled:opacity-50">
-     <CreditCard size={18}/>{isInternational?(paying?'Opening PayPal…':paypalStatus.ready?'Pay with PayPal (USD)':'PayPal checkout not yet active'):paying?'Opening payment…':paymentUncertain?'Verify payment in Dashboard':'Pay '+(order?formatINR:formatPaise)(displayedQuote.totalPaise)}
+     <CreditCard size={18}/>{isInternational?(paying?'Opening PayPal…':paypalStatus.ready?'Pay with PayPal ('+actualPayPalCurrency+')':'PayPal checkout not yet active'):paying?'Opening payment…':paymentUncertain?'Verify payment in Dashboard':'Pay '+(order?formatINR:formatPaise)(displayedQuote.totalPaise)}
     </button>
     <p className="mt-3 text-center text-xs text-muted-foreground"><ShieldCheck size={13} className="mr-1 inline"/> The backend verifies the exact amount and gateway capture. Never pay twice for the same order.</p>
    </div>

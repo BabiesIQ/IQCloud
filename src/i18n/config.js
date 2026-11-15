@@ -18,7 +18,7 @@ export const CURRENCY_BY_COUNTRY = Object.freeze({
  NP:"NPR",LK:"LKR",ZA:"ZAR",NG:"NGN",KE:"KES",GH:"GHS",TZ:"TZS",UG:"UGX",EG:"EGP",
  MA:"MAD",DZ:"DZD",TN:"TND",BR:"BRL",MX:"MXN",AR:"ARS",CL:"CLP",CO:"COP",PE:"PEN",
  UY:"UYU",PY:"PYG",BO:"BOB",CR:"CRC",DO:"DOP",CH:"CHF",SE:"SEK",NO:"NOK",DK:"DKK",
- IS:"ISK",PL:"PLN",CZ:"CZK",HU:"HUF",RO:"RON",BG:"BGN",RS:"RSD",UA:"UAH",TR:"TRY",
+ IS:"ISK",PL:"PLN",CZ:"CZK",HU:"HUF",RO:"RON",BG:"EUR",RS:"RSD",UA:"UAH",TR:"TRY",
  GE:"GEL",AZ:"AZN",KZ:"KZT",UZ:"UZS",RU:"RUB",BY:"BYN",AM:"AMD",MD:"MDL",IR:"IRR",
  MU:"MUR",SC:"SCR",ET:"ETB",ZM:"ZMW",BW:"BWP",NA:"NAD",AO:"AOA",FJ:"FJD",PG:"PGK",
  SB:"SBD",PA:"PAB",GT:"GTQ",HN:"HNL",NI:"NIO",SV:"USD",EC:"USD",JM:"JMD",TT:"TTD",
@@ -50,6 +50,22 @@ export function nativeLanguageName(code){
 }
 export const LANGUAGES = Object.freeze(LANGUAGE_CODES.map(code=>({code,nativeName:nativeLanguageName(code),region:LANGUAGE_GROUPS[code]})));
 export function currencyForCountry(country){return CURRENCY_BY_COUNTRY[String(country||"").toUpperCase()]||"USD"}
+// PayPal merchant presentment is limited to its Orders v2 supported list.
+// BRL/CNY/MYR are intentionally excluded for India-based merchants due to
+// PayPal's in-country-only restrictions. Unsupported local currencies use USD.
+export const PAYPAL_PRESENTMENT_CURRENCIES = new Set("AUD CAD CZK DKK EUR HKD HUF ILS JPY MXN TWD NZD NOK PHP PLN GBP SGD SEK CHF THB USD".split(" "));
+export const PAYPAL_ZERO_DIGIT_CURRENCIES = new Set(["HUF","JPY","TWD"]);
+export function paypalCurrencyForCountry(country){
+ if(country==="IN")return "INR";
+ const local=currencyForCountry(country);
+ return PAYPAL_PRESENTMENT_CURRENCIES.has(local)?local:"USD";
+}
+export function formatPayPalMinorAmount(amount,currency,locale="en"){
+ const digits=PAYPAL_ZERO_DIGIT_CURRENCIES.has(currency)?0:2;
+ const value=(Number(amount)||0)/(digits===0?1:100);
+ try{return new Intl.NumberFormat(locale,{style:"currency",currency,minimumFractionDigits:digits,maximumFractionDigits:digits}).format(value)}
+ catch{return String(value)+" "+currency}
+}
 export const COUNTRY_OPTIONS = Object.freeze(Object.keys(CURRENCY_BY_COUNTRY).sort());
 export function countryName(country,locale="en"){
  try{return new Intl.DisplayNames([locale],{type:"region"}).of(country)||country}
