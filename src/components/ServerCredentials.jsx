@@ -14,6 +14,7 @@ export default function ServerCredentials({item}){
  const host=typeof (gateway?.host||item?.sshHost)==='string'?(gateway?.host||item?.sshHost):'';
  const port=Number(gateway?.port||item?.sshPort)||0;
  const username=gateway?.username||'root';
+ const usesSharedRoot=gateway?.authFormat==='vps-id-colon-root-password' && /^\d{8}$/.test(gateway?.vpsId||'');
  async function copy(value,label){
   if(!value)return;
   try{await navigator.clipboard.writeText(String(value));setCopied(label)}catch{setCopied('Copy blocked by browser')}
@@ -40,8 +41,17 @@ export default function ServerCredentials({item}){
    </div>
   </div>
   {host&&port>0&&<button type="button" onClick={()=>copy(`ssh -p ${port} ${username}@${host}`,'ssh command')} className="mt-3 inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-medium"><Copy size={14}/> Copy SSH command</button>}
+  {usesSharedRoot&&<div className="mt-4 rounded-xl border border-primary/20 bg-background p-3">
+   <p className="text-xs font-semibold">BabiesIQ SSH Gateway · Termius</p>
+   <p className="mt-2 text-xs text-muted-foreground">All VPSs use the same host, port and username <strong>root</strong>. Your VPS ID selects your own server.</p>
+   <div className="mt-3 flex flex-wrap items-center gap-2"><span className="text-xs text-muted-foreground">Your VPS ID</span><code className="font-semibold">{gateway.vpsId}</code><button type="button" className="rounded border p-2" aria-label="Copy VPS ID" onClick={()=>copy(gateway.vpsId,'VPS ID')}><Copy size={14}/></button></div>
+   <p className="mt-3 text-xs text-muted-foreground">In the Termius Password field enter:</p>
+   <div className="mt-1 flex flex-wrap items-center gap-2"><code className="min-w-0 break-all text-xs">{gateway.vpsId}:YOUR_ORIGINAL_ROOT_PASSWORD</code><button type="button" className="rounded border p-2" aria-label="Copy Termius login prefix" onClick={()=>copy(gateway.vpsId+':','Termius prefix')}><Copy size={14}/></button></div>
+   {password!==null&&<button type="button" className="mt-3 inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold" onClick={()=>copy(gateway.vpsId+':'+password,'Termius password')}><Copy size={14}/> Copy combined Termius password</button>}
+   <p className="mt-2 text-xs text-muted-foreground">Use no spaces around the colon. Your VPS root password remains unchanged. The VPS ID alone is not a password.</p>
+  </div>}
   {gateway?.hostKeyFingerprint&&<div className="mt-3 rounded-lg border p-3"><p className="text-xs font-semibold">Gateway SSH fingerprint</p><div className="mt-2 flex items-center gap-2"><code className="min-w-0 flex-1 break-all text-xs">{gateway.hostKeyFingerprint}</code><button type="button" className="rounded border p-2" aria-label="Copy gateway SSH fingerprint" onClick={()=>copy(gateway.hostKeyFingerprint,'SSH fingerprint')}><Copy size={14}/></button></div><p className="mt-1 text-xs text-muted-foreground">Verify this fingerprint when your SSH app asks you to trust the gateway.</p></div>}
-  {gateway?<p className="mt-3 text-xs text-emerald-600">BabiesIQ SSH Gateway is ready. Use your existing root password.</p>:item?.sshGatewayStatus==='pending'?<p className="mt-3 text-xs text-amber-600">Preparing your secure SSH gateway port. Connection details will appear automatically after verification.</p>:<p className="mt-3 text-xs text-muted-foreground">Direct SSH connection is available until your gateway migration is complete.</p>}
+  {gateway?<p className="mt-3 text-xs text-emerald-600">BabiesIQ SSH Gateway is ready. {usesSharedRoot ? "For Termius, combine your VPS ID and original root password above." : "Use your existing root password."}</p>:item?.sshGatewayStatus==='pending'?<p className="mt-3 text-xs text-amber-600">Preparing your secure SSH gateway port. Connection details will appear automatically after verification.</p>:<p className="mt-3 text-xs text-muted-foreground">Direct SSH connection is available until your gateway migration is complete.</p>}
   <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border p-3">
    <span className="text-xs text-muted-foreground">Forgot root password or changed it using passwd?</span>
    <Link to={'/dashboard/instances/'+encodeURIComponent(item._id)+'/reset-password'} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold"><KeyRound size={14}/> Reset password</Link>
