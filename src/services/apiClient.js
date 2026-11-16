@@ -2,7 +2,7 @@
  // payment URLs, route identifiers or technical connection fields.
 export function brandVisibleMessage(value) {
   if (typeof value !== 'string') return value;
-  return value.replace(/\\bRailway\\b(?!\\.(?:app|com|net)\\b)/gi, 'BabiesIQ Cloud');
+  return value.replace(/\bRailway\b(?!\.(?:app|com|net)\b)/gi, 'BabiesIQ Cloud');
 }
 const VISIBLE_MESSAGE_FIELDS = new Set(['message', 'error', 'notice', 'description', 'reason', 'hint', 'warning', 'warnings', 'problems', 'purpose']);
 function normalizeVisibleMessages(value, visible = false) {

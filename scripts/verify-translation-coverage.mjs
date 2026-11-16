@@ -5,7 +5,7 @@ const checks={
  'src/pages/Home.jsx':['Your cloud.','Made simple.','Create a server your way. Pick a region, choose your resources, and manage it all in one simple dashboard.','Create a server','View pricing','Secure checkout','Everything in one place.','More ways to host.','Explore servers','Connect your domain'],
  'src/pages/Pricing.jsx':['Choose RAM and CPU. See your price.','Monthly compute price','Complete RAM × CPU price list','Configure instance'],
  'src/pages/CreateInstance.jsx':['Cloud configuration','Operating system','VPS root password','Passwords do not match.','Total payable'],
- 'src/pages/ServerCheckout.jsx':['Secure checkout','Loading your configuration…','Total payable','Railway root storage is ephemeral. Expiry followed by redeployment may erase data. Back up important files and renew before expiry.'],
+ 'src/pages/ServerCheckout.jsx':['Secure checkout','Loading your configuration…','Total payable','BabiesIQ Cloud root storage is ephemeral. Expiry followed by redeployment may erase data. Back up important files and renew before expiry.'],
  'src/pages/Dashboard.jsx':['Cloud workspace','Your infrastructure and account, in one place.','Active servers','Saved drafts','Recent activity'],
  'src/pages/Domains.jsx':['Select a VPS, enter the HTTP port your website uses, then connect your own domain and verify its DNS records.','Your VPS','Loading your servers…'],
  'src/pages/DomainManager.jsx':['Website port','Your custom domain','Invalid hostname. Enter a public domain, not a URL or port.','DNS records to add'],

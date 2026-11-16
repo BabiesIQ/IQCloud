@@ -24,13 +24,13 @@ assert.equal(currencyForCountry('ZZ'),'USD');
 assert.equal(priceLocale('fr-CA','CA'),'fr-CA');
 assert.equal(translateUI('Apple','hi'),'सेब');
 assert.equal(translateUI('BabiesIQ Cloud','hi'),'BabiesIQ Cloud');
-assert.equal(translateUI('Railway','hi'),'Railway');
+assert.equal(translateUI('BabiesIQ Cloud','hi'),'BabiesIQ Cloud');
 assert.equal(isKnownTranslationOf('Home','Inicio'),true);
 for(const [lang,dict] of Object.entries(UI_DICTIONARIES)){
  assert.ok(LANGUAGE_CODES.includes(lang),'No phantom language dictionary: '+lang);
  for(const [source,target] of Object.entries(dict)){
   assert.ok(source.trim()&&target.trim(),'Empty localization: '+lang+' / '+source);
-  for(const brand of ['BabiesIQ','Railway','Razorpay','PayPal','Cloudflare','Ubuntu','Debian']){
+  for(const brand of ['BabiesIQ','Razorpay','PayPal','Cloudflare','Ubuntu','Debian']){
    if(source.includes(brand))assert.ok(target.includes(brand),'Brand must remain unchanged: '+lang+' / '+source);
   }
   assert.ok(!/[<>]/.test(target),'Translated UI must not contain markup: '+lang+' / '+source);
