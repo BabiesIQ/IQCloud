@@ -7,7 +7,7 @@ const panel=readFileSync('src/components/MusicEcosystem.jsx','utf8');
 const logo=readFileSync('public/assets/brands/babiesiq-music-api.svg','utf8');
 assert.ok(home.includes('<MusicEcosystem/>'),'Music ecosystem must be on home');
 assert.ok(!home.includes('Ready to get started?')&&!home.includes('Set up your first server in a few simple steps.'),'Old CTA section must be removed');
-for(const [name,url] of [['Music API','https://babiesiq.tech'],['Instagram','https://www.instagram.com/babaiesiq.tech/'],['GitHub','https://github.com/BabiesIQ'],['Telegram','https://t.me/babiesiq']]){
+for(const [name,url] of [['Music API','https://babiesiq.tech'],['Instagram','https://www.instagram.com/babiesiq.tech/'],['GitHub','https://github.com/BabiesIQ'],['Telegram','https://t.me/babiesiq']]){
  assert.ok(panel.includes(url),'Missing exact destination: '+name);
 }
 assert.ok(panel.includes('rel="noopener noreferrer"'),'External links must be safe');
