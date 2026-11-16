@@ -54,7 +54,7 @@ export default function Configure() {
                   </button>
                 ))}
               </div>
-              <p className="mt-3 text-xs text-muted-foreground">Region choices are illustrative; Railway location availability may change.</p>
+              <p className="mt-3 text-xs text-muted-foreground">Region choices are illustrative; BabiesIQ Cloud location availability may change.</p>
             </section>
             <section className="rounded-md border border-border bg-card p-6 md:p-8">
               <div className="mb-6 flex items-center gap-3"><span className="grid size-9 place-items-center rounded-md bg-primary/10 font-heading text-sm font-semibold text-primary">03</span><h2 className="font-heading text-lg font-bold">Operating system</h2></div>

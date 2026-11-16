@@ -28,9 +28,9 @@ export default function ServerActions({item,onChanged}){
   setRunningAction(action);setError('');setMessage('');
   try{
    const result=await apiRequest('/api/v1/instances/'+encodeURIComponent(id)+'/actions/'+action,{method:'POST',body:{}});
-   setMessage(result.message||'Railway command accepted.');
+   setMessage(result.message||'BabiesIQ Cloud command accepted.');
    if(onChanged)await onChanged();
-  }catch(e){setError(e.message||'Could not complete Railway action.')}
+  }catch(e){setError(e.message||'Could not complete BabiesIQ Cloud action.')}
   finally{setRunningAction('');}
  }
  async function requestCode(){
@@ -51,7 +51,7 @@ export default function ServerActions({item,onChanged}){
    setOpen(false);setPhrase('');setOtp('');setPhase('phrase');
    setMessage(result.message||'Service permanently deleted.');
    if(onChanged)await onChanged();
-  }catch(e){setDeleteMessage(e.message||'Railway deletion not confirmed. Do not submit another request until reconciled.')}
+  }catch(e){setDeleteMessage(e.message||'BabiesIQ Cloud deletion not confirmed. Do not submit another request until reconciled.')}
   finally{setBusy(false);}
  }
  return <div className="mt-4 rounded-xl border p-4">
@@ -61,14 +61,14 @@ export default function ServerActions({item,onChanged}){
    {['paused','stopped','resuming'].includes(item.status)&&<button type="button" disabled={!!runningAction} onClick={()=>execute('resume')} className="inline-flex items-center gap-2 rounded-lg border border-emerald-500 px-3 py-2 text-xs font-semibold text-emerald-500 disabled:opacity-50"><Play size={15}/> {item.status==='resuming'?'Check & resume':'Resume'}</button>}
    {eligible&&<button type="button" disabled={!!runningAction} onClick={()=>closeDialog(true)} className="inline-flex items-center gap-2 rounded-lg border border-red-500/40 px-3 py-2 text-xs font-semibold text-red-600 dark:text-red-400 disabled:opacity-50"><Trash2 size={15}/> Delete permanently</button>}
   </div>
-  {['running','paused','stopped','resuming'].includes(item.status)&&<p className="mt-2 text-xs leading-5 text-muted-foreground">Data-safe controls only: Resume checks the existing Railway deployment without restarting it. Pause is blocked while a safe suspend and persistent storage are unavailable; your files are not risked by an automatic stop/redeploy.</p>}
+  {['running','paused','stopped','resuming'].includes(item.status)&&<p className="mt-2 text-xs leading-5 text-muted-foreground">Data-safe controls only: Resume checks the existing BabiesIQ Cloud deployment without restarting it. Pause is blocked while a safe suspend and persistent storage are unavailable; your files are not risked by an automatic stop/redeploy.</p>}
   {item.status==='action_needs_review'&&<p className="mt-2 text-xs text-amber-600">The previous provider action needs reconciliation. Do not retry automatically.</p>}
   {item.status==='delete_needs_review'&&<p className="mt-2 text-xs text-amber-600">Permanent deletion could not be confirmed. Contact support; do not retry.</p>}
   {message&&<p role="status" className="mt-3 text-xs text-emerald-600">{message}</p>}
   {error&&<p role="alert" className="mt-3 text-xs text-red-600">{error}</p>}
   <Dialog open={open} onOpenChange={closeDialog}>
    <DialogContent className="max-w-lg">
-    <DialogHeader><DialogTitle className="flex items-center gap-2 text-red-600"><ShieldAlert size={21}/> Permanently delete this service?</DialogTitle><DialogDescription>This removes the real Railway service, its deployments, SSH endpoint and all ephemeral files. This cannot be undone.</DialogDescription></DialogHeader>
+    <DialogHeader><DialogTitle className="flex items-center gap-2 text-red-600"><ShieldAlert size={21}/> Permanently delete this service?</DialogTitle><DialogDescription>This removes the real BabiesIQ Cloud service, its deployments, SSH endpoint and all ephemeral files. This cannot be undone.</DialogDescription></DialogHeader>
     <div className="space-y-4">
      <div className="rounded-xl border border-red-500/40 bg-red-500/5 p-3 text-sm text-red-600 dark:text-red-400">
       <strong>Warning:</strong> No automatic refund is issued for unused subscription time when you delete a service. Any refund rights under applicable law or the published refund policy still apply. Save all data before proceeding.
