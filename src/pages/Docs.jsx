@@ -49,7 +49,7 @@ function DeveloperAPISection(){
   -H 'Content-Type: application/json' \\
   -d '{"os":"ubuntu-24","region":"ap-southeast","country":"IN","rootPassword":"YOUR_SECURE_16_PLUS_CHAR_ROOT_PASSWORD"}'`;
  return <section id="developer-api" className="mt-10 rounded-2xl border border-border bg-card p-6 sm:p-8">
-  <div className="flex items-center gap-2 text-emerald-600"><ApperIcon name="Code2" size={22}/><span className="text-xs font-bold uppercase tracking-widest">Developer API · Beta</span></div>
+  <div className="flex items-center gap-2 text-emerald-600"><ApperIcon name="Code2" size={22}/><span className="text-xs font-bold uppercase tracking-widest">Developer API · Secure Beta</span></div>
   <h2 className="mt-3 font-heading text-xl font-bold">Build VPS sales into Discord, Telegram or your website</h2>
   <p className="mt-2 text-sm leading-6 text-muted-foreground">Three integration calls. Your server/bot holds the private API key; end users only see the payment link. Buyer's VPS remains a Linux Railway container; shared host storage is ephemeral, not a dedicated SSD or static IP.</p>
   <div className="mt-5 space-y-2">
