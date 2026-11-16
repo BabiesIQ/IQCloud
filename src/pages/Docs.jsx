@@ -122,8 +122,8 @@ export default function Docs(){
     '-H "Authorization: Bearer $IQC_API_KEY"',
     '-H "Idempotency-Key: india-order-00000001"',
     '-H "Content-Type: application/json"',
-    String.fromCharCode(39)+'-d' // replaced in generated constant below
-  ]).replace(String.fromCharCode(39)+'-d',"-d '"+JSON.stringify({country:'IN',os:'ubuntu-24',region:'ap-southeast',rootPassword:'REPLACE_With_a_Strong_Passw0rd!'})+"'");
+    "-d '"+JSON.stringify({country:'IN',os:'ubuntu-24',region:'ap-southeast',rootPassword:'REPLACE_With_a_Strong_Passw0rd!'})+"'"
+  ]);
   const usOrderCurl=curl([
     'curl -sS -X POST "'+BASE+'/create-order/linux/linux-r1-c1-m1?currency=USD"',
     '-H "Authorization: Bearer $IQC_API_KEY"',
@@ -256,7 +256,7 @@ export default function Docs(){
       </div>
       <JsonBox title="Example HTTP 201 create-order response — payment URL is illustrative" value={{
         paymentId:paymentExampleId,priceId,provider:currency==='INR'?'razorpay_payment_link':'paypal',
-        currency,amountMinor:currency==='INR'?4900:1000,
+        currency,amountMinor:'SERVER_LOCKED_AMOUNT_IN_MINOR_UNITS',
         status:'awaiting_payment',paymentUrl:'https://rzp.io/rzp/EXAMPLE_NOT_PAYABLE',
         confirmationUrl:BASE+'/confirmation/'+paymentExampleId,serverProvisioned:false
       }} note="The price amount and URL above are illustrative. In a real response the provider-generated paymentUrl can point to Razorpay or PayPal and amountMinor is the exact locked charge. Store paymentId in your bot; share only paymentUrl with the buyer."/>
