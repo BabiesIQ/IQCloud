@@ -52,10 +52,10 @@ export default function CustomPorts(){
   setWorking(true);setError('');setNotice('');
   try{
    const result=await apiRequest('/api/v1/instances/'+encodeURIComponent(selected)+'/ports/inbound',{method:'POST',body:{port:value,acceptRedeployRisk:riskAccepted}});
-   setNotice(result.notice||'Railway HTTP endpoint created. Verify your app is listening on the selected port.');
+   setNotice(result.notice||'BabiesIQ Cloud HTTP endpoint created. Verify your app is listening on the selected port.');
    const data=await apiRequest('/api/v1/instances/'+encodeURIComponent(selected)+'/ports');
    setBindings(data);
-  }catch(e){setError(e.message||'Railway could not create an inbound HTTP endpoint')}
+  }catch(e){setError(e.message||'BabiesIQ Cloud could not create an inbound HTTP endpoint')}
   finally{setWorking(false)}
  }
  return <main className="mx-auto max-w-4xl px-5 py-10 pb-24">
@@ -74,9 +74,9 @@ export default function CustomPorts(){
   </div>
   {mode==='inbound'?<section className="mt-5 space-y-5 rounded-2xl border bg-card p-5 sm:p-7">
    <div className="flex items-center gap-2 font-semibold"><Globe2 size={19} className="text-emerald-500"/> Inbound HTTP</div>
-   <p className="text-sm leading-6 text-muted-foreground">Run your app inside the instance on a chosen TCP port (for example <code>0.0.0.0:3000</code>). Railway will assign a public HTTPS hostname that forwards traffic to that HTTP port. DNS/TLS and your app's response should be verified before sharing it.</p>
-   <div className="flex items-start gap-2 rounded-xl border p-3 text-xs text-muted-foreground"><LockKeyhole size={16} className="shrink-0"/> SSH keeps its existing public TCP proxy and port. Railway allows only one public TCP proxy per service, so arbitrary additional inbound TCP/UDP ports are not supported by this control.</div>
-   <label className="flex items-start gap-2 rounded-xl border border-amber-500/40 p-3 text-xs text-muted-foreground"><input type="checkbox" className="mt-0.5" checked={riskAccepted} onChange={e=>setRiskAccepted(e.target.checked)}/><span>I understand that provider networking changes may redeploy or interrupt a Railway container and its ephemeral files may be lost. I have backed up important data.</span></label>
+   <p className="text-sm leading-6 text-muted-foreground">Run your app inside the instance on a chosen TCP port (for example <code>0.0.0.0:3000</code>). BabiesIQ Cloud will provide a public HTTPS hostname that forwards traffic to that HTTP port. DNS/TLS and your app's response should be verified before sharing it.</p>
+   <div className="flex items-start gap-2 rounded-xl border p-3 text-xs text-muted-foreground"><LockKeyhole size={16} className="shrink-0"/> SSH keeps its existing public TCP proxy and port. BabiesIQ Cloud currently offers one public TCP proxy per VPS, so arbitrary additional inbound TCP/UDP ports are not supported by this control.</div>
+   <label className="flex items-start gap-2 rounded-xl border border-amber-500/40 p-3 text-xs text-muted-foreground"><input type="checkbox" className="mt-0.5" checked={riskAccepted} onChange={e=>setRiskAccepted(e.target.checked)}/><span>I understand that provider networking changes may redeploy or interrupt a BabiesIQ Cloud container and its ephemeral files may be lost. I have backed up important data.</span></label>
    <div className="flex flex-wrap items-end gap-3">
     <label htmlFor="http-port" className="block flex-1 text-sm font-medium">Internal HTTP application port<input id="http-port" type="number" min="1" max="65535" value={port} onChange={e=>setPort(e.target.value)} className="mt-2 w-full rounded-xl border bg-background p-3" /></label>
     <button type="button" onClick={createInbound} disabled={!selectedServer||working||!riskAccepted} className="rounded-xl bg-primary px-5 py-3 font-semibold text-primary-foreground disabled:opacity-50">{working?'Configuring…':'Expose HTTP port'}</button>
@@ -85,10 +85,10 @@ export default function CustomPorts(){
    <p className="text-xs text-muted-foreground">Provider endpoint creation does not install a web server, open local firewall rules, or prove your app is listening.</p>
   </section>:<section className="mt-5 space-y-4 rounded-2xl border bg-card p-5 sm:p-7">
    <div className="flex items-center gap-2 font-semibold"><TerminalSquare size={19} className="text-emerald-500"/> Outbound networking</div>
-   <p className="text-sm leading-6 text-muted-foreground">Outgoing connections are normally permitted by Railway without opening a port in this panel. This tab does not list traffic history or add egress firewall rules.</p>
+   <p className="text-sm leading-6 text-muted-foreground">Outgoing connections are normally permitted by BabiesIQ Cloud without opening a port in this panel. This tab does not list traffic history or add egress firewall rules.</p>
    <div className="rounded-xl border p-4 text-sm"><h3 className="font-semibold">Check outbound from your VPS terminal</h3><p className="mt-2 text-muted-foreground">Connect through SSH, then run:</p><code className="mt-2 block break-all rounded-lg bg-muted p-3 font-mono text-xs">curl -4 -I --max-time 10 https://example.com</code><p className="mt-2 text-xs text-muted-foreground">An HTTP response confirms this destination is reachable. A failure needs DNS, route, proxy, or destination troubleshooting; it does not mean an outbound rule is missing here.</p></div>
-   <div className="rounded-xl border p-4 text-sm"><div className="flex items-center gap-2 font-semibold"><ShieldCheck size={17}/> Current configuration</div><p className="mt-2 text-muted-foreground">{bindings?.outbound?.message||'Outbound rules are controlled by Railway and the container; a customer-level port firewall API is not available.'}</p></div>
-   <p className="text-sm text-muted-foreground">An arbitrary outbound allow/deny toggle would not actually change network permissions on Railway, so the interface does not show a misleading enabled switch.</p>
+   <div className="rounded-xl border p-4 text-sm"><div className="flex items-center gap-2 font-semibold"><ShieldCheck size={17}/> Current configuration</div><p className="mt-2 text-muted-foreground">{bindings?.outbound?.message||'Outbound rules are controlled by BabiesIQ Cloud and the container; a customer-level port firewall API is not available.'}</p></div>
+   <p className="text-sm text-muted-foreground">An arbitrary outbound allow/deny toggle would not actually change network permissions on BabiesIQ Cloud, so the interface does not show a misleading enabled switch.</p>
   </section>}
   {notice&&<div role="status" className="mt-5 rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4 text-sm">{notice}</div>}
   {error&&<div role="alert" className="mt-5 rounded-xl border border-amber-500/40 p-4 text-sm text-amber-600">{error}</div>}

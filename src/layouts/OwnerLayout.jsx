@@ -57,7 +57,7 @@ export default function OwnerLayout() {
             <span className="size-1.5 rounded-full bg-highlight" />
             Control center
           </div>
-          <p className="mt-1.5 leading-relaxed text-sidebar-foreground/55">Manage your Railway-backed instances</p>
+          <p className="mt-1.5 leading-relaxed text-sidebar-foreground/55">Manage your BabiesIQ Cloud-backed instances</p>
         </div>
         <nav className="min-h-0 flex-1 space-y-2 overflow-y-auto overscroll-contain">{navigation}</nav>
         <div className="mt-4 rounded-xl border border-sidebar-border bg-sidebar-accent/40 p-3">

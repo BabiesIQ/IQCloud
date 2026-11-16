@@ -38,7 +38,7 @@ const mustTranslate={
   'Everything in one place.','Secure checkout','More ways to host.',
  ],
  'src/pages/Pricing.jsx':[
-  '64 compute combinations. No SSD selector or per-plan disk size; Railway containers use shared, ephemeral host storage.',
+  '64 compute combinations. No SSD selector or per-plan disk size; BabiesIQ Cloud containers use shared, ephemeral host storage.',
   'Compute-only price. Shared host capacity is not customer storage allocation. Container data is ephemeral. Validity starts once your server is SSH-ready; a warning is sent 3 days before expiry and the service stops when billing ends. Renewal requires a new verified payment; prices are not recurring auto-debits.',
   'Higher capacity coming soon','Complete RAM × CPU price list',
  ],
@@ -48,7 +48,7 @@ const mustTranslate={
  ],
  'src/pages/ServerCheckout.jsx':[
   'Secure checkout','Loading your configuration…',
-  'Railway root storage is ephemeral. Expiry followed by redeployment may erase data. Back up important files and renew before expiry.',
+  'BabiesIQ Cloud root storage is ephemeral. Expiry followed by redeployment may erase data. Back up important files and renew before expiry.',
   'The backend verifies the exact amount and gateway capture. Never pay twice for the same order.',
  ],
  'src/pages/Dashboard.jsx':[
@@ -61,7 +61,7 @@ const mustTranslate={
  ],
  'src/pages/CustomPorts.jsx':[
   'Server networking','Custom ports','Outbound networking',
-  'Outgoing connections are normally permitted by Railway without opening a port in this panel. This tab does not list traffic history or add egress firewall rules.',
+  'Outgoing connections are normally permitted by BabiesIQ Cloud without opening a port in this panel. This tab does not list traffic history or add egress firewall rules.',
  ],
  'src/pages/SecurityCenter.jsx':[
   'Account security','Your devices','Review where your BabiesIQ Cloud account is signed in.',

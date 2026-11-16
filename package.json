@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "prebuild": "node scripts/verify-localization.mjs && node scripts/verify-translation-coverage.mjs && node scripts/verify-i18n-integrity.mjs && node scripts/verify-payment-method-ui.mjs && node scripts/verify-native-country-and-welcome.mjs && node scripts/verify-brand-svg.mjs && node scripts/verify-navigation-icons.mjs && node scripts/verify-notification-language.mjs && node scripts/verify-home-layout.mjs && node scripts/verify-language-sheet-swipe.mjs && node scripts/verify-music-ecosystem.mjs && node scripts/verify-admin-console.mjs"
+    "prebuild": "node scripts/verify-customer-branding.mjs && node scripts/verify-localization.mjs && node scripts/verify-translation-coverage.mjs && node scripts/verify-i18n-integrity.mjs && node scripts/verify-payment-method-ui.mjs && node scripts/verify-native-country-and-welcome.mjs && node scripts/verify-brand-svg.mjs && node scripts/verify-navigation-icons.mjs && node scripts/verify-notification-language.mjs && node scripts/verify-home-layout.mjs && node scripts/verify-language-sheet-swipe.mjs && node scripts/verify-music-ecosystem.mjs && node scripts/verify-admin-console.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

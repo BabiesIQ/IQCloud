@@ -90,7 +90,7 @@ export default function ServerCheckout(){
  async function payWithPayPal(){
   if(!paypalStatus.ready||!draft||!quote){setError(paypalStatus.reason||'PayPal checkout is not ready.');return}
   if(isRenewal&&draft.status==='expired'&&!riskAcknowledged){
-   setError('Please acknowledge that expired Railway containers may lose temporary files before renewing.');return;
+   setError('Please acknowledge that expired VPS containers may lose temporary files before renewing.');return;
   }
   busy.current=true;setPaying(true);setError('');
   try{
@@ -192,9 +192,9 @@ export default function ServerCheckout(){
       {order?.gateway==='paypal'&&<p className="mt-2 font-semibold">{t('Final PayPal total:')} {formatPayPalMinorAmount(order.amount,order.currency)} ({order.currency})</p>}
       <p className="mt-2">{paypalStatus.loading?'Checking PayPal availability…':paypalStatus.ready?'PayPal international checkout is available for eligible foreign buyers. Payment will be captured only after your approval.':paypalStatus.reason||'PayPal international checkout is not ready.'}</p>
      </div>}
-    <p className="mt-4 text-xs leading-5 text-muted-foreground">Validity starts after SSH-ready for a new VPS. You will receive a warning 3 days before expiry. At expiry, the Railway deployment is stopped. Renewal requires another verified payment; there is no automatic card debit.</p>
-    <div className="mt-4 flex gap-2 rounded-xl border border-amber-500/30 bg-amber-500/5 p-3 text-xs leading-5 text-muted-foreground"><AlertTriangle size={17} className="shrink-0 text-amber-500"/> Railway root storage is ephemeral. Expiry followed by redeployment may erase data. Back up important files and renew before expiry.</div>
-    {isRenewal&&draft.status==='expired'&&<label className="mt-4 flex items-start gap-2 text-sm"><input className="mt-1" type="checkbox" checked={riskAcknowledged} onChange={e=>setRiskAcknowledged(e.target.checked)}/><span>I understand restarting an expired Railway container may lose its files.</span></label>}
+    <p className="mt-4 text-xs leading-5 text-muted-foreground">Validity starts after SSH-ready for a new VPS. You will receive a warning 3 days before expiry. At expiry, the managed VPS service is stopped. Renewal requires another verified payment; there is no automatic card debit.</p>
+    <div className="mt-4 flex gap-2 rounded-xl border border-amber-500/30 bg-amber-500/5 p-3 text-xs leading-5 text-muted-foreground"><AlertTriangle size={17} className="shrink-0 text-amber-500"/> BabiesIQ Cloud root storage is ephemeral. Expiry followed by redeployment may erase data. Back up important files and renew before expiry.</div>
+    {isRenewal&&draft.status==='expired'&&<label className="mt-4 flex items-start gap-2 text-sm"><input className="mt-1" type="checkbox" checked={riskAcknowledged} onChange={e=>setRiskAcknowledged(e.target.checked)}/><span>I understand restarting an expired BabiesIQ Cloud container may lose its files.</span></label>}
     <p className="mt-4 text-xs text-muted-foreground">Public SSH uses a provider hostname + port; dedicated IPv4 and IPv6 addresses are not included or guaranteed.</p>
     {isInternational?<div className="mt-6 space-y-4">
       <div>
