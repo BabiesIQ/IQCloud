@@ -40,6 +40,7 @@ export default function ServerCredentials({item}){
    </div>
   </div>
   {host&&port>0&&<button type="button" onClick={()=>copy(`ssh -p ${port} ${username}@${host}`,'ssh command')} className="mt-3 inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-medium"><Copy size={14}/> Copy SSH command</button>}
+  {gateway?.hostKeyFingerprint&&<div className="mt-3 rounded-lg border p-3"><p className="text-xs font-semibold">Gateway SSH fingerprint</p><div className="mt-2 flex items-center gap-2"><code className="min-w-0 flex-1 break-all text-xs">{gateway.hostKeyFingerprint}</code><button type="button" className="rounded border p-2" aria-label="Copy gateway SSH fingerprint" onClick={()=>copy(gateway.hostKeyFingerprint,'SSH fingerprint')}><Copy size={14}/></button></div><p className="mt-1 text-xs text-muted-foreground">Verify this fingerprint when your SSH app asks you to trust the gateway.</p></div>}
   {gateway?<p className="mt-3 text-xs text-emerald-600">Connected through BabiesIQ SSH Gateway. This username identifies your VPS; use the same root password.</p>:<p className="mt-3 text-xs text-muted-foreground">Direct Railway SSH endpoint shown while gateway access is pending. Your original connection remains available.</p>}
   <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border p-3">
    <span className="text-xs text-muted-foreground">Forgot root password or changed it using passwd?</span>
