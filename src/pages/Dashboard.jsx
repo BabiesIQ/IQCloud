@@ -75,7 +75,7 @@ export default function Dashboard() {
      setPilotOrder({orderId:checkingOrder.orderId,draftId:checkingOrder.draftId});
      setCheckingOrder(null);
      setPayingDraft('');
-     setCheckoutMessage('Razorpay Test Mode payment verified. Checking real Railway provisioning; do not pay again.');
+     setCheckoutMessage('Razorpay payment verified. Checking actual VPS provisioning; do not pay again.');
     }
    }catch{/* signed webhooks and background reconciliation remain authoritative */}
   };
@@ -112,7 +112,7 @@ export default function Dashboard() {
    }
    const checkout=new window.Razorpay({
     key:order.keyId,amount:order.amount,currency:order.currency,order_id:order.orderId,
-    name:'BabiesIQ Cloud',description:'Monthly compute plan • Railway provisioning requested after payment',
+    name:'BabiesIQ Cloud',description:'Monthly compute plan • BabiesIQ Cloud provisioning requested after payment',
     handler:async result=>{
      try{
       const verified=await apiRequest('/api/v1/payments/test/verify',{method:'POST',body:result});
@@ -165,7 +165,7 @@ export default function Dashboard() {
     <div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="font-semibold">{t('Instance')} {index+1}</h3><p className="mt-1 text-sm text-muted-foreground">{item.os==='debian-12'?'Debian 12':item.os==='ubuntu-22'?'Ubuntu 22.04 LTS':item.os==='ubuntu-26'?'Ubuntu 26.04 LTS':'Ubuntu 24.04 LTS'} · {item.ram} GB RAM · {item.cpu} vCPU</p></div><span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold">{t(item.status==='running'?'Running':item.status)}</span></div>
     <p className="mt-2 text-xs text-muted-foreground">{t('Region')}: {item.region} · {t('Shared ephemeral storage')} · {t('Public SSH via TCP proxy')}</p>
     {item.providerRuntime==='needs_review'&&<p className="mt-3 rounded-lg border border-amber-500/40 p-3 text-xs text-amber-600">Provider verification needs review. Your paid validity and last known SSH address are preserved. Do not pay again.</p>}
-    {item.rootResetStatus==='redeploy_requested'&&<p className="mt-3 rounded-lg border p-3 text-xs text-muted-foreground">Root password update was requested. Railway may be redeploying this instance; check SSH connectivity before connecting.</p>}
+    {item.rootResetStatus==='redeploy_requested'&&<p className="mt-3 rounded-lg border p-3 text-xs text-muted-foreground">Root password update was requested. BabiesIQ Cloud may be redeploying this instance; check SSH connectivity before connecting.</p>}
     {item.validUntil&&<div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border p-3 text-sm">
      <div className="min-w-0"><div className="flex items-center gap-2 font-semibold"><CalendarClock size={16} className="text-emerald-500"/> Billing validity</div>
       <p className="mt-1 text-xs text-muted-foreground">Expires: {new Date(item.validUntil).toLocaleString(language,{dateStyle:'medium',timeStyle:'short'})}</p>
@@ -176,7 +176,7 @@ export default function Dashboard() {
     </div>}
     {!item.validUntil&&item.status==='running'&&<p className="mt-2 text-xs text-muted-foreground">Legacy server: no new subscription expiry has been applied to this instance.</p>}
     <ServerActions item={item} onChanged={refresh}/>
-    {item.status==='running'?<ServerCredentials item={item}/>:<p className="mt-3 text-xs text-muted-foreground">{['paused','stopped'].includes(item.status)?'This instance is stopped. Its saved endpoint is reserved; starting again creates a new Railway deployment and may erase ephemeral files.': ['expired','expiring','resume_pending','resuming','resume_failed'].includes(item.status)?'The paid period ended or renewal redeployment is in progress. Railway root data is ephemeral and may be lost when the service restarts.':'Your SSH details will appear after verified payment and successful provisioning.'}</p>}
+    {item.status==='running'?<ServerCredentials item={item}/>:<p className="mt-3 text-xs text-muted-foreground">{['paused','stopped'].includes(item.status)?'This instance is stopped. Its saved endpoint is reserved; starting again creates a new BabiesIQ Cloud deployment and may erase ephemeral files.': ['expired','expiring','resume_pending','resuming','resume_failed'].includes(item.status)?'The paid period ended or renewal redeployment is in progress. BabiesIQ Cloud root data is ephemeral and may be lost when the service restarts.':'Your SSH details will appear after verified payment and successful provisioning.'}</p>}
    </div>)}
    {instances.filter(i=>i.status!=='draft'&&i.status!=='deleted').length===0&&<div className="rounded-xl border border-dashed p-7 text-center text-sm text-muted-foreground">No provisioned instances yet.</div>}</div>
    {instances.some(i=>i.status==='draft')&&<div className="mt-8"><h3 className="font-semibold">Saved drafts</h3><div className="mt-4 space-y-3">{instances.filter(i=>i.status==='draft').map((item,index)=><div key={item._id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"><div><p className="font-semibold">Draft {index+1}</p><p className="mt-1 text-xs text-muted-foreground">{item.os} · {item.ram} GB RAM · {item.cpu} vCPU · {formatPaise(item.computePriceINR*100)}/month · {item.billingMonths||1} month(s) validity</p></div><div className="flex gap-2"><Link to={'/dashboard/checkout?draftId='+encodeURIComponent(item._id)} className="rounded-lg border border-emerald-500 px-3 py-2 text-xs font-semibold text-emerald-500">Checkout</Link><button type="button" disabled={!!removingDraft} onClick={()=>deleteDraft(item._id)} className="rounded-lg border px-3 py-2 text-xs disabled:opacity-50">{removingDraft===item._id?'Deleting…':'Delete'}</button></div></div>)}</div></div>}
