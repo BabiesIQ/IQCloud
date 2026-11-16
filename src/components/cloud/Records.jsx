@@ -156,8 +156,8 @@ export function ResourceList({ kind }) {
           </Button>
         )}
       </div>
-      {kind==='instances' && <div className="mt-6 rounded-md border border-warning-border bg-warning-muted p-4 text-xs leading-6 text-warning">Instances in this demo are sample records, not actual Railway containers or dedicated virtual machines.</div>}
-      {kind==='domains' && <div className="mt-6 rounded-md border border-warning-border bg-warning-muted p-4 text-xs leading-6 text-warning">DNS instructions are illustrative. No live Railway hostname has been assigned and no actual DNS verification is run.</div>}
+      {kind==='instances' && <div className="mt-6 rounded-md border border-warning-border bg-warning-muted p-4 text-xs leading-6 text-warning">Instances in this demo are sample records, not actual BabiesIQ Cloud containers or dedicated virtual machines.</div>}
+      {kind==='domains' && <div className="mt-6 rounded-md border border-warning-border bg-warning-muted p-4 text-xs leading-6 text-warning">DNS instructions are illustrative. No live BabiesIQ Cloud hostname has been assigned and no actual DNS verification is run.</div>}
       <div className="mt-8 overflow-hidden rounded-md border border-border bg-card">
         <div className="flex flex-wrap items-center gap-3 border-b border-border p-4">
           <div className="relative min-w-[210px] flex-1">
@@ -216,7 +216,7 @@ export function ResourceList({ kind }) {
         <Dialog open={createOpen} onOpenChange={setCreateOpen}>
           <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
             <DialogHeader><DialogTitle>New {config.singular.toLowerCase()} (demo)</DialogTitle></DialogHeader>
-            <p className="text-xs text-muted-foreground">Create a sample record for preview. It will not contact Railway or provision a server.</p>
+            <p className="text-xs text-muted-foreground">Create a sample record for preview. It will not contact BabiesIQ Cloud or provision a server.</p>
             <form onSubmit={(e)=>{e.preventDefault();setConfirmCreate(true);}} className="space-y-6">
               <RecordFields config={config} form={form} setForm={setForm}/>
               <DialogFooter><Button type="button" variant="outline" onClick={()=>setCreateOpen(false)}>Cancel</Button><Button type="submit">Review demo record</Button></DialogFooter>
@@ -305,7 +305,7 @@ export function ResourceDetail({ kind, id }) {
               <div className="rounded-md border border-border bg-card p-6">
                 <div className="font-heading text-sm font-bold">About this record</div>
                 <p className="mt-4 text-xs leading-6 text-muted-foreground">Created {record.CreatedOn ? formatLocalDate(record.CreatedOn,DATE_FORMATS.SHORT) : 'recently'}</p>
-                <p className="mt-4 text-xs leading-6 text-muted-foreground">This is demonstration data. Railway operations, actual DNS verification and payment status are not connected.</p>
+                <p className="mt-4 text-xs leading-6 text-muted-foreground">This is demonstration data. BabiesIQ Cloud operations, actual DNS verification and payment status are not connected.</p>
               </div>
               {kind==='domains' && (
                 <div className="rounded-md border border-warning-border bg-warning-muted p-5 text-sm text-warning">
@@ -314,7 +314,7 @@ export function ResourceDetail({ kind, id }) {
                   <p className="mt-3 text-xs">Refreshing this page does not perform public DNS verification.</p>
                 </div>
               )}
-              {kind==='instances' && <div className="rounded-md border border-border bg-card p-5 text-xs leading-6 text-muted-foreground">A future Railway service may expose SSH through a generated TCP proxy host and port. No dedicated IPv4 address is promised.</div>}
+              {kind==='instances' && <div className="rounded-md border border-border bg-card p-5 text-xs leading-6 text-muted-foreground">Live BabiesIQ Cloud VPSs use the branded vps.babiesiq.tech SSH gateway and a shared TCP port. No dedicated IPv4 address is promised.</div>}
             </aside>
           </div>
         </>
