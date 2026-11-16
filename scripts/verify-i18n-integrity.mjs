@@ -73,8 +73,8 @@ const mustTranslate={
   'Example compute prices','Billing duration',
  ],
  'src/pages/Docs.jsx':[
-  'BabiesIQ Cloud documentation','Getting started','SSH and remote access',
-  'Typical custom-domain workflow',
+  'Developer API documentation','Create an API key',
+  'Get the complete Linux price list','Verify payment and VPS provisioning',
  ],
  'src/components/ServerActions.jsx':[
   'Server controls','Delete permanently',
