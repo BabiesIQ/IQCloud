@@ -4,14 +4,14 @@ import { getPreferences } from '@/config/runtime.config';
 
 const ThemeContext = createContext();
 
-// localStorage throws inside sandboxed or third-party iframes (opaque origin, blocked
-// third-party storage) — e.g. the inline preview in Claude/ChatGPT. Theme persistence is
-// a nicety; it must never crash the app.
+
+
+
 function readStoredTheme() {
   try { return localStorage.getItem('app-theme'); } catch { return null; }
 }
 function writeStoredTheme(theme) {
-  try { localStorage.setItem('app-theme', theme); } catch { /* ignore */ }
+  try { localStorage.setItem('app-theme', theme); } catch {   }
 }
 
 export function ThemeProvider({ children }) {
