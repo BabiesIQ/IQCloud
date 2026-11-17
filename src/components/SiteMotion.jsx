@@ -2,9 +2,9 @@ import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import '@/site-motion.css';
 
-// Route-level entrance and opt-in-on-visibility reveals are kept separate from form state.
-// Only offscreen sections/cards are prepared for scroll reveals, so the first viewport
-// never flashes hidden while React mounts a page or async data finishes loading.
+
+
+
 export default function SiteMotion({ children }) {
   const { pathname } = useLocation();
   const rootRef = useRef(null);
@@ -50,7 +50,7 @@ export default function SiteMotion({ children }) {
     };
     scheduleScan();
 
-    // Pages refresh server lists asynchronously; observe only newly inserted content.
+    
     const mutations = new MutationObserver(scheduleScan);
     mutations.observe(root, { childList: true, subtree: true });
     return () => {

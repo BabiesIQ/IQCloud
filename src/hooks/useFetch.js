@@ -46,7 +46,7 @@ export function useFetch(fetcher, depsOrOpts, maybeOpts) {
   useEffect(() => {
     if (initialLoading) run();
     return () => abortRef.current?.abort();
-  }, deps ?? []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, deps ?? []); 
 
   useEffect(() => () => abortRef.current?.abort(), []);
 

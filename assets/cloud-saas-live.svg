@@ -20,7 +20,7 @@
 <path d="M-30 396 Q260 330 460 424 T1230 360" fill="none" stroke="#53a8ff" stroke-width="1.3" opacity=".23" stroke-dasharray="4 13"><animate attributeName="stroke-dashoffset" values="0;170" dur="13s" repeatCount="indefinite"/></path>
 <g opacity=".2" stroke="#60c7ca" stroke-width="1"><path d="M0 90H1200 M0 180H1200 M0 270H1200 M0 360H1200 M100 0V470 M200 0V470 M300 0V470 M400 0V470 M500 0V470 M600 0V470 M700 0V470 M800 0V470 M900 0V470 M1000 0V470 M1100 0V470" opacity=".21"/></g>
 <rect x="1.5" y="1.5" width="1197" height="467" rx="27" fill="none" stroke="#55e8d1" stroke-width="1.5" stroke-opacity=".33"/>
-<!-- cloud brand mark -->
+
 <g transform="translate(71 57)" filter="url(#shadow)">
  <path d="M16 63C-3 52 1 28 22 25C25 4 48 -7 65 8C81 -7 112 2 117 27C137 26 148 43 141 60C137 74 122 78 110 78H35C26 78 21 72 16 63Z" fill="url(#steel)" stroke="#c5f7f3" stroke-width="2.5"/>
  <rect x="35" y="35" width="78" height="29" rx="9" fill="#092e39" stroke="#3ef0cf" stroke-width="2.5"/>
@@ -39,7 +39,7 @@
 </g>
 <text x="76" y="406" fill="#70f3d4" font-size="17" font-family="Arial,DejaVu Sans,sans-serif" font-weight="700">cloud.babiesiq.tech</text>
 <text x="76" y="429" fill="#91b9c2" font-size="13" font-family="Arial,DejaVu Sans,sans-serif">API  ·  api.cloud.babiesiq.tech</text>
-<!-- illustrative SaaS app, no fabricated utilization metrics -->
+
 <g filter="url(#shadow)">
  <rect x="610" y="52" width="532" height="359" rx="20" fill="url(#pane)" stroke="#4adbc7" stroke-opacity=".68" stroke-width="1.5"/>
  <rect x="611" y="53" width="530" height="49" rx="19" fill="#133039"/>

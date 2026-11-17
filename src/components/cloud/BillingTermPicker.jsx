@@ -1,8 +1,8 @@
 import { BILLING_TERMS, priceINR, termQuote } from '@/config/plans';
 import {useLocale} from '@/i18n/LocaleProvider';
 
-// An accessible, responsive term chooser. All amounts are previews;
-// backend recalculates the authoritative amount before Razorpay checkout.
+
+
 export default function BillingTermPicker({months,onChange,ram,cpu,disabled=false,className=''}) {
  const {formatPaise,t}=useLocale();
  return <div className={className}>

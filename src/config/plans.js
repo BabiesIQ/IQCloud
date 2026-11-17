@@ -1,4 +1,4 @@
-// Shared monthly compute prices matching the Go backend RAM x CPU matrix.
+
 export const MONTHLY_COMPUTE_PRICES=[
  [49,65,85,105,125,145,165,185],[65,99,115,135,155,175,195,215],
  [85,120,150,170,190,210,230,250],[110,185,200,220,240,260,280,300],

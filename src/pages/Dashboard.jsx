@@ -9,7 +9,7 @@ import ServerCredentials from '@/components/ServerCredentials';
 import ServerActions from '@/components/ServerActions';
 import { CalendarClock, AlertTriangle } from 'lucide-react';
 
-// Required by src/router/index.jsx, which auto-registers pages using exported route metadata.
+
 export const route = { path: '/dashboard', layout: 'owner', access: 'authenticated' };
 
 export default function Dashboard() {
@@ -44,9 +44,9 @@ export default function Dashboard() {
   }finally{setLoading(false)}
  }
  useEffect(()=>{refresh()},[]);
- // Razorpay's browser handler may be interrupted by mobile navigation.
- // Show the verified status coming from the backend webhook, even if the
- // Checkout callback did not reach this page.
+ 
+ 
+ 
  useEffect(()=>{
   let active=true;
   const sync=async()=>{
@@ -59,7 +59,7 @@ export default function Dashboard() {
      setPilotOrder(previous=>previous?.orderId===paid.orderId?previous:{orderId:paid.orderId,draftId:paid._id});
      setPayingDraft('');
     }
-   }catch{/* leave the last known server state visible */}
+   }catch{ }
   };
   const timer=window.setInterval(sync,10000);
   return()=>{active=false;window.clearInterval(timer)};
@@ -77,7 +77,7 @@ export default function Dashboard() {
      setPayingDraft('');
      setCheckoutMessage('Razorpay payment verified. Checking actual VPS provisioning; do not pay again.');
     }
-   }catch{/* signed webhooks and background reconciliation remain authoritative */}
+   }catch{ }
   };
   check();
   const timer=window.setInterval(check,7000);
@@ -95,7 +95,7 @@ export default function Dashboard() {
   if(payingDraft)return;
   setPayingDraft(id);setCheckoutMessage('');setCheckoutErrorDraft('');
   try{
-   // Recheck the selected draft against the current account before opening Razorpay.
+   
    const inventory=await apiRequest('/api/v1/instances');
    const fresh=(inventory?.items||[]).find(item=>item._id===id&&item.status==='draft');
    if(!fresh){setInstances(Array.isArray(inventory?.items)?inventory.items:[]);throw Error('This configuration is no longer available. Refresh or create a new one.')}

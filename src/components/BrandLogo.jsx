@@ -1,4 +1,4 @@
-// Cosmetic UI protection only: public assets remain available through the browser/network.
+
 const blockMediaMenu = event => event.preventDefault();
 
 export default function BrandLogo({ size = 36, className = '', decorative = true }) {

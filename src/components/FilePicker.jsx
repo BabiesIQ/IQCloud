@@ -59,7 +59,7 @@ function formatSize(bytes) {
 }
 
 function normalizeFile(file) {
-  // Server files carry an Id (UUID on migrated backends); a falsy Id means a local, not-yet-uploaded file.
+  
   const isServer = !!file.Id;
   return {
     ...file,
@@ -109,7 +109,7 @@ export default function FilePicker({
       return;
     }
 
-    // Deduplicate by name + size
+    
     const existing = filesRef.current;
     const deduped = selected.filter(f =>
       !existing.some(e => (e.Name ?? e.name) === f.name && (e.Size ?? e.size ?? 0) === f.size)
@@ -208,14 +208,14 @@ export default function FilePicker({
 
   const maxHint = config.maxValue ? `Max ${formatSize(config.maxValue * 1024)}` : null;
 
-  // Overall batch progress percentage
+  
   const overallProgress = batchProgress.total > 0
     ? (((batchProgress.current - 1) + batchProgress.fileProgress / 100) / batchProgress.total) * 100
     : 0;
 
   return (
     <div className="space-y-3">
-      {/* Drop zone — hidden in readOnly mode */}
+      { }
       {!readOnly && (
         <div
           role="button"
@@ -250,11 +250,11 @@ export default function FilePicker({
                   Uploading {batchProgress.current} of {batchProgress.total}
                 </p>
                 <p className="text-sm text-foreground font-medium truncate max-w-full">{batchProgress.fileName}</p>
-                {/* Per-file progress */}
+                { }
                 <div className="h-1.5 w-48 max-w-full bg-muted rounded-full overflow-hidden">
                   <div className="h-full bg-primary transition-all duration-150" style={{ width: `${batchProgress.fileProgress}%` }} />
                 </div>
-                {/* Overall batch progress */}
+                { }
                 {batchProgress.total > 1 && (
                   <div className="h-1 w-48 max-w-full bg-muted rounded-full overflow-hidden">
                     <div className="h-full bg-primary/50 transition-all duration-150" style={{ width: `${overallProgress}%` }} />
@@ -280,7 +280,7 @@ export default function FilePicker({
         </div>
       )}
 
-      {/* Hidden file input */}
+      { }
       <input
         ref={inputRef}
         type="file"
@@ -293,7 +293,7 @@ export default function FilePicker({
         aria-hidden="true"
       />
 
-      {/* File list */}
+      { }
       {files.length > 0 && (
         <div className="space-y-1.5" role="list" aria-label="Attached files">
           {files.map((raw, idx) => {
@@ -354,7 +354,7 @@ export default function FilePicker({
         </div>
       )}
 
-      {/* Empty state for readOnly */}
+      { }
       {readOnly && files.length === 0 && (
         <p className="text-sm text-muted-foreground">No attachments</p>
       )}

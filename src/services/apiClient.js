@@ -1,5 +1,5 @@
-// White-label only human-readable backend notices. Never rewrite DNS targets,
- // payment URLs, route identifiers or technical connection fields.
+
+ 
 export function brandVisibleMessage(value) {
   if (typeof value !== 'string') return value;
   return value.replace(/\bRailway\b(?!\.(?:app|com|net)\b)/gi, 'BabiesIQ Cloud');
@@ -14,7 +14,7 @@ function normalizeVisibleMessages(value, visible = false) {
   return value;
 }
 import { APP_RUNTIME_DEFAULTS, getPreferences } from '@/config/runtime.config';
-// All new API integrations must use this client, never hard-code a backend URL.
+
 export async function apiRequest(path, { method = 'GET', body, headers = {}, signal } = {}) {
   if (!path.startsWith('/') || path.startsWith('//')) throw Error('API path must be relative');
   const response = await fetch(APP_RUNTIME_DEFAULTS.apiBaseUrl + path, {

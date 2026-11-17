@@ -1,5 +1,5 @@
-// Public site localizations. Language preferences are independent of billing
-// country: browser language does NOT prove residency or payment eligibility.
+
+
 export const LANGUAGE_CODES = Object.freeze("en hi es fr de pt it nl ru uk pl tr ar fa ur he zh ja ko bn ta te ml kn gu mr pa ne si th vi id ms tl sw am ha yo zu af fr-CA es-MX pt-BR zh-TW sv no da fi el cs sk hu ro bg hr sr sl et lv lt".split(" "));
 export const LANGUAGE_GROUPS = Object.freeze({
  en:"US",hi:"IN",es:"ES",fr:"FR",de:"DE",pt:"PT",it:"IT",nl:"NL",ru:"RU",uk:"UA",pl:"PL",tr:"TR",
@@ -56,9 +56,9 @@ export function nativeLanguageName(code){
 }
 export const LANGUAGES = Object.freeze(LANGUAGE_CODES.map(code=>({code,nativeName:nativeLanguageName(code),region:LANGUAGE_GROUPS[code]})));
 export function currencyForCountry(country){return CURRENCY_BY_COUNTRY[String(country||"").toUpperCase()]||"USD"}
-// PayPal merchant presentment is limited to its Orders v2 supported list.
-// BRL/CNY/MYR are intentionally excluded for India-based merchants due to
-// PayPal's in-country-only restrictions. Unsupported local currencies use USD.
+
+
+
 export const PAYPAL_PRESENTMENT_CURRENCIES = new Set("AUD CAD CZK DKK EUR HKD HUF ILS JPY MXN TWD NZD NOK PHP PLN GBP SGD SEK CHF THB USD".split(" "));
 export const PAYPAL_ZERO_DIGIT_CURRENCIES = new Set(["HUF","JPY","TWD"]);
 export function paypalCurrencyForCountry(country){
@@ -73,9 +73,9 @@ export function formatPayPalMinorAmount(amount,currency,locale="en"){
  catch{return String(value)+" "+currency}
 }
 export const COUNTRY_OPTIONS = Object.freeze(Object.keys(CURRENCY_BY_COUNTRY).sort());
-// The billing-country picker is self-localized: each country is written in a
-// commonly used official/local language, independent of the website UI language.
-// Multilingual countries use one widely used local official language.
+
+
+
 export const COUNTRY_NATIVE_LOCALES = Object.freeze(Object.fromEntries(
  "IN:hi US:en GB:en CA:en AU:en NZ:en DE:de FR:fr IT:it ES:es PT:pt IE:en NL:nl BE:nl AT:de FI:fi GR:el EE:et LV:lv LT:lt SK:sk SI:sl LU:fr MT:mt CY:el HR:hr AE:ar SA:ar QA:ar KW:ar BH:ar OM:ar IL:he JP:ja CN:zh HK:zh-Hant TW:zh-Hant KR:ko SG:en MY:ms TH:th ID:id PH:fil VN:vi BD:bn PK:ur NP:ne LK:si ZA:zu NG:en KE:sw GH:en TZ:sw UG:en EG:ar MA:ar DZ:ar TN:ar BR:pt-BR MX:es AR:es CL:es CO:es PE:es UY:es PY:es BO:es CR:es DO:es CH:de SE:sv NO:no DK:da IS:is PL:pl CZ:cs HU:hu RO:ro BG:bg RS:sr UA:uk TR:tr GE:ka AZ:az KZ:kk UZ:uz RU:ru BY:be AM:hy MD:ro IR:fa MU:en SC:fr ET:am ZM:en BW:en NA:en AO:pt FJ:en PG:en SB:en PA:es GT:es HN:es NI:es SV:es EC:es JM:en TT:en BS:en BB:en BZ:en".split(" ").map(entry=>entry.split(":"))
 ));

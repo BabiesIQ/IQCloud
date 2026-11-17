@@ -1,4 +1,4 @@
-// Prevent the native mobile image callout; not a restriction on public SVG access.
+
 const blockMediaMenu = event => event.preventDefault();
 const names = new Set(["domains","home","dashboard","security","pricing","currency","preferences","documentation","networking","logout"]);
 

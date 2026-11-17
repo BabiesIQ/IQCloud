@@ -14,20 +14,20 @@ function getUserId(person) {
   return String(person?.User?.Id ?? person?.Id ?? '');
 }
 
-/**
- * People value → the shape create/update accept: `[{ User: <id> }]`.
- *
- * The picker's own value is `[{ User: { Id, Name } }]` because it needs `Name` to render avatars and
- * badges — but the data API REJECTS that nested object on a write and wants a bare id. Call this on
- * every People field at submit time (the same way Files goes through `sdk.storage.toCreateFormat`).
- *
- * User ids are UUID strings on migrated backends, integers on legacy ones. Digit-only strings are
- * coerced to Number because legacy int backends reject `{ User: "2" }`; UUID strings pass through
- * unchanged. Anything else (null, empty, junk strings, non-integer numbers) is dropped rather than
- * sent as `{ User: null }`, which fails the insert.
- */
+ 
+
+
+
+
+
+
+
+
+
+
+
 export function toPeopleWrite(value) {
-  // Inside the function on purpose: peopleWriteShape.test.mjs evaluates this function in isolation.
+  
   const UUID_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   if (!Array.isArray(value)) return [];
   return value
@@ -89,19 +89,19 @@ export default function PeoplePicker({
     { initialLoading: true }
   );
 
-  // Filter by search
+  
   const filtered = useMemo(() => {
     if (!search) return users;
     const q = search.toLowerCase();
     return users.filter(u => getUserLabel(u).toLowerCase().includes(q) || u.Email?.toLowerCase().includes(q));
   }, [users, search]);
 
-  // Check if user is selected
+  
   const isSelected = useCallback((userId) => {
     return selected.some(p => getUserId(p) === String(userId));
   }, [selected]);
 
-  // Toggle selection
+  
   const toggle = useCallback((user) => {
     const uid = String(user.Id);
     if (isSelected(uid)) {
@@ -127,7 +127,7 @@ export default function PeoplePicker({
     setActiveIndex(-1);
   }, []);
 
-  // Outside click
+  
   useEffect(() => {
     if (!open || isMobile) return;
     const handler = (e) => {
@@ -141,7 +141,7 @@ export default function PeoplePicker({
     };
   }, [open, isMobile, closeDropdown]);
 
-  // Body scroll lock on mobile
+  
   useEffect(() => {
     if (!open || !isMobile) return;
     const scrollY = window.scrollY;
@@ -160,7 +160,7 @@ export default function PeoplePicker({
     };
   }, [open, isMobile]);
 
-  // Keyboard
+  
   const handleKeyDown = useCallback((e) => {
     if (!open) {
       if (['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(e.key)) {
@@ -177,7 +177,7 @@ export default function PeoplePicker({
     }
   }, [open, filtered, activeIndex, toggle, closeDropdown]);
 
-  // Scroll active into view
+  
   useEffect(() => {
     if (activeIndex < 0 || !listRef.current) return;
     listRef.current.children[activeIndex]?.scrollIntoView({ block: 'nearest' });
@@ -225,7 +225,7 @@ export default function PeoplePicker({
 
   return (
     <div className={cn('relative', className)} ref={containerRef} onKeyDown={handleKeyDown}>
-      {/* Selected badges */}
+      { }
       {selected.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-2">
           {selected.map(person => (
@@ -247,7 +247,7 @@ export default function PeoplePicker({
         </div>
       )}
 
-      {/* Trigger */}
+      { }
       <button
         type="button"
         disabled={disabled}
@@ -271,7 +271,7 @@ export default function PeoplePicker({
         <ApperIcon name="ChevronsUpDown" size={15} className="ml-auto text-muted-foreground shrink-0" />
       </button>
 
-      {/* Mobile bottom sheet */}
+      { }
       {open && isMobile && (
         <div className="fixed inset-0 z-50 flex flex-col justify-end">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={closeDropdown} />
@@ -301,7 +301,7 @@ export default function PeoplePicker({
         </div>
       )}
 
-      {/* Desktop dropdown */}
+      { }
       {open && !isMobile && (
         <div className="absolute left-0 right-0 z-30 top-full mt-1 rounded-lg border border-border bg-popover shadow-lg ring-1 ring-black/5 flex flex-col max-h-72 animate-in fade-in-0 zoom-in-[0.98] duration-100">
           <div className="p-1.5 border-b border-border">

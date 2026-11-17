@@ -11,31 +11,31 @@
  <filter id="softShadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="1" dy="3" stdDeviation="3" flood-color="#5d3eb2" flood-opacity=".30"/></filter>
  <filter id="outerGlow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2.2"/></filter>
 </defs>
-<!-- The headband, note curl, round ears and happy face are designed as one recognizable baby-music mark. -->
+
 <g fill="none" stroke-linecap="round" stroke-linejoin="round">
  <path d="M73 192 C76 103 111 67 165 67 C221 67 264 111 267 192" stroke="#5e53e8" stroke-width="31" opacity=".20" filter="url(#outerGlow)"/>
  <path d="M73 192 C76 103 111 67 165 67 C221 67 264 111 267 192" stroke="url(#halo)" stroke-width="27"/>
  <path d="M83 158 C107 84 137 75 167 79" stroke="#b6efff" stroke-width="3.5" opacity=".48"/>
 </g>
-<!-- Music note as the playful hair curl -->
+
 <g filter="url(#softShadow)">
  <path d="M171 121 L170 35 C173 24 187 26 203 37 C219 47 229 60 220 67 C208 76 197 64 183 56 L183 122" fill="url(#hair)" stroke="#806af3" stroke-width="2" stroke-linejoin="round"/>
  <ellipse cx="157" cy="128" rx="28" ry="20" transform="rotate(-27 157 128)" fill="url(#hair)"/>
  <path d="M179 41 L180 104 M177 117 C166 134 147 143 134 137" fill="none" stroke="#bceaff" stroke-width="2.7" opacity=".35" stroke-linecap="round"/>
 </g>
-<!-- Oversized glossy headphone ear pads -->
+
 <g filter="url(#softShadow)">
  <rect x="42" y="174" width="72" height="84" rx="36" fill="url(#ear)" transform="rotate(-8 78 216)"/>
  <rect x="218" y="174" width="72" height="84" rx="36" fill="url(#ear)" transform="rotate(8 254 216)"/>
  <path d="M63 181 C48 194 47 222 59 237" fill="none" stroke="#d6beff" stroke-width="3" opacity=".55" stroke-linecap="round"/>
  <path d="M260 182 C275 195 274 220 266 236" fill="none" stroke="#dfc5ff" stroke-width="3" opacity=".5" stroke-linecap="round"/>
 </g>
-<!-- Pink lower face ring matches BabiesIQ's original baby mascot -->
+
 <path d="M83 204 C71 243 100 281 132 294 C168 309 208 300 234 282 C256 266 269 237 254 202" fill="none" stroke="#c75ae5" stroke-width="35" stroke-linecap="round" opacity=".18" filter="url(#outerGlow)"/>
 <path d="M83 205 C71 245 100 281 132 294 C168 309 208 300 234 282 C256 266 269 238 254 202" fill="none" stroke="url(#face)" stroke-width="31" stroke-linecap="round"/>
 <path d="M81 218 C77 256 102 282 137 295" stroke="#ffd2db" stroke-width="3.5" stroke-linecap="round" opacity=".45" fill="none"/>
 <path d="M161 305 C203 306 239 284 254 251" stroke="#ffe0b9" stroke-width="3" stroke-linecap="round" opacity=".38" fill="none"/>
-<!-- Baby's dot eyes and broad little smile -->
+
 <circle cx="130" cy="217" r="14" fill="url(#eye)" stroke="#b957e6" stroke-opacity=".35" stroke-width="1.3"/>
 <circle cx="208" cy="217" r="14" fill="url(#eye)" stroke="#b957e6" stroke-opacity=".35" stroke-width="1.3"/>
 <circle cx="125" cy="210" r="3.2" fill="#ffe8ff" opacity=".5"/>

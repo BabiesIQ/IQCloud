@@ -3,8 +3,8 @@ import {apiRequest} from '@/services/apiClient';
 import {PAYPAL_PRESENTMENT_CURRENCIES} from '@/i18n/config';
 import {useLocale} from '@/i18n/LocaleProvider';
 
-// PayPal owns the card-entry UI. No card number, expiration or CVV is read by
-// BabiesIQ Cloud, React, application logs or our backend.
+
+
 let scriptPromise;
 function loadPayPalV6(mode){
  if(window.paypal?.createInstance)return Promise.resolve(window.paypal);
@@ -100,18 +100,18 @@ export default function PayPalGuestCardButton({
     return {orderId:result.orderId};
    };
    try{
-    // Pass an invoked Promise to the v6 SDK, from the direct buyer click.
+    
     await sessionRef.current.start({presentationMode:'auto',targetElement:button},request());
    }catch(e){
-    pendingRef.current=true; // The provider order may already exist.
+    pendingRef.current=true; 
     props.current.onFailure('Card checkout could not finish. Check the existing order before paying again. '+(e.message||''));
    }
   };
   button.addEventListener('click',click);
   return()=>button.removeEventListener('click',click);
  },[state]);
- // Show the original brand artwork only after the provider verifies card eligibility.
- // Preserve the exact SVGs and colors, and give the marks a clean white surface.
+ 
+ 
  const available=enabled&&state==='eligible';
  return <section aria-label={t('Pay using card')} className={`rounded-2xl border p-4 transition-colors sm:p-5 ${available?'border-emerald-500/35 bg-emerald-500/[0.035]':'border-border bg-muted/20'}`}>
   <div className="flex flex-wrap items-start justify-between gap-3">

@@ -1,4 +1,4 @@
-// Preferences never allow the backend URL to be user controlled.
+
 import {browserCountry,browserLanguage,canonicalLanguage,LANGUAGE_CODES} from '@/i18n/config';
 const DEFAULT_API = 'https://api.cloud.babiesiq.tech';
 const KEY = 'iqcloud:preferences:v1';

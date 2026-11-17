@@ -1,5 +1,5 @@
-// Curated on-device UI essentials for additional languages.
-// Safety/legal paragraphs remain English until individually reviewed.
+
+
 const keys=["Home","Dashboard","Pricing","Create server","Domains","Networking","Security Center","Preferences","Documentation","Currency","Log out","Log in","Refresh","Cancel","Your devices","Pay"];
 const rows={
   "nl": [

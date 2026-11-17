@@ -1,9 +1,9 @@
 import {additionalLocales} from './locales/essentials.js';
 import {WELCOME_BACK_TRANSLATIONS} from './locales/welcome.js';
 import traditionalChinese from './locales/zh-TW.js';
-// Brand names and technical identifiers stay in their original language.
-// All unsupported phrases are shown in the original English; no invented
-// machine translation is presented as reviewed human copy.
+
+
+
 const dictionaries={
  hi:{
   "Home":"मुख्य पृष्ठ","Dashboard":"डैशबोर्ड","Pricing":"कीमतें","Preferences":"पसंद की सेटिंग्स","Documentation":"सहायता और जानकारी",
@@ -39,8 +39,8 @@ const dictionaries={
 };
 dictionaries["pt-BR"]=dictionaries.pt;dictionaries["fr-CA"]=dictionaries.fr;dictionaries["es-MX"]=dictionaries.es;dictionaries["zh-TW"]={...dictionaries.zh,...traditionalChinese};
 for(const [code,essential] of Object.entries(additionalLocales))dictionaries[code]={...essential,...(dictionaries[code]||{})};
-// Reviewed human-style Hindi website copy. UI texts are keyed by their
-// original English source so every page can share the same translation.
+
+
 Object.assign(dictionaries.hi,{
  "Retry":"दोबारा कोशिश करें",
  "No running VPS found":"कोई चालू VPS नहीं मिला",
@@ -736,7 +736,7 @@ Object.assign(dictionaries.pt||{},{
   "or": "ou",
   "Choose the way you would like to pay securely.": "Escolha a forma de pagamento segura que preferir."
 });
-// Human-authored copy for the Music API sibling-project showcase.
+
 Object.assign(dictionaries.hi||{},{
   "MORE FROM BABIESIQ": "BABIESIQ की दूसरी खास सेवा",
   "Our music developer platform": "हमारा म्यूज़िक डेवलपर प्लेटफ़ॉर्म",
@@ -785,7 +785,7 @@ Object.assign(dictionaries.de||{},{
   "Updates, open-source projects, and our community.": "Neuigkeiten, Open-Source-Projekte und unsere Community.",
   "Find us online": "Besuch uns online"
 });
-// Localize the greeting only. Customer-provided names are never dictionary input.
+
 for(const [locale,greeting] of Object.entries(WELCOME_BACK_TRANSLATIONS)){
  if(dictionaries[locale])dictionaries[locale]["Welcome back,"]=greeting;
 }

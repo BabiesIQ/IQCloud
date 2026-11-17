@@ -1,7 +1,7 @@
 import { mockData, mockMeta } from './mockData';
 import { policies } from './policies';
 
-// Never block the entire React module graph on a third-party SDK.
+
 const unavailable = { ok: false, error: { message: 'Service unavailable. Please try again later.' } };
 const fallbackSession = {
   ui: null, initFailed: true,

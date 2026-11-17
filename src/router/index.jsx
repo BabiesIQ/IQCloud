@@ -6,8 +6,8 @@ import PublicLayout from '@/layouts/PublicLayout';
 import AppLoader from '@/components/AppLoader';
 import PageSkeleton from '@/components/PageSkeleton';
 
-// Route chunk fallbacks: app pages show a neutral page skeleton in the content area; auth pages
-// keep the boot loader so first open reads as one continuous state.
+
+
 const PageLoader = () => <PageSkeleton />;
 const AuthLoader = () => <AppLoader />;
 
@@ -18,15 +18,15 @@ const authWrap = (Component) => (
   <Suspense fallback={<AuthLoader />}><Component /></Suspense>
 );
 
-// Auto-discover: eager modules for route metadata + lazy loaders for code-splitting
+
 const pageMods = import.meta.glob('/src/pages/**/*.jsx', { eager: true });
 const pageLoaders = import.meta.glob('/src/pages/**/*.jsx');
 const NotFoundPage = lazy(() => import('@/pages/NotFound'));
 
-// Warm every page chunk once the browser is idle, so the first click on a nav item renders from
-// cache instead of waiting on a network fetch (the "URL changed but the page came later" first-open lag).
+
+
 if (typeof window !== 'undefined') {
-  const warm = () => { for (const load of Object.values(pageLoaders)) { try { load().catch(() => {}); } catch { /* ignore */ } } };
+  const warm = () => { for (const load of Object.values(pageLoaders)) { try { load().catch(() => {}); } catch {   } } };
   if ('requestIdleCallback' in window) window.requestIdleCallback(warm, { timeout: 4000 });
   else setTimeout(warm, 1500);
 }
@@ -42,15 +42,15 @@ function buildDiscoveredRoute(r) {
   const isIndex = r.path === '/';
   const config = {
     element: wrap(r._component),
-    // An owner-layout page that forgot `access` is private, never public: the shell is for signed-in users.
+    
     handle: { access: r.access ?? (r.layout === 'owner' ? 'authenticated' : 'public') },
   };
   if (isIndex) config.index = true;
-  else config.path = r.path.replace(/^\//, '');
+  else config.path = r.path.replace(/^\
   return config;
 }
 
-// Auth routes (frozen pages — no route export, handled separately)
+
 const AuthPage = lazy(() => import('@/pages/auth/AuthPage'));
 const AuthCallback = lazy(() => import('@/pages/auth/Callback'));
 const AuthError = lazy(() => import('@/pages/auth/ErrorPage'));
@@ -94,8 +94,8 @@ function buildAuthRoutes() {
 
 const ownerRoutes = discoveredRoutes.filter((r) => r.layout === 'owner').map(buildDiscoveredRoute);
 
-// Old Create Instance links and bookmarks must all resolve to the actual
-// authenticated provisioning form, not the legacy demo instance detail page.
+
+
 const oldCreatePaths = [
   'instances/new',
   'create-instance',

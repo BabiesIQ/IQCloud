@@ -25,7 +25,7 @@ export default function Notifications() {
    setError(e.message||'Could not load notifications');
   }finally{setLoading(false);}
  },[navigate]);
- // Reread notices when the user changes language, not only after refresh.
+ 
  useEffect(()=>{load()},[load,language]);
  async function markRead(id){
   setBusy(id);setError('');

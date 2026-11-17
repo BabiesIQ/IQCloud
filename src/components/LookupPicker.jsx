@@ -9,8 +9,8 @@ import { cn } from '@/lib/utils';
 
 const DEFAULT_LABEL = (item) => item.Name ?? item.title_c ?? `#${item.Id}`;
 const DEFAULT_ID = (item) => item.Id;
-// Record ids are opaque: UUID strings on migrated backends, integers on legacy ones. Digit-only
-// strings are coerced to Number because legacy int backends reject a string Lookup value.
+
+
 const normId = (v) => (typeof v === 'string' && /^\d+$/.test(v) ? Number(v) : v);
 const PAGE_SIZE = 20;
 const DEBOUNCE_MS = 300;
@@ -81,14 +81,14 @@ function LookupPicker({
     return DEFAULT_ID;
   }, [idKey]);
 
-  // --- Debounce server search ---
+  
   useEffect(() => {
     if (!isServerSearch) { setDebouncedSearch(search); return; }
     debounceRef.current = setTimeout(() => setDebouncedSearch(search), debounceMs);
     return () => clearTimeout(debounceRef.current);
   }, [search, isServerSearch, debounceMs]);
 
-  // --- Data fetching ---
+  
   const fetchPage = useCallback(async (offset = 0, append = false, query = '') => {
     if (isStatic || !table) return;
 
@@ -129,7 +129,7 @@ function LookupPicker({
     return () => abortRef.current?.abort();
   }, [table, staticOptions, isStatic, fetchPage, debouncedSearch]);
 
-  // --- Resolve display label (deduped by value) ---
+  
   useEffect(() => {
     if (!value || isStatic) { setResolvedLabel(null); return; }
     const match = items.find((o) => String(getId(o)) === String(value));
@@ -151,7 +151,7 @@ function LookupPicker({
     return resolvedLabel;
   }, [value, items, getId, getLabel, resolvedLabel]);
 
-  // --- Actions ---
+  
   const refresh = useCallback(() => {
     offsetRef.current = 0;
     setSearch('');
@@ -181,7 +181,7 @@ function LookupPicker({
     onChangeRef.current?.(null);
   }, []);
 
-  // --- Outside click/touch (desktop) ---
+  
   useEffect(() => {
     if (!open || isMobile) return;
     const handler = (e) => {
@@ -195,7 +195,7 @@ function LookupPicker({
     };
   }, [open, isMobile, closeDropdown]);
 
-  // --- Lock body scroll on mobile (preserve scroll position) ---
+  
   useEffect(() => {
     if (!open || !isMobile) return;
     const scrollY = window.scrollY;
@@ -214,7 +214,7 @@ function LookupPicker({
     };
   }, [open, isMobile]);
 
-  // --- Dropdown flip (desktop) ---
+  
   useEffect(() => {
     if (!open || !containerRef.current || isMobile) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -222,7 +222,7 @@ function LookupPicker({
     setDropUp(spaceBelow < FLIP_THRESHOLD && rect.top > spaceBelow);
   }, [open, isMobile]);
 
-  // --- Auto load more ---
+  
   const checkLoadMore = useCallback(() => {
     const el = listRef.current;
     if (!el || !hasMore || loadingMore) return;
@@ -235,14 +235,14 @@ function LookupPicker({
     if (open) checkLoadMore();
   }, [open, items, checkLoadMore]);
 
-  // --- Client-side filter ---
+  
   const filtered = useMemo(() => {
     if (isServerSearch || !search || !isLocalFilter) return items;
     const q = search.toLowerCase();
     return items.filter((item) => getLabel(item).toLowerCase().includes(q));
   }, [items, search, getLabel, isLocalFilter, isServerSearch]);
 
-  // --- Keyboard navigation ---
+  
   const optionIds = useMemo(() => {
     const ids = [];
     if (includeAll) ids.push(null);
@@ -276,7 +276,7 @@ function LookupPicker({
 
   useEffect(() => { setActiveIndex(-1); }, [filtered]);
 
-  // --- Shared list content ---
+  
   const renderOptions = () => (
     <>
       {includeAll && (
@@ -382,7 +382,7 @@ function LookupPicker({
 
   return (
     <div className={cn('relative', className)} ref={containerRef} onKeyDown={handleKeyDown}>
-      {/* Trigger */}
+      { }
       <button
         type="button"
         disabled={disabled}
@@ -420,7 +420,7 @@ function LookupPicker({
         </span>
       </button>
 
-      {/* --- Mobile: bottom sheet --- */}
+      { }
       {open && isMobile && (
         <div className="fixed inset-0 z-50 flex flex-col justify-end">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={closeDropdown} />
@@ -454,7 +454,7 @@ function LookupPicker({
         </div>
       )}
 
-      {/* --- Desktop: popover dropdown --- */}
+      { }
       {open && !isMobile && (
         <div
           className={cn(
