@@ -10,8 +10,8 @@ const rawText=new WeakMap();
 const rawAttrs=new WeakMap();
 const knownTranslated=isKnownTranslationOf;
 
-// Compare the actual visible text, not the JSX whitespace around it.
-// DOM edits made by a previous locale must never become the new source language.
+
+
 function isTranslatedVersion(source,current){
  const original=String(source||'').trim();
  const visible=String(current||'').trim();
@@ -23,13 +23,13 @@ function rememberSource(cache,key,current){
   entry={source:current,applied:current};
   cache.set(key,entry);
  }else if(current!==entry.applied&&!isTranslatedVersion(entry.source,current)){
-  // React rendered genuinely new text, e.g. an updated price, server state, or label.
+  
   entry.source=current;
  }
  return entry;
 }
-// All translations are bundled inside the frontend. Never send user content,
-// account details, passwords or rendered DOM text to a third-party service.
+
+
 function installDOMLanguage(language){
  const translate=source=>translateUI(source,language);
  const root=document.getElementById("root");if(!root)return ()=>{};
@@ -89,8 +89,8 @@ export function LocaleProvider({children}){
  const [preferences,setPreferences]=useState(getPreferences);
  const [fx,setFX]=useState(null);
  const lastSyncedLanguage=useRef(getPreferences().language);
- // Locale remains instant on the device, while authenticated users also save
- // the preference server-side for asynchronous Brevo and app notifications.
+ 
+ 
  useEffect(()=>{
   let active=true;
   const syncAccountLanguage=async()=>{
@@ -108,8 +108,8 @@ export function LocaleProvider({children}){
      updatePreferences({language:remote});
     }
    }catch{
-    // Guest sessions, offline devices and temporary API failures keep
-    // localized UI working. Never block login or navigation for preference sync.
+    
+    
    }
   };
   syncAccountLanguage();
@@ -127,8 +127,8 @@ export function LocaleProvider({children}){
   return()=>window.removeEventListener('iqcloud:preferences',sendLanguage);
  },[]);
  useEffect(()=>{
-  // The current-tab custom event already contains the updated preferences.
-  // Reading localStorage again could return stale values or fail in restricted browsers.
+  
+  
   const sync=event=>setPreferences(event?.type==="iqcloud:preferences"&&event.detail?event.detail:getPreferences());
   addEventListener("iqcloud:preferences",sync);addEventListener("storage",sync);
   return()=>{removeEventListener("iqcloud:preferences",sync);removeEventListener("storage",sync)};
@@ -148,7 +148,7 @@ export function LocaleProvider({children}){
  },[preferences.country]);
  const values=useMemo(()=>{
   const country=preferences.country,language=preferences.language;
-  // A pending request for the previous country must not keep its currency or rate on screen.
+  
   const currentFX=fx?.country===country?fx:null;
   const currency=country==="IN"?"INR":currentFX?.currency||currencyForCountry(country);
   const formatINR=paise=>new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:2}).format((Number(paise)||0)/100);

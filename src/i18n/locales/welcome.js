@@ -1,5 +1,5 @@
-// Localized dashboard greeting. The user's display name is rendered separately
-// and never passed through translation, transliteration, or DOM localization.
+
+
 export const WELCOME_BACK_TRANSLATIONS = Object.freeze({
   "hi": "फिर से स्वागत है,",
   "es": "Qué gusto verte de nuevo,",

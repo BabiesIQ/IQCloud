@@ -4,7 +4,7 @@ import { APP_CONFIG, AUTH_PROFILES, GENERIC_AUTH } from '@/config/app.config';
 import { useFetch } from '@/hooks/useFetch';
 import { sdk } from '@/services/sdk';
 
-// Auto-discover nav items and footer pages from page exports
+
 const pageMods = import.meta.glob('/src/pages/**/*.jsx', { eager: true });
 
 const discoveredNavItems = Object.entries(pageMods)
@@ -36,12 +36,12 @@ async function fetchCounts() {
   return counts;
 }
 
-// The single data source for OwnerLayout: auth, nav discovery, profile filtering,
-// section grouping, footer pages, nav count badges, and the post-login home route.
+
+
 export function useOwnerLayoutData() {
   const { logout, user } = useAuth();
 
-  // "Home" for a signed-in user is their profile's post-login route, matching AuthPage.
+  
   const homeRoute = useMemo(() => {
     const matched = AUTH_PROFILES?.find((p) => p.name === user?.profile);
     return matched?.redirectAfterAuth ?? GENERIC_AUTH?.redirectAfterAuth ?? '/';
