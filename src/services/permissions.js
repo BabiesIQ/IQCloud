@@ -1,5 +1,5 @@
-// Frozen permission helpers. The generated src/services/userPermissions.js supplies the
-// app-specific PROFILES and TABLE_PERMISSIONS maps and re-exports the returned functions.
+
+
 export function createPermissions(profiles, tablePermissions) {
   function getProfileMeta(profile) {
     return profiles[profile] ?? { label: profile, isDefault: false, isPublic: false, canManageTeam: false, reportsTo: null };

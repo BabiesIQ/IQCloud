@@ -1,4 +1,4 @@
-/* Shared visual rhythm for the live Cloud SPA. Keep transforms on the compositor. */
+
 @keyframes iq-page-arrive {
   from { opacity: 0.62; transform: translate3d(0, 12px, 0); }
   to { opacity: 1; transform: none; }
@@ -139,8 +139,8 @@
 @media(hover:hover){.iq-nav-panel a:hover .iq-nav-icon,.iq-nav-panel button:hover .iq-nav-icon,main a:hover .iq-nav-icon{transform:translateY(-1px) scale(1.07);filter:drop-shadow(0 2px 4px rgba(0,226,182,.44))}}
 @media(prefers-reduced-motion:reduce){.iq-nav-icon{transition:none!important;transform:none!important}}
 
-/* Stop the native "Save image" callout when a visitor long-presses UI logos.
-   The image itself never takes pointer hits; outer links/buttons remain clickable. */
+
+
 .iq-protected-icon,
 .iq-protected-icon > .iq-protected-image {
   -webkit-touch-callout: none;
