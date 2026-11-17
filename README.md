@@ -111,7 +111,6 @@ IQCloud/
 │   ├── pages/                   # pages and content
 │   ├── components/              # reusable UI
 │   └── i18n/                    # translations
-├── scripts/                     # website checks
 ├── package.json
 └── vite.config.js
 ```
@@ -150,7 +149,6 @@ npm run preview
 | `npm run dev` | Local development |
 | `npm run build` | Website build |
 | `npm run preview` | Preview `dist/` output |
-| `node scripts/check-active-routes.mjs` | Verify site navigation |
 
 > Local website development and live account services are separate experiences. Use [the official website](https://cloud.babiesiq.tech) to access your account.
 
