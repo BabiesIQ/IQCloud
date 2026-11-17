@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getPreferences, updatePreferences } from '@/config/runtime.config';
 import { LANGUAGES,COUNTRY_OPTIONS,CURRENCY_BY_COUNTRY,nativeCountryName } from '@/i18n/config';
 
-// Can be mounted in account settings or the global header.
+
 export default function CloudPreferences() {
   const [prefs, setPrefs] = useState(getPreferences);
   const [error, setError] = useState('');

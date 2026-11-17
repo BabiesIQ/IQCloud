@@ -41,8 +41,8 @@ export default function LanguageSelector(){
   touchStart.current=null;
   setOpen(true);
  }
- // Mouse / pen support on the grip. Touch uses native non-passive listeners
- // below because mobile browsers cancel pointer gestures while scrolling.
+ 
+ 
  function onSwipeStart(event){
   if(event.pointerType==='touch'||!event.isPrimary||event.button!==0)return;
   dragStart.current={id:event.pointerId,y:event.clientY,at:performance.now()};
@@ -72,9 +72,9 @@ export default function LanguageSelector(){
   setDragY(0);
   setDragging(false);
  }
- // The whole sheet can be pulled down. Pulling from the options area only
- // takes over when it is already at the top; upward gestures keep normal
- // native list scrolling intact. Do not steal touches from the search input.
+ 
+ 
+ 
  useEffect(()=>{
   if(!open)return;
   const element=sheetRef.current;
@@ -110,8 +110,8 @@ export default function LanguageSelector(){
     return;
    }
    if(deltaY<8&&!gesture.active)return;
-   // This listener must be non-passive for Android Chrome to let the sheet
-   // follow a downward drag instead of rubber-banding the page behind it.
+   
+   
    if(event.cancelable)event.preventDefault();
    gesture.active=true;
    setDragging(true);
