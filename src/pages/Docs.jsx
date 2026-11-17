@@ -285,9 +285,9 @@ export default function Docs(){
         server:{host:'vps.babiesiq.tech',port:33756,username:'root',vpsId:'12345678',
           passwordExample:'12345678:YOUR_VPS_PASSWORD',
           os:osImage,region,ramGb:ram,vcpu:cpu,
-          hostKeyFingerprint:'SHA256:EXAMPLE_FINGERPRINT',dedicatedPublicIPv4:false}
+          hostKeyFingerprint:'SHA256:EXAMPLE_FINGERPRINT'}
       }} note="The VPS ID and fingerprint above are placeholders. Obtain your actual values from your own successful confirmation response."/>
-      <p className="rounded-xl bg-muted/40 p-4 text-xs leading-6 text-muted-foreground"><strong className="text-foreground">Termius SSH:</strong> host <code>vps.babiesiq.tech</code>, username <code>root</code>, use <code>server.port</code> from the response (currently 33756). In the password field enter <code>VPS_ID:YOUR_VPS_PASSWORD</code> with your unique ID and the original root password you supplied. The backend never returns that secret. These are BabiesIQ Cloud containers using shared gateway networking, not dedicated public IPv4 VPSs or dedicated persistent SSD.</p>
+      <p className="rounded-xl bg-muted/40 p-4 text-xs leading-6 text-muted-foreground"><strong className="text-foreground">Termius SSH:</strong> host <code>vps.babiesiq.tech</code>, username <code>root</code>, use <code>server.port</code> from the response (currently 33756). In the password field enter <code>VPS_ID:YOUR_VPS_PASSWORD</code> with your unique ID and the original root password you supplied. The backend never returns that secret. These BabiesIQ Cloud containers support IPv4 and IPv6 networking through their configured routes. Use the assigned connection details; shared root storage remains ephemeral.</p>
     </Section>
 
     <Section id="errors" n="07" title="HTTP status codes, quotas and safe retry rules" description="All errors are JSON. Keep the original order reference and the same idempotency key on any uncertain retry.">

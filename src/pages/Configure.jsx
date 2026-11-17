@@ -104,7 +104,7 @@ export default function Configure() {
                 <div className="border-t border-border pt-5">
                   <p className="text-xs text-muted-foreground">Monthly compute price {isRecommended(ram,cpu)?'· Recommended':''}</p>
                   <div className="mt-1 font-heading text-4xl font-bold">{formatMonthly(amount)}<span className="ml-1 text-sm font-normal text-muted-foreground">/mo</span></div>
-                  <p className="mt-3 text-xs leading-5 text-muted-foreground">Monthly RAM/CPU estimate. Shared ephemeral disk and target network speeds are not guaranteed.</p>
+                  <p className="mt-3 text-xs leading-5 text-muted-foreground">Monthly RAM/CPU estimate. Shared storage is ephemeral. Network throughput varies with source server limits, routing, traffic and available bandwidth.</p>
                 </div>
                 <Button asChild disabled={!ready} size="lg" className="w-full">
                   <Link to={ready ? '/checkout?'+query : '#'}>Continue to review <ApperIcon name="ArrowRight" size={17} /></Link>

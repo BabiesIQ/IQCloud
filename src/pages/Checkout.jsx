@@ -28,7 +28,7 @@ export default function Checkout() {
         <div className="grid gap-x-8 gap-y-6 py-8 sm:grid-cols-2">
           {[
             ['Location',regionLabel],['Operating system',imageLabel],['Compute',cpu+' vCPU'],
-            ['RAM',ram+' GB'],['Host storage','Shared ephemeral; no per-user quota'],['Public access','SSH proxy hostname + port; no dedicated IPv4/IPv6'],['Billing','Monthly'],
+            ['RAM',ram+' GB'],['Host storage','Shared ephemeral; no per-user quota'],['Public access','IPv4 + IPv6 supported; SSH hostname + port'],['Billing','Monthly'],
           ].map(([label,value])=><div key={label}><p className="text-xs text-muted-foreground">{label}</p><p className="mt-2 text-sm font-semibold">{value}</p></div>)}
         </div>
         <div className="flex flex-wrap items-center justify-between gap-5 rounded-md bg-muted px-5 py-5">
