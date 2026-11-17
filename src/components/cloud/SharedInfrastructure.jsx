@@ -3,8 +3,8 @@ export default function SharedInfrastructure({className=''}) {
  return <div className={`grid gap-3 sm:grid-cols-2 ${className}`}>
   <div className="rounded-2xl border border-emerald-500/40 bg-emerald-500/5 p-5">
    <div className="flex items-center gap-2 text-sm font-semibold text-emerald-600 dark:text-emerald-400"><Gauge size={19}/> Network performance</div>
-   <p className="mt-3 text-xl font-semibold">Variable throughput</p>
-   <p className="mt-2 text-xs leading-5 text-muted-foreground">Actual transfer speed depends on the sending and receiving servers, available bandwidth, routing, traffic and congestion. No fixed Mbps or Gbps rate is guaranteed.</p>
+   <p className="mt-3 text-xl font-semibold">2–10 Gbps</p>
+   <p className="mt-2 text-xs leading-5 text-muted-foreground">High-speed network range based on our own performance tests. Actual file and download speeds depend on the source and destination servers, routing, traffic and available bandwidth.</p>
   </div>
   <div className="rounded-2xl border bg-card p-5">
    <div className="flex items-center gap-2 text-sm font-semibold"><HardDrive size={19} className="text-emerald-500"/> Shared host storage</div>

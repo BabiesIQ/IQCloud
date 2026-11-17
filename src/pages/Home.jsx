@@ -83,7 +83,7 @@ export default function Home() {
               <span className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">Cloud hosting preview</span>
               <h2 className="mt-6 text-3xl font-semibold tracking-tight">More ways to host.</h2>
               <p className="mt-4 max-w-md text-sm leading-7 text-muted-foreground">Linux containers today, Windows RDP planned. Choose compute and region from one dashboard.</p>
-              <p className="mt-3 text-xs text-muted-foreground">IPv4 and IPv6 networking is supported. Transfer speed depends on the source server, network route and traffic; no fixed Gbps rate is guaranteed. Shared host capacity target 2–30 TB is not a per-user SSD or persistence promise. Windows RDP coming later.</p>
+              <p className="mt-3 text-xs text-muted-foreground">IPv4 and IPv6 networking is supported, with a 2–10 Gbps advertised network range. Actual transfer speeds depend on the source and destination servers, routing, traffic and available bandwidth. Shared host capacity target 2–30 TB is not a per-user SSD or persistence promise. Windows RDP coming later.</p>
               <Link to="/dashboard/instances/new" className="mt-6 inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background">Explore servers <ApperIcon name="ArrowUpRight" size={16}/></Link>
             </div>
             <div className="relative min-h-[260px] [perspective:900px]">
