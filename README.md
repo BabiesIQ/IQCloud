@@ -161,9 +161,9 @@ npm run preview
 Choose your preferred host and open its guide. These steps describe **hosting a Vite single-page website**.
 
 <details>
-<summary><b>▸ 01 · Deploy with Railway</b></summary>
+<summary><b>▸ 01 · Deploy with a managed Node host</b></summary>
 
-1. Open [Railway](https://railway.com/) and create a project.
+1. Open your preferred managed Node.js hosting platform and create a web service.
 2. Connect your GitHub repository and select the branch.
 3. Use a compatible Node 24 build environment.
 4. Build command: `npm run build`.
@@ -268,7 +268,7 @@ Enable this server block in Nginx, run `sudo nginx -t`, then reload Nginx. Confi
 
 | Host | Build | Output | Routing |
 |:--|:--|:--|:--|
-| Railway | `npm run build` | `dist/` | Static server with SPA fallback |
+| Managed Node host | `npm run build` | `dist/` | Static server with SPA fallback |
 | Vercel | `npm run build` | `dist/` | Rewrite to `index.html` |
 | Netlify | `npm run build` | `dist/` | `_redirects` |
 | Cloudflare Pages | `npm run build` | `dist/` | SPA routing |
