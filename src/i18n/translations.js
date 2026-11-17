@@ -89,7 +89,7 @@ Object.assign(dictionaries.hi,{
  "Cloud hosting preview":"क्लाउड होस्टिंग की झलक",
  "More ways to host.":"होस्टिंग के और भी विकल्प।",
  "Linux containers today, Windows RDP planned. Choose compute and region from one dashboard.":"अभी Linux कंटेनर उपलब्ध हैं और आगे Windows RDP लाने की योजना है। संसाधन और क्षेत्र एक ही डैशबोर्ड से चुनें।",
- "Target network up to 3–5 Gbps (unverified, not guaranteed). Shared host capacity target 2–30 TB is not a per-user SSD or persistence promise. Windows RDP coming later.":"नेटवर्क का लक्ष्य 3–5 Gbps तक है, लेकिन इसकी पुष्टि या गारंटी नहीं है। साझा होस्ट पर 2–30 TB की अनुमानित क्षमता हर ग्राहक को मिलने वाला अलग SSD नहीं है। Windows RDP बाद में आएगा।",
+  "IPv4 and IPv6 networking is supported. Transfer speed depends on the source server, network route and traffic; no fixed Gbps rate is guaranteed. Shared host capacity target 2–30 TB is not a per-user SSD or persistence promise. Windows RDP coming later.": "IPv4 और IPv6 नेटवर्क कनेक्टिविटी उपलब्ध है। डेटा ट्रांसफर की गति भेजने वाले सर्वर, नेटवर्क रूट और ट्रैफ़िक पर निर्भर करती है; किसी निश्चित Gbps गति की गारंटी नहीं है। साझा होस्ट की अनुमानित 2–30 TB क्षमता हर ग्राहक का अलग SSD या स्थायी स्टोरेज नहीं है। Windows RDP बाद में आएगा।",
  "Explore servers":"सर्वर देखें",
  "Linux VPS":"Linux VPS",
  "Cloud compute":"क्लाउड कंप्यूटिंग",
@@ -127,7 +127,7 @@ Object.assign(dictionaries.hi,{
  "Base monthly price":"सामान्य मासिक शुल्क",
  "Cloud configuration":"क्लाउड की सेटिंग्स",
  "Create instance":"सर्वर बनाएँ",
- "Choose RAM and CPU for your Linux container. No dedicated SSD size is sold. Shared host storage and network speeds are best effort.":"अपने Linux कंटेनर के लिए RAM और CPU चुनें। अलग SSD नहीं दिया जाता। साझा स्टोरेज और नेटवर्क की गति उपलब्धता पर निर्भर करती है।",
+  "Choose RAM and CPU for your Linux container. IPv4 and IPv6 networking is available. No dedicated SSD size is sold; storage is ephemeral and transfer speed depends on the servers and network route.": "Linux कंटेनर के लिए RAM और CPU चुनें। IPv4 और IPv6 नेटवर्क उपलब्ध हैं। अलग SSD क्षमता नहीं बेची जाती; स्टोरेज अस्थायी है और डेटा ट्रांसफर की गति सर्वर एवं नेटवर्क रूट पर निर्भर करती है।",
  "🔒 Available soon":"🔒 जल्द उपलब्ध",
  "Windows RDP is coming soon. Windows hosting is not available on this BabiesIQ Cloud container setup.":"Windows RDP जल्द आएगा। BabiesIQ Cloud के इस कंटेनर पर अभी Windows होस्टिंग उपलब्ध नहीं है।",
  "Operating system":"ऑपरेटिंग सिस्टम",
@@ -155,7 +155,7 @@ Object.assign(dictionaries.hi,{
  "Validity starts after SSH-ready for a new VPS. You will receive a warning 3 days before expiry. At expiry, the managed VPS service is stopped. Renewal requires another verified payment; there is no automatic card debit.":"नए VPS पर SSH तैयार होने के बाद अवधि शुरू होगी। समाप्ति से 3 दिन पहले सूचना मिलेगी। अवधि समाप्त होने पर BabiesIQ Cloud सेवा बंद हो सकती है। रिन्यू करने के लिए दोबारा सत्यापित भुगतान ज़रूरी होगा; अपने-आप पैसा नहीं कटेगा।",
  "BabiesIQ Cloud root storage is ephemeral. Expiry followed by redeployment may erase data. Back up important files and renew before expiry.":"BabiesIQ Cloud का root स्टोरेज अस्थायी है। अवधि समाप्त होने के बाद दोबारा डिप्लॉय करने पर फ़ाइलें मिट सकती हैं। समय रहते बैकअप लें और रिन्यू करें।",
  "I understand restarting an expired BabiesIQ Cloud container may lose its files.":"मैं समझता हूँ कि समाप्त हो चुके BabiesIQ Cloud कंटेनर को फिर से चलाने पर फ़ाइलें खो सकती हैं।",
- "Public SSH uses a provider hostname + port; dedicated IPv4 and IPv6 addresses are not included or guaranteed.":"पब्लिक SSH कनेक्शन के लिए होस्टनाम और पोर्ट मिलते हैं। अलग IPv4 या IPv6 पते की गारंटी नहीं है।",
+  "IPv4 and IPv6 networking is supported. Connect using the assigned SSH hostname and port. Public IP assignments depend on the instance configuration.": "IPv4 और IPv6 नेटवर्क उपलब्ध हैं। SSH के लिए अपने सर्वर का निर्धारित होस्टनाम और पोर्ट इस्तेमाल करें। सार्वजनिक IP का आवंटन सर्वर की कॉन्फ़िगरेशन पर निर्भर करता है।",
  "The backend verifies the exact amount and gateway capture. Never pay twice for the same order.":"सिस्टम भुगतान राशि और उसके सफल होने की पुष्टि करता है। एक ही ऑर्डर के लिए दोबारा भुगतान न करें।",
  "Cloud workspace":"क्लाउड डैशबोर्ड",
  "Your infrastructure and account, in one place.":"आपके सर्वर और खाते की सारी जानकारी एक ही जगह।",
@@ -291,10 +291,10 @@ Object.assign(dictionaries.hi,{
  "Copy username root":"root यूज़रनेम कॉपी करें",
  "Show or hide password":"पासवर्ड दिखाएँ या छिपाएँ",
  "Copy root password":"root पासवर्ड कॉपी करें",
- "Network speed target":"नेटवर्क गति का लक्ष्य",
+  "Network performance": "नेटवर्क प्रदर्शन",
  "Shared host storage":"साझा होस्ट स्टोरेज",
- "IPv4 / IPv6 connectivity":"IPv4 / IPv6 कनेक्टिविटी",
- "Public SSH via hostname + port":"होस्टनाम और पोर्ट से सार्वजनिक SSH",
+  "IPv4 / IPv6 supported": "IPv4 / IPv6 समर्थित",
+  "IPv4 + IPv6 access": "IPv4 + IPv6 एक्सेस",
  "International":"अंतरराष्ट्रीय",
  "Choose the country used to preview local prices. Your browser language and billing residence are separate settings.":"स्थानीय कीमत देखने के लिए देश चुनें। ब्राउज़र की भाषा और भुगतान का वास्तविक देश अलग हो सकते हैं।",
  "Exchange rates are indicative only. Source: ExchangeRate-API public exchange-rate feed. The final payment currency and total must be confirmed by the gateway.":"विनिमय दरें केवल अनुमान के लिए हैं। स्रोत ExchangeRate-API है। अंतिम मुद्रा और राशि भुगतान सेवा ही तय करेगी।",
@@ -636,7 +636,7 @@ Object.assign(dictionaries["id"],{
 });
 Object.assign(dictionaries.hi,{
   "BabiesIQ Cloud · Preview": "BabiesIQ Cloud · झलक",
-  "Compute-only monthly price. Shared host filesystem is not an allocated disk quota; network speed is not guaranteed. Checkout confirms final payment amount. Three days before expiry, we warn you to renew; the BabiesIQ Cloud deployment is stopped when validity ends. Renew before expiry to avoid restart and ephemeral data loss.": "मासिक शुल्क केवल CPU और RAM का है। साझा होस्ट स्टोरेज आपकी अलग डिस्क नहीं है और नेटवर्क गति की गारंटी नहीं है। भुगतान से पहले अंतिम राशि दिखाई जाएगी। अवधि समाप्त होने से तीन दिन पहले रिन्यू करने की सूचना मिलेगी। BabiesIQ Cloud पर अवधि समाप्त होने के बाद सेवा बंद हो सकती है। डेटा सुरक्षित रखने के लिए समय पर रिन्यू करें।",
+  "Compute-only monthly price. Shared host filesystem is not an allocated disk quota; transfer speed depends on source and destination servers, routing and traffic. Checkout confirms final payment amount. Three days before expiry, we warn you to renew; the BabiesIQ Cloud deployment is stopped when validity ends. Renew before expiry to avoid restart and ephemeral data loss.": "मासिक शुल्क CPU और RAM के लिए है। साझा होस्ट की फ़ाइल प्रणाली आपकी अलग डिस्क नहीं है; ट्रांसफर गति भेजने और पाने वाले सर्वर, रूट और ट्रैफ़िक पर निर्भर करती है। भुगतान से पहले अंतिम राशि दिखाई जाएगी। अवधि समाप्त होने से तीन दिन पहले सूचना मिलेगी; समय रहते रिन्यू करें और ज़रूरी फ़ाइलों का बैकअप रखें।",
   "Monthly compute plan • BabiesIQ Cloud provisioning requested after payment": "मासिक सर्वर प्लान • भुगतान के बाद BabiesIQ Cloud पर सर्वर बनाने का अनुरोध",
   "All VPS domains": "सभी VPS के डोमेन",
   "Running": "चालू",
@@ -656,7 +656,7 @@ Object.assign(dictionaries.hi,{
   "Permanent deletion could not be confirmed. Contact support; do not retry.": "हमेशा के लिए हटाने की पुष्टि नहीं हो सकी। सहायता टीम से संपर्क करें; दोबारा कोशिश न करें।",
   "No automatic refund is issued for unused subscription time when you delete a service. Any refund rights under applicable law or the published refund policy still apply. Save all data before proceeding.": "सेवा हटाने पर बची हुई सदस्यता अवधि का पैसा अपने-आप वापस नहीं किया जाता। लागू कानून और प्रकाशित रिफ़ंड नीति के तहत आपके अधिकार बने रहेंगे। आगे बढ़ने से पहले सभी फ़ाइलें सुरक्षित कर लें।",
   "Unavailable until the service supports suspension without rebuilding its ephemeral filesystem": "जब तक अस्थायी फ़ाइलें सुरक्षित रखकर सेवा रोकना संभव नहीं होगा, यह विकल्प उपलब्ध नहीं रहेगा।",
-  "The public TCP proxy uses a hostname and port, not a dedicated IPv4/IPv6 address. IPv4/IPv6 availability depends on provider routing and DNS. Password is revealed only once after the server is ready; do not share or email it.": "सार्वजनिक TCP प्रॉक्सी एक होस्टनाम और पोर्ट देता है, अलग IPv4/IPv6 पता नहीं। IP की उपलब्धता सेवा प्रदाता के DNS और रूटिंग पर निर्भर करती है। सर्वर तैयार होने के बाद पासवर्ड केवल एक बार दिखेगा; इसे किसी से साझा या ईमेल न करें।"
+  "IPv4 and IPv6 networking is supported. Use the SSH hostname and port assigned to your instance. Public IP assignments depend on the instance configuration. Password is revealed only once after the server is ready; do not share or email it.": "IPv4 और IPv6 नेटवर्क समर्थित हैं। अपने सर्वर का SSH होस्टनाम और पोर्ट इस्तेमाल करें। सार्वजनिक IP का आवंटन सर्वर की सेटिंग पर निर्भर है। सर्वर तैयार होने के बाद पासवर्ड सिर्फ एक बार दिखेगा; इसे साझा या ईमेल न करें।"
 });
 Object.assign(dictionaries.hi,{
  "International compute plans use 2× the India price.":"अंतरराष्ट्रीय सर्वर प्लानों की कीमत भारत की कीमत से दोगुनी है।",
@@ -784,6 +784,16 @@ Object.assign(dictionaries.de||{},{
   "Connect with BabiesIQ": "Mit BabiesIQ verbinden",
   "Updates, open-source projects, and our community.": "Neuigkeiten, Open-Source-Projekte und unsere Community.",
   "Find us online": "Besuch uns online"
+});
+
+Object.assign(dictionaries.hi,{
+  "Variable throughput": "गति परिस्थितियों पर निर्भर",
+  "Actual transfer speed depends on the sending and receiving servers, available bandwidth, routing, traffic and congestion. No fixed Mbps or Gbps rate is guaranteed.": "वास्तविक गति भेजने और पाने वाले सर्वर, उपलब्ध बैंडविड्थ, नेटवर्क रूट, ट्रैफ़िक और भीड़ पर निर्भर करती है। किसी तय Mbps या Gbps गति की गारंटी नहीं है।",
+  "IPv4 and IPv6 connectivity is available. For SSH, use the assigned hostname and port shown in your dashboard. Public IP assignments and inbound routes depend on instance configuration; a dedicated static address is provided only when explicitly assigned.": "IPv4 और IPv6 दोनों नेटवर्क उपलब्ध हैं। SSH के लिए डैशबोर्ड पर दिया गया होस्टनाम और पोर्ट इस्तेमाल करें। सार्वजनिक IP और इनबाउंड रूट सर्वर की सेटिंग पर निर्भर करते हैं; अलग स्थायी IP केवल स्पष्ट रूप से आवंटित होने पर मिलता है।",
+  "IPv4 + IPv6 supported; SSH hostname + port": "IPv4 + IPv6 समर्थित; SSH होस्टनाम और पोर्ट",
+  "Monthly RAM/CPU estimate. Shared storage is ephemeral. Network throughput varies with source server limits, routing, traffic and available bandwidth.": "RAM/CPU की अनुमानित मासिक कीमत। साझा स्टोरेज अस्थायी है। नेटवर्क की गति स्रोत सर्वर, रूट, ट्रैफ़िक और उपलब्ध बैंडविड्थ पर निर्भर है।",
+  "Selected vCPU and memory are compute resources. No individual SSD quota is sold: container root storage uses a shared ephemeral host filesystem and files may be lost on redeploy. Shared host capacity is not a customer entitlement. IPv4 and IPv6 networking is supported, with SSH access via the assigned hostname and port; public IP assignments and dedicated or static address availability depend on each instance’s configuration. Real network throughput depends on source and destination server limits, available bandwidth, routing and traffic; no fixed Mbps or Gbps rate is guaranteed. Containerized environments share a host kernel, with no promise of dedicated hardware or unrestricted root capabilities.": "चुने गए vCPU और RAM कंप्यूटिंग संसाधन हैं। अलग SSD नहीं बेचा जाता; कंटेनर का स्टोरेज साझा और अस्थायी है, इसलिए दोबारा डिप्लॉय करने पर डेटा खो सकता है। साझा होस्ट की कुल क्षमता आपकी निजी डिस्क नहीं है। IPv4 और IPv6 नेटवर्क समर्थित हैं; SSH के लिए निर्धारित होस्टनाम और पोर्ट इस्तेमाल होते हैं। सार्वजनिक IP तथा अलग या स्थायी IP का आवंटन सर्वर की कॉन्फ़िगरेशन पर निर्भर करता है। गति स्रोत और गंतव्य सर्वर, बैंडविड्थ, रूट तथा ट्रैफ़िक पर निर्भर करती है; तय Mbps/Gbps गति की गारंटी नहीं है। कंटेनर साझा होस्ट कर्नेल इस्तेमाल करते हैं; अलग हार्डवेयर या बिना सीमा वाली root अनुमति की गारंटी नहीं है।",
+  "BabiesIQ Cloud supports IPv4 and IPv6 networking. The managed SSH gateway supplies the assigned hostname and port, while public IP address assignment and inbound routes depend on the instance configuration. The dashboard may mask hostnames on-screen, but authenticated owners can copy their actual connection details. A dedicated static IP is available only if explicitly assigned. During verified infrastructure recovery, the SSH endpoint may change; account notifications provide details without exposing root passwords.": "BabiesIQ Cloud पर IPv4 और IPv6 नेटवर्क उपलब्ध हैं। SSH के लिए निर्धारित सार्वजनिक होस्टनाम और पोर्ट मिलता है; सार्वजनिक IP और इनबाउंड रूट सर्वर की सेटिंग पर निर्भर करते हैं। डैशबोर्ड पर होस्टनाम छिपा हुआ दिख सकता है, लेकिन सत्यापित मालिक वास्तविक कनेक्शन जानकारी कॉपी कर सकता है। अलग स्थायी IP तभी मिलता है जब स्पष्ट रूप से आवंटित हो। सत्यापित इंफ्रास्ट्रक्चर रिकवरी पर SSH पता बदल सकता है; सूचनाओं में root पासवर्ड उजागर नहीं किया जाता।"
 });
 
 for(const [locale,greeting] of Object.entries(WELCOME_BACK_TRANSLATIONS)){
