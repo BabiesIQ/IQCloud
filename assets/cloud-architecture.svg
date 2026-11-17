@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="280" viewBox="0 0 1200 280" role="img" aria-labelledby="diagramTitle diagramDesc">
+<title id="diagramTitle">BabiesIQ Cloud web frontend and backend architecture</title>
+<desc id="diagramDesc">Browsers access the static React/Vite web app at cloud.babiesiq.tech, which connects to a separate Go API at api.cloud.babiesiq.tech. The API controls authentication, payment coordination, provisioning and data stores. The frontend repository does not contain the backend.</desc>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071321"/><stop offset="1" stop-color="#0a3030"/></linearGradient>
+<linearGradient id="line" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#4bedbf"/><stop offset="1" stop-color="#6bbdf5"/></linearGradient>
+<filter id="shade"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000c10" flood-opacity=".55"/></filter>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#60e4d3" stroke-width="1.6"/></marker>
+</defs>
+<rect width="1200" height="280" rx="23" fill="url(#bg)" stroke="#3cb4a2" stroke-opacity=".36"/>
+<text x="36" y="37" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" font-weight="700" fill="#80f8d9">CLOUD ARCHITECTURE</text>
+<text x="36" y="56" font-family="Arial,DejaVu Sans,sans-serif" font-size="11" fill="#a7c7cc">Two distinct applications · HTTPS requests · no client-side secrets</text>
+<g filter="url(#shade)">
+<rect x="42" y="91" width="234" height="128" rx="16" fill="#0c2632" stroke="#48c7bb"/>
+<rect x="354" y="91" width="230" height="128" rx="16" fill="#0c2632" stroke="#48c7bb"/>
+<rect x="662" y="91" width="241" height="128" rx="16" fill="#0c2632" stroke="#48c7bb"/>
+<rect x="983" y="91" width="172" height="128" rx="16" fill="#0c2632" stroke="#48c7bb"/>
+</g>
+<g font-family="Arial,DejaVu Sans,sans-serif">
+<text x="65" y="122" font-size="18" font-weight="700" fill="#e8fff8">01  ◈  Visitor</text>
+<text x="65" y="150" font-size="14" fill="#9fc5cd">Web browser</text>
+<text x="65" y="177" font-size="12" fill="#73e8ca">HTTPS</text>
+<text x="377" y="122" font-size="18" font-weight="700" fill="#e8fff8">02  ◈  Frontend</text>
+<text x="377" y="150" font-size="14" fill="#9fc5cd">React · Vite · UI</text>
+<text x="377" y="175" font-size="10.5" fill="#70e9ce">cloud.babiesiq.tech</text>
+<text x="687" y="122" font-size="18" font-weight="700" fill="#e8fff8">03  ◈  Backend</text>
+<text x="687" y="150" font-size="14" fill="#9fc5cd">Go API · auth · orders</text>
+<text x="687" y="175" font-size="10.5" fill="#70e9ce">api.cloud.babiesiq.tech</text>
+<text x="1003" y="122" font-size="18" font-weight="700" fill="#e8fff8">04  ◈  Services</text>
+<text x="1003" y="150" font-size="12" fill="#9fc5cd">MongoDB / Redis</text>
+<text x="1003" y="173" font-size="12" fill="#9fc5cd">Payment / provider</text>
+</g>
+<path d="M277 156H349 M585 156H657 M904 156H978" stroke="url(#line)" stroke-width="3" marker-end="url(#arrow)" stroke-dasharray="8 5" fill="none"><animate attributeName="stroke-dashoffset" values="0;-65" dur="5s" repeatCount="indefinite"/></path>
+<text x="600" y="255" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="11" fill="#87acb6">Architecture is conceptual. Infrastructure and credentials are managed separately from this frontend repository.</text>
+</svg>
