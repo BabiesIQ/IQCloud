@@ -33,10 +33,10 @@ export default function TagInput({
 
   const emit = useCallback((next) => onChangeRef.current?.(next.join(',')), []);
 
-  // A MultiPicklist value must match its declared `_meta.values` EXACTLY — the platform rejects
-  // "engineering" for a field declaring "Engineering". So a tag matching a declared one
-  // case-insensitively is stored in the DECLARED casing; anything else is kept as typed (open
-  // tag fields are free text and must not be case-mangled).
+  
+  
+  
+  
   const canonicalize = useCallback((raw) => {
     const tag = raw.trim();
     if (!tag) return '';
@@ -46,7 +46,7 @@ export default function TagInput({
   const addTag = useCallback((raw) => {
     const tag = canonicalize(raw);
     if (!tag || atLimit) return;
-    // Case-insensitive dedupe: "ENG" must not sit alongside an already-selected "Eng".
+    
     if (selected.some(t => t.toLowerCase() === tag.toLowerCase())) return;
     emit([...selected, tag]);
     setInput('');
@@ -59,8 +59,8 @@ export default function TagInput({
     inputRef.current?.focus();
   }, [selected, emit]);
 
-  // Filtered suggestions. All comparisons are case-insensitive: selections now carry the DECLARED
-  // casing, so an exact-match test would re-offer a tag that is already selected.
+  
+  
   const selectedLower = selected.map(t => t.toLowerCase());
   const filtered = availableTags.filter(
     t => !selectedLower.includes(t.toLowerCase()) && t.toLowerCase().includes(input.toLowerCase()),
@@ -69,7 +69,7 @@ export default function TagInput({
   const totalItems = filtered.length + (showCustom ? 1 : 0);
   const showDropdown = open && totalItems > 0 && !atLimit;
 
-  // Outside click
+  
   useEffect(() => {
     if (!open) return;
     const handler = (e) => {
@@ -82,7 +82,7 @@ export default function TagInput({
     return () => document.removeEventListener('mousedown', handler);
   }, [open]);
 
-  // Scroll active into view
+  
   useEffect(() => {
     if (activeIdx >= 0 && listRef.current) {
       listRef.current.children[activeIdx]?.scrollIntoView({ block: 'nearest' });

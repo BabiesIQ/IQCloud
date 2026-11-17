@@ -10,13 +10,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-/**
- * Default account menu — ships with the template so every shell has one.
- * Overwrite it to restyle. Keep: the four optional props (user, initials,
- * displayName, logout — all derived from useAuth() when omitted), the
- * ThemeToggle in a plain container (never inside a DropdownMenuItem, which
- * closes on pointer-down and swallows the click), and the sign-out item.
- */
+ 
+
+
+
+
+
+
 export default function UserMenu({ user: userProp, initials: initialsProp, displayName: displayNameProp, logout: logoutProp }) {
   const auth = useAuth();
   const user = userProp ?? auth.user;
