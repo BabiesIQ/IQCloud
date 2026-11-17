@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 
-// A separate reveal control for each field; never stores passwords outside the form.
+
 export default function PasswordField({ label, value, onChange, autoComplete, minLength, required = true, placeholder = '' }) {
  const [visible, setVisible] = useState(false);
  return <div className="block text-sm font-medium">

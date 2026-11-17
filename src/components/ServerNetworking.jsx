@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Globe, MoreVertical, RefreshCw, ShieldCheck, Network, LockKeyhole } from 'lucide-react';
 import { apiRequest } from '@/services/apiClient';
 
-// No synthetic DNS records or guessed listening ports: the provider must return both.
+
 export default function ServerNetworking(){
  const [servers,setServers]=useState([]);
  const [open,setOpen]=useState(null);

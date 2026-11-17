@@ -1,17 +1,17 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 
-/**
- * Neutral loading placeholders (platform-owned). Built on the Skeleton primitive, which paints
- * with a translucent foreground tint, so they read as "content is coming" in any palette and
- * in both themes without introducing a color of their own.
- *
- *   <PageSkeleton />                 route fallback while a page chunk loads (the router uses it)
- *   <ListSkeleton rows={8} />        a list or table before its first fetch resolves
- *   <DetailSkeleton />               a single record before it resolves
- *   <StatsSkeleton count={4} />      a row of metric tiles
- *   <Skeleton className="h-4 w-40" />  anything else — compose your own to match the page's shape
- */
+ 
+
+
+
+
+
+
+
+
+
+
 export function StatsSkeleton({ count = 4, className }) {
   return (
     <div className={cn('grid gap-4 sm:grid-cols-2 xl:grid-cols-4', className)} aria-hidden="true">
