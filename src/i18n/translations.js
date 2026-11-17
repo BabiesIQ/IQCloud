@@ -89,7 +89,7 @@ Object.assign(dictionaries.hi,{
  "Cloud hosting preview":"क्लाउड होस्टिंग की झलक",
  "More ways to host.":"होस्टिंग के और भी विकल्प।",
  "Linux containers today, Windows RDP planned. Choose compute and region from one dashboard.":"अभी Linux कंटेनर उपलब्ध हैं और आगे Windows RDP लाने की योजना है। संसाधन और क्षेत्र एक ही डैशबोर्ड से चुनें।",
-  "IPv4 and IPv6 networking is supported. Transfer speed depends on the source server, network route and traffic; no fixed Gbps rate is guaranteed. Shared host capacity target 2–30 TB is not a per-user SSD or persistence promise. Windows RDP coming later.": "IPv4 और IPv6 नेटवर्क कनेक्टिविटी उपलब्ध है। डेटा ट्रांसफर की गति भेजने वाले सर्वर, नेटवर्क रूट और ट्रैफ़िक पर निर्भर करती है; किसी निश्चित Gbps गति की गारंटी नहीं है। साझा होस्ट की अनुमानित 2–30 TB क्षमता हर ग्राहक का अलग SSD या स्थायी स्टोरेज नहीं है। Windows RDP बाद में आएगा।",
+  "IPv4 and IPv6 networking is supported, with a 2–10 Gbps advertised network range. Actual transfer speeds depend on the source and destination servers, routing, traffic and available bandwidth. Shared host capacity target 2–30 TB is not a per-user SSD or persistence promise. Windows RDP coming later.": "IPv4 और IPv6 नेटवर्क उपलब्ध हैं और 2–10 Gbps की नेटवर्क स्पीड रेंज दिखाई जाती है। वास्तविक गति भेजने और पाने वाले सर्वर, रूट, ट्रैफ़िक और बैंडविड्थ पर निर्भर है। साझा होस्ट की अनुमानित 2–30 TB क्षमता हर ग्राहक का अलग SSD या स्थायी स्टोरेज नहीं है। Windows RDP बाद में आएगा।",
  "Explore servers":"सर्वर देखें",
  "Linux VPS":"Linux VPS",
  "Cloud compute":"क्लाउड कंप्यूटिंग",
@@ -787,8 +787,8 @@ Object.assign(dictionaries.de||{},{
 });
 
 Object.assign(dictionaries.hi,{
-  "Variable throughput": "गति परिस्थितियों पर निर्भर",
-  "Actual transfer speed depends on the sending and receiving servers, available bandwidth, routing, traffic and congestion. No fixed Mbps or Gbps rate is guaranteed.": "वास्तविक गति भेजने और पाने वाले सर्वर, उपलब्ध बैंडविड्थ, नेटवर्क रूट, ट्रैफ़िक और भीड़ पर निर्भर करती है। किसी तय Mbps या Gbps गति की गारंटी नहीं है।",
+  "2–10 Gbps": "2–10 Gbps",
+  "High-speed network range based on our own performance tests. Actual file and download speeds depend on the source and destination servers, routing, traffic and available bandwidth.": "हमारे खुद के स्पीड टेस्ट के आधार पर नेटवर्क की सीमा 2–10 Gbps दिखाई गई है। फ़ाइल और डाउनलोड की वास्तविक गति भेजने और पाने वाले सर्वर, नेटवर्क रूट, ट्रैफ़िक और उपलब्ध बैंडविड्थ पर निर्भर करती है।",
   "IPv4 and IPv6 connectivity is available. For SSH, use the assigned hostname and port shown in your dashboard. Public IP assignments and inbound routes depend on instance configuration; a dedicated static address is provided only when explicitly assigned.": "IPv4 और IPv6 दोनों नेटवर्क उपलब्ध हैं। SSH के लिए डैशबोर्ड पर दिया गया होस्टनाम और पोर्ट इस्तेमाल करें। सार्वजनिक IP और इनबाउंड रूट सर्वर की सेटिंग पर निर्भर करते हैं; अलग स्थायी IP केवल स्पष्ट रूप से आवंटित होने पर मिलता है।",
   "IPv4 + IPv6 supported; SSH hostname + port": "IPv4 + IPv6 समर्थित; SSH होस्टनाम और पोर्ट",
   "Monthly RAM/CPU estimate. Shared storage is ephemeral. Network throughput varies with source server limits, routing, traffic and available bandwidth.": "RAM/CPU की अनुमानित मासिक कीमत। साझा स्टोरेज अस्थायी है। नेटवर्क की गति स्रोत सर्वर, रूट, ट्रैफ़िक और उपलब्ध बैंडविड्थ पर निर्भर है।",

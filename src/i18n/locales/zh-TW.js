@@ -68,7 +68,7 @@ export default Object.freeze({
   "Cloud hosting preview": "雲端主機服務預覽",
   "More ways to host.": "更多主機選擇。",
   "Linux containers today, Windows RDP planned. Choose compute and region from one dashboard.": "目前提供 Linux 容器服務，Windows RDP 尚在規劃中。運算資源與部署地區都能在同一個控制台選擇。",
-  "IPv4 and IPv6 networking is supported. Transfer speed depends on the source server, network route and traffic; no fixed Gbps rate is guaranteed. Shared host capacity target 2–30 TB is not a per-user SSD or persistence promise. Windows RDP coming later.": "支援 IPv4 與 IPv6 網路連線。實際傳輸速度取決於來源伺服器、網路路由與流量，不保證固定的 Gbps 速率。共享主機 2–30 TB 的目標容量不是每位使用者的專屬 SSD 或永久儲存保證。Windows RDP 將於日後推出。",
+  "IPv4 and IPv6 networking is supported, with a 2–10 Gbps advertised network range. Actual transfer speeds depend on the source and destination servers, routing, traffic and available bandwidth. Shared host capacity target 2–30 TB is not a per-user SSD or persistence promise. Windows RDP coming later.": "支援 IPv4 與 IPv6 網路，宣傳的網路速率範圍為 2–10 Gbps。實際傳輸速度取決於來源與目的伺服器、網路路由、流量及可用頻寬。共享主機 2–30 TB 的目標容量並非每位使用者的專屬 SSD 或永久儲存保證。Windows RDP 將於日後推出。",
   "Explore servers": "探索伺服器",
   "Linux VPS": "Linux VPS",
   "Cloud compute": "雲端運算",
@@ -716,8 +716,8 @@ export default Object.freeze({
   "Continue with PayPal": "前往 PayPal 繼續付款",
   "Use your PayPal account or a linked payment method.": "使用您的 PayPal 帳戶或已連結的付款方式。",
   "or": "或",
-  "Variable throughput": "傳輸速度隨實際情況而變",
-  "Actual transfer speed depends on the sending and receiving servers, available bandwidth, routing, traffic and congestion. No fixed Mbps or Gbps rate is guaranteed.": "實際傳輸速度取決於傳送與接收伺服器、可用頻寬、路由、流量及網路壅塞，不保證固定 Mbps 或 Gbps 速率。",
+  "2–10 Gbps": "2–10 Gbps",
+  "High-speed network range based on our own performance tests. Actual file and download speeds depend on the source and destination servers, routing, traffic and available bandwidth.": "高速網路範圍以我們的實測結果為參考。實際檔案傳輸及下載速度取決於來源與目的伺服器、路由、流量及可用頻寬。",
   "IPv4 and IPv6 connectivity is available. For SSH, use the assigned hostname and port shown in your dashboard. Public IP assignments and inbound routes depend on instance configuration; a dedicated static address is provided only when explicitly assigned.": "支援 IPv4 與 IPv6 網路。SSH 請使用控制台提供的主機名稱和連接埠。公用 IP 與傳入路由取決於執行個體設定；只有明確指派時才提供專屬靜態位址。",
   "IPv4 + IPv6 supported; SSH hostname + port": "支援 IPv4 + IPv6；SSH 主機名稱及連接埠"
 });
