@@ -81,7 +81,7 @@ export default function RootLayout() {
 
   const deepestMatch = matches[matches.length - 1];
   const accessRule = deepestMatch?.handle?.access ?? 'public';
-  // Decided during render, not after it: a route this session may not open never paints.
+  
   const allowed = isInitialized && verifyRouteAccess(accessRule, user);
 
   useEffect(() => {
@@ -103,8 +103,8 @@ export default function RootLayout() {
     navigateRef.current(APP_CONFIG.defaultLoginRoute ?? '/login', { replace: true });
   }, [dispatch]);
 
-  // Loader while the session resolves AND while a denied route redirects — the shell, the page
-  // and its data fetches never mount for a visitor who may not see them.
+  
+  
   if (!isInitialized || !allowed) return <AppLoader fullScreen />;
 
   return (
