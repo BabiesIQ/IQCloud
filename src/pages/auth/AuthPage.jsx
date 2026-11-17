@@ -57,8 +57,8 @@ export default function AuthPage({ mode }) {
     setError(null);
     setLoading(true);
     try {
-      // profileSlug binds the credentials to the profile whose login page this is. The connect step
-      // rewrites it to the platform's own slug; the memory adapter ignores it.
+      
+      
       const profileSlug = matchedProfile?.profileSlug;
       let result;
       if (mode === 'login') {
