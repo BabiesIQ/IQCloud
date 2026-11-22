@@ -172,7 +172,3 @@
 .iq-support-trigger { overscroll-behavior: contain; }
 .iq-support-dock { -webkit-user-select: none; user-select: none; }
 .iq-support-dock .iq-support-bubble { touch-action: manipulation; }
-.iq-support-dock.is-right-side .iq-support-tip {
-  right: auto;
-  left: calc(100% + 10px);
-}
