@@ -6,7 +6,17 @@ export const MONTHLY_COMPUTE_PRICES=[
  [175,245,270,300,325,350,375,400],[200,275,300,350,375,400,450,500],
 ];
 export const isRecommended=(ram,cpu)=>Number(ram)===8&&Number(cpu)===4;
-export const computePrice=(ram,cpu)=>MONTHLY_COMPUTE_PRICES[Number(ram)-1]?.[Number(cpu)-1]??null;
+// Retain every original 1–8 GB / 1–8 vCPU price. For Pro previews,
+// extend from the closest table anchor (+₹60/extra GB, +₹90/extra vCPU).
+// Checkout beyond 8/8 still requires the backend's verified Pro capacity.
+export const MAX_COMPUTE_RAM=24;
+export const MAX_COMPUTE_CPU=24;
+export const computePrice=(ram,cpu)=>{
+ const r=Number(ram),c=Number(cpu);
+ if(!Number.isInteger(r)||!Number.isInteger(c)||r<1||r>MAX_COMPUTE_RAM||c<1||c>MAX_COMPUTE_CPU)return null;
+ const baseR=Math.min(r,8),baseC=Math.min(c,8);
+ return MONTHLY_COMPUTE_PRICES[baseR-1][baseC-1]+(r-baseR)*60+(c-baseC)*90;
+};
 
 export const BILLING_TERMS = [
  {months:1,discountPercent:0,label:'Monthly'},
