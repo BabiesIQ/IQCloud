@@ -36,6 +36,19 @@ export default function ServerCheckout(){
  const busy=useRef(false);
  const quote=draft?termQuote(draft.ram,draft.cpu,months,isInternational):null;
  const displayedQuote=order?.quote||quote;
+ const highCapacity=Boolean(draft&&(draft.ram>8||draft.cpu>8));
+ const [capacityStatus,setCapacityStatus]=useState({checked:false,purchasable:false});
+ const paymentBlocked=highCapacity&&(!capacityStatus.checked||!capacityStatus.purchasable);
+ useEffect(()=>{
+  if(!draft||!highCapacity){setCapacityStatus({checked:true,purchasable:true});return}
+  let active=true;
+  setCapacityStatus({checked:false,purchasable:false});
+  apiRequest('/api/v1/instances/quote',{method:'POST',body:{
+   ram:draft.ram,cpu:draft.cpu,region:draft.region,os:draft.os,billingMonths:months,
+  }}).then(result=>{if(active)setCapacityStatus({checked:true,purchasable:result.purchasable===true})})
+   .catch(()=>{if(active)setCapacityStatus({checked:true,purchasable:false})});
+  return()=>{active=false};
+ },[draft,highCapacity,months]);
  useEffect(()=>{
   let active=true;
   if(!/^[a-f0-9]{32}$/.test(instanceId)){
@@ -88,6 +101,7 @@ export default function ServerCheckout(){
   })();
  },[isInternational,draft,loading,instanceId]);
  async function payWithPayPal(){
+  if(paymentBlocked){setError('This high-capacity plan is not verified for payment. No payment was created.');return}
   if(!paypalStatus.ready||!draft||!quote){setError(paypalStatus.reason||'PayPal checkout is not ready.');return}
   if(isRenewal&&draft.status==='expired'&&!riskAcknowledged){
    setError('Please acknowledge that expired VPS containers may lose temporary files before renewing.');return;
@@ -116,6 +130,7 @@ export default function ServerCheckout(){
  }
  async function pay(){
   if(busy.current||!draft||!quote||paymentUncertain)return;
+  if(paymentBlocked){setError('This high-capacity plan cannot be charged until capacity verification is complete. No payment was created.');return;}
   if(isInternational){await payWithPayPal();return;}
   if(isRenewal&&draft.status==='expired'&&!riskAcknowledged){
    setError('Please confirm that you understand ephemeral data can be lost when a stopped instance is redeployed.');return;
@@ -196,6 +211,7 @@ export default function ServerCheckout(){
     <div className="mt-4 flex gap-2 rounded-xl border border-amber-500/30 bg-amber-500/5 p-3 text-xs leading-5 text-muted-foreground"><AlertTriangle size={17} className="shrink-0 text-amber-500"/> BabiesIQ Cloud root storage is ephemeral. Expiry followed by redeployment may erase data. Back up important files and renew before expiry.</div>
     {isRenewal&&draft.status==='expired'&&<label className="mt-4 flex items-start gap-2 text-sm"><input className="mt-1" type="checkbox" checked={riskAcknowledged} onChange={e=>setRiskAcknowledged(e.target.checked)}/><span>I understand restarting an expired BabiesIQ Cloud container may lose its files.</span></label>}
     <p className="mt-4 text-xs text-muted-foreground">IPv4 and IPv6 networking is supported. Connect using the assigned SSH hostname and port. Public IP assignments depend on the instance configuration.</p>
+    {highCapacity&&paymentBlocked&&<p role="status" className="mt-4 text-sm text-muted-foreground">{capacityStatus.checked?'Payment is not enabled for this resource tier yet. Your configuration is saved; no charge was created.':'Checking resource availability before payment…'}</p>}
     {isInternational?<div className="mt-6 space-y-4">
       <div>
        <h2 className="text-lg font-bold tracking-tight">{t('Choose a payment method')}</h2>
@@ -208,7 +224,7 @@ export default function ServerCheckout(){
        country={country} currency={suggestedPayPalCurrency}
        draftId={instanceId} billingMonths={months} kind={isRenewal?'renewal':'new'}
        totalINRPaise={quote.totalPaise}
-       disabled={paying||paymentUncertain||paypalReturnProcessing||loading||(isRenewal&&draft.status==='expired'&&!riskAcknowledged)}
+       disabled={paymentBlocked||paying||paymentUncertain||paypalReturnProcessing||loading||(isRenewal&&draft.status==='expired'&&!riskAcknowledged)}
        onOrder={result=>setOrder(result)}
        onCapture={()=>navigate('/dashboard',{replace:true})}
        onFailure={message=>{setPaymentUncertain(true);setError(message)}}
@@ -222,11 +238,11 @@ export default function ServerCheckout(){
         </div>
         <span className="inline-flex items-center rounded-lg bg-[#e6f2ff] px-3 py-1.5 text-lg font-black italic tracking-tight text-[#003087]" aria-label="PayPal">PayPal</span>
        </div>
-       <button type="button" disabled={paying||paymentUncertain||!paypalStatus.ready||paypalReturnProcessing} onClick={pay} className="mt-4 flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-[#0070ba] px-4 py-3 font-semibold text-white transition-colors hover:bg-[#005c99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0070ba] disabled:cursor-not-allowed disabled:opacity-50">
+       <button type="button" disabled={paymentBlocked||paying||paymentUncertain||!paypalStatus.ready||paypalReturnProcessing} onClick={pay} className="mt-4 flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-[#0070ba] px-4 py-3 font-semibold text-white transition-colors hover:bg-[#005c99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0070ba] disabled:cursor-not-allowed disabled:opacity-50">
         {paying?t('Opening PayPal…'):paypalStatus.ready?t('Continue with PayPal')+' · '+actualPayPalCurrency:t('PayPal checkout not yet active')}
        </button>
       </section>
-     </div>:<button type="button" disabled={paying||paymentUncertain||paypalReturnProcessing} onClick={pay} className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary p-4 font-semibold text-primary-foreground disabled:opacity-50">
+     </div>:<button type="button" disabled={paymentBlocked||paying||paymentUncertain||paypalReturnProcessing} onClick={pay} className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary p-4 font-semibold text-primary-foreground disabled:opacity-50">
       <CreditCard size={18}/>{paying?t('Opening payment…'):paymentUncertain?t('Verify payment in Dashboard'):t('Pay')+' '+(order?formatINR:formatPaise)(displayedQuote.totalPaise)}
      </button>}
     <p className="mt-3 text-center text-xs text-muted-foreground"><ShieldCheck size={13} className="mr-1 inline"/> The backend verifies the exact amount and gateway capture. Never pay twice for the same order.</p>
