@@ -7,19 +7,19 @@ import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { REGIONS, SYSTEMS, formatMoney, quoteServer } from '@/components/cloud/CloudUI';
 import ApperIcon from '@/components/ApperIcon';
-import { isRecommended } from '@/config/plans';
+import { isRecommended,computeInternationalPrice } from '@/config/plans';
 import SharedInfrastructure from '@/components/cloud/SharedInfrastructure';
 
 export const route = { path: '/configure', layout: 'public', access: 'authenticated' };
 
 export default function Configure() {
-  const {formatMonthly}=useLocale();
+  const {formatMonthly,isInternational}=useLocale();
   const [name, setName] = useState('my-cloud-server');
   const [region, setRegion] = useState('ap-southeast');
   const [os, setOs] = useState('ubuntu-24');
   const [cpu, setCpu] = useState(2);
   const [ram, setRam] = useState(4);
-  const amount = quoteServer({ cpu, ram });
+  const amount = isInternational?computeInternationalPrice(ram,cpu):quoteServer({ cpu, ram });
   const needsVerifiedProQuote = ram>8 || cpu>8;
   const ready = name.trim().length >= 3 && /^[a-z0-9-]+$/.test(name.trim());
   const query = new URLSearchParams({ name, region, os, cpu, ram, estimate: amount }).toString();
@@ -104,7 +104,7 @@ export default function Configure() {
                 ].map(([label,value]) => <div key={label} className="flex items-center justify-between gap-3 text-sm"><span className="text-muted-foreground">{label}</span><span className="text-right font-semibold">{value}</span></div>)}
                 <div className="border-t border-border pt-5">
                   <p className="text-xs text-muted-foreground">Monthly compute price {isRecommended(ram,cpu)?'· Recommended':''}</p>
-                  <div className="mt-1 font-heading text-4xl font-bold">{needsVerifiedProQuote?'Quote in dashboard':formatMonthly(amount)}{!needsVerifiedProQuote&&<span className="ml-1 text-sm font-normal text-muted-foreground">/mo</span>}</div>
+                  <div className="mt-1 font-heading text-4xl font-bold">{formatMonthly(amount)}<span className="ml-1 text-sm font-normal text-muted-foreground">/mo</span></div>
                   <p className="mt-3 text-xs leading-5 text-muted-foreground">Monthly RAM/CPU estimate. Shared storage is ephemeral. Network throughput varies with source server limits, routing, traffic and available bandwidth.</p>
                 </div>
                 <Button asChild disabled={!ready} size="lg" className="w-full">
