@@ -6,17 +6,19 @@ export const MONTHLY_COMPUTE_PRICES=[
  [175,245,270,300,325,350,375,400],[200,275,300,350,375,400,450,500],
 ];
 export const isRecommended=(ram,cpu)=>Number(ram)===8&&Number(cpu)===4;
-// Retain every original 1–8 GB / 1–8 vCPU price. For Pro previews,
-// extend from the closest table anchor (+₹60/extra GB, +₹90/extra vCPU).
-// Checkout beyond 8/8 still requires the backend's verified Pro capacity.
+// Preserve every original 1–8 GB / 1–8 vCPU price.
+// Only the Indian INR catalog discounts resources above the 8x8 table.
+// All international currencies keep the original reference (+60/+90).
 export const MAX_COMPUTE_RAM=24;
 export const MAX_COMPUTE_CPU=24;
-export const computePrice=(ram,cpu)=>{
+const priceWithExtras=(ram,cpu,extraRAM,extraCPU)=>{
  const r=Number(ram),c=Number(cpu);
  if(!Number.isInteger(r)||!Number.isInteger(c)||r<1||r>MAX_COMPUTE_RAM||c<1||c>MAX_COMPUTE_CPU)return null;
  const baseR=Math.min(r,8),baseC=Math.min(c,8);
- return MONTHLY_COMPUTE_PRICES[baseR-1][baseC-1]+(r-baseR)*60+(c-baseC)*90;
+ return MONTHLY_COMPUTE_PRICES[baseR-1][baseC-1]+(r-baseR)*extraRAM+(c-baseC)*extraCPU;
 };
+export const computePrice=(ram,cpu)=>priceWithExtras(ram,cpu,50,75);
+export const computeInternationalPrice=(ram,cpu)=>priceWithExtras(ram,cpu,60,90);
 
 export const BILLING_TERMS = [
  {months:1,discountPercent:0,label:'Monthly'},
@@ -33,8 +35,9 @@ export function termQuoteFromMonthlyPrice(monthlyPriceINR,months){
  return {months:term.months,discountPercent:term.discountPercent,monthlyPriceINR,
   subtotalPaise,discountPaise,totalPaise:subtotalPaise-discountPaise};
 }
-export function termQuote(ram,cpu,months){
- return termQuoteFromMonthlyPrice(computePrice(ram,cpu),months);
+export function termQuote(ram,cpu,months,isInternational=false){
+ const monthly=isInternational?computeInternationalPrice(ram,cpu):computePrice(ram,cpu);
+ return termQuoteFromMonthlyPrice(monthly,months);
 }
 export const priceINR=(paise) => (Number(paise)/100).toLocaleString('en-IN',{
  style:'currency',currency:'INR',minimumFractionDigits:0,
