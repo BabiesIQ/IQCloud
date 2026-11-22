@@ -20,6 +20,7 @@ export default function Configure() {
   const [cpu, setCpu] = useState(2);
   const [ram, setRam] = useState(4);
   const amount = quoteServer({ cpu, ram });
+  const needsVerifiedProQuote = ram>8 || cpu>8;
   const ready = name.trim().length >= 3 && /^[a-z0-9-]+$/.test(name.trim());
   const query = new URLSearchParams({ name, region, os, cpu, ram, estimate: amount }).toString();
 
@@ -71,8 +72,8 @@ export default function Configure() {
             <section className="rounded-md border border-border bg-card p-6 md:p-8">
               <div className="mb-7 flex items-center gap-3"><span className="grid size-9 place-items-center rounded-md bg-primary/10 font-heading text-sm font-semibold text-primary">04</span><h2 className="font-heading text-lg font-bold">Hardware specifications</h2></div>
               {[
-                { name: 'vCPU', subtitle: 'Requested compute', value: cpu, change: setCpu, min: 1, max: 8, suffix: ' cores', icon: 'Cpu' },
-                { name: 'Memory', subtitle: 'Requested RAM', value: ram, change: setRam, min: 1, max: 8, suffix: ' GB', icon: 'MemoryStick' },
+                { name: 'vCPU', subtitle: 'Requested compute · Pro tiers need verification', value: cpu, change: setCpu, min: 1, max: 24, suffix: ' cores', icon: 'Cpu' },
+                { name: 'Memory', subtitle: 'Requested RAM · Pro tiers need verification', value: ram, change: setRam, min: 1, max: 24, suffix: ' GB', icon: 'MemoryStick' },
               ].map((control) => (
                 <div key={control.name} className="mb-8 last:mb-0">
                   <div className="mb-5 flex items-center justify-between gap-4">
@@ -103,11 +104,11 @@ export default function Configure() {
                 ].map(([label,value]) => <div key={label} className="flex items-center justify-between gap-3 text-sm"><span className="text-muted-foreground">{label}</span><span className="text-right font-semibold">{value}</span></div>)}
                 <div className="border-t border-border pt-5">
                   <p className="text-xs text-muted-foreground">Monthly compute price {isRecommended(ram,cpu)?'· Recommended':''}</p>
-                  <div className="mt-1 font-heading text-4xl font-bold">{formatMonthly(amount)}<span className="ml-1 text-sm font-normal text-muted-foreground">/mo</span></div>
+                  <div className="mt-1 font-heading text-4xl font-bold">{needsVerifiedProQuote?'Quote in dashboard':formatMonthly(amount)}{!needsVerifiedProQuote&&<span className="ml-1 text-sm font-normal text-muted-foreground">/mo</span>}</div>
                   <p className="mt-3 text-xs leading-5 text-muted-foreground">Monthly RAM/CPU estimate. Shared storage is ephemeral. Network throughput varies with source server limits, routing, traffic and available bandwidth.</p>
                 </div>
                 <Button asChild disabled={!ready} size="lg" className="w-full">
-                  <Link to={ready ? '/checkout?'+query : '#'}>Continue to review <ApperIcon name="ArrowRight" size={17} /></Link>
+                  <Link to={ready ? (needsVerifiedProQuote?'/dashboard/instances/new?ram='+ram+'&cpu='+cpu:'/checkout?'+query) : '#'}>{needsVerifiedProQuote?'Check Pro capacity & pricing':'Continue to review'} <ApperIcon name="ArrowRight" size={17} /></Link>
                 </Button>
                 <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground"><ApperIcon name="ShieldCheck" size={15} /> No payment is collected in the demo</div>
               </div>
