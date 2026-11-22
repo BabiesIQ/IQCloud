@@ -2,8 +2,8 @@
 .iq-support-dock {
   position: fixed;
   z-index: 45;
-  right: max(18px, env(safe-area-inset-right, 0px));
-  bottom: calc(clamp(110px, 23vh, 250px) + env(safe-area-inset-bottom, 0px));
+  left: 12px;
+  top: 65vh;
   width: 70px;
   height: 70px;
   isolation: isolate;
@@ -24,7 +24,10 @@
   color: white;
   box-shadow: 0 13px 34px rgba(0, 53, 56, .38), 0 0 0 5px rgba(16, 185, 129, .12),
     inset 0 2px 2px rgba(255, 255, 255, .28);
-  cursor: pointer;
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
   -webkit-tap-highlight-color: transparent;
   transition: transform .21s ease, box-shadow .21s ease, border-radius .21s ease;
 }
@@ -40,7 +43,7 @@
 }
 .iq-support-trigger > svg {position:relative; z-index: 1; filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
 .iq-support-trigger:hover {transform:translateY(-3px); box-shadow:0 17px 38px rgba(0,53,56,.42),0 0 0 6px rgba(16,185,129,.16)}
-.iq-support-trigger:active {transform:scale(.95)}
+.iq-support-trigger:active {transform:scale(.95);cursor:grabbing}
 .iq-support-trigger:focus-visible, .iq-support-bubble:focus-visible {
   outline: 3px solid #34d399;
   outline-offset: 4px;
@@ -103,9 +106,9 @@
   -webkit-tap-highlight-color: transparent;
 }
 .iq-support-bubble svg {width: 27px;height:27px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.11))}
-.iq-support-bubble--telegram {--tx:-98px;--ty:-97px;--delay:0ms;background:linear-gradient(145deg,#47c1f6,#178fce);color:#fff}
-.iq-support-bubble--whatsapp {--tx:-2px;--ty:-126px;--delay:24ms;background:linear-gradient(145deg,#40db7e,#099947);color:#fff}
-.iq-support-bubble--instagram {--tx:-127px;--ty:-3px;--delay:48ms;background:linear-gradient(140deg,#7253d7 0%,#cd36a6 42%,#ee643c 74%,#f6bb51 100%);color:#fff}
+.iq-support-bubble--telegram {--delay:0ms;background:linear-gradient(145deg,#47c1f6,#178fce);color:#fff}
+.iq-support-bubble--whatsapp {--delay:24ms;background:linear-gradient(145deg,#40db7e,#099947);color:#fff}
+.iq-support-bubble--instagram {--delay:48ms;background:linear-gradient(140deg,#7253d7 0%,#cd36a6 42%,#ee643c 74%,#f6bb51 100%);color:#fff}
 .iq-support-dock.is-open .iq-support-bubble {
   visibility:visible;
   opacity:1;
@@ -146,23 +149,30 @@
 
 @media (min-width: 768px) {
   .iq-support-dock {
-    right: 30px;
-    bottom: calc(118px + env(safe-area-inset-bottom, 0px));
+    /* Coordinates are set per device by the draggable launcher. */
   }
   .iq-support-trigger {width:74px;height:74px}
   .iq-support-dock {width:74px;height:74px}
   .iq-support-bubble {top:10px;left:10px}
 }
 @media (max-width: 420px) {
-  .iq-support-dock {right:max(14px,env(safe-area-inset-right,0px));width:64px;height:64px}
+  .iq-support-dock {width:64px;height:64px}
   .iq-support-trigger {width:64px;height:64px;border-radius:21px}
   .iq-support-bubble {width:50px;height:50px;top:7px;left:7px;border-radius:17px}
   .iq-support-bubble svg {width:26px;height:26px}
-  .iq-support-bubble--telegram {--tx:-88px;--ty:-85px}
-  .iq-support-bubble--whatsapp {--tx:0px;--ty:-112px}
-  .iq-support-bubble--instagram {--tx:-109px;--ty:-1px}
+  /* The radial direction follows the dragged headset at runtime. */
   .iq-support-tip {display:none}
 }
 @media (prefers-reduced-motion: reduce) {
   .iq-support-trigger, .iq-support-bubble, .iq-support-tip {transition:none !important}
+}
+
+/* Dragging is supported on touchscreens, pens and mice. */
+.iq-support-dock,
+.iq-support-trigger { overscroll-behavior: contain; }
+.iq-support-dock { -webkit-user-select: none; user-select: none; }
+.iq-support-dock .iq-support-bubble { touch-action: manipulation; }
+.iq-support-dock.is-right-side .iq-support-tip {
+  right: auto;
+  left: calc(100% + 10px);
 }
