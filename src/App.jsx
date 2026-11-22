@@ -3,6 +3,7 @@ import { BrowserRouter, Link, Navigate, Route, Routes, useLocation, useNavigate 
 import { Toaster } from 'sonner';
 import { Bell, MoonStar, SunDim, Sparkles } from 'lucide-react';
 import SiteMotion from '@/components/SiteMotion';
+import SupportLauncher from '@/components/SupportLauncher';
 import BrandLogo from '@/components/BrandLogo';
 import NavIcon from '@/components/NavIcon';
 import { ThemeProvider } from '@/contexts/ThemeContext';
@@ -278,7 +279,7 @@ function Shell() {
     <Route path="/dashboard" element={<Dashboard/>}/>
     <Route path="/instances" element={<Navigate to="/dashboard" replace/>}/>
     <Route path="*" element={<StatusPage title="Page not found"/>}/>
-  </Routes></SiteMotion><LanguageSelector/><footer className="flex items-center justify-center gap-2 border-t px-5 py-8 pb-20 text-center text-xs text-muted-foreground"><BrandLogo size={26} className="h-7 w-7" />© {new Date().getFullYear()} BabiesIQ Cloud</footer><Toaster position="top-right" richColors/></div>;
+  </Routes></SiteMotion><SupportLauncher/><LanguageSelector/><footer className="flex items-center justify-center gap-2 border-t px-5 py-8 pb-20 text-center text-xs text-muted-foreground"><BrandLogo size={26} className="h-7 w-7" />© {new Date().getFullYear()} BabiesIQ Cloud</footer><Toaster position="top-right" richColors/></div>;
 }
 export default function App() {
   return <ThemeProvider><LocaleProvider><BrowserRouter><Shell/></BrowserRouter></LocaleProvider></ThemeProvider>;
