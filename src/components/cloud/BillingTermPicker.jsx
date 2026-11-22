@@ -4,7 +4,7 @@ import {useLocale} from '@/i18n/LocaleProvider';
 
 
 export default function BillingTermPicker({months,onChange,ram,cpu,monthlyPriceINR=null,disabled=false,className=''}) {
- const {formatPaise,t}=useLocale();
+ const {formatPaise,t,isInternational}=useLocale();
  return <div className={className}>
   <div className="mb-3 flex items-center justify-between gap-2">
    <h3 className="font-semibold">Choose your validity</h3>
@@ -12,7 +12,7 @@ export default function BillingTermPicker({months,onChange,ram,cpu,monthlyPriceI
   </div>
   <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
    {BILLING_TERMS.map(term=>{
-    const quote=monthlyPriceINR == null ? termQuote(ram,cpu,term.months) : termQuoteFromMonthlyPrice(monthlyPriceINR,term.months);
+    const quote=monthlyPriceINR == null ? termQuote(ram,cpu,term.months,isInternational) : termQuoteFromMonthlyPrice(monthlyPriceINR,term.months);
     const selected=Number(months)===term.months;
     return <button key={term.months} type="button" aria-pressed={selected}
       disabled={disabled} onClick={()=>onChange(term.months)}
