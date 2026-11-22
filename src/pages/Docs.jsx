@@ -162,7 +162,7 @@ export default function Docs(){
     </header>
     <div className="grid gap-3 sm:grid-cols-3">
       {[
-        ['GET','/linux/price-list','Public catalog, 256 Linux price IDs'],
+        ['GET','/linux/price-list','Public catalog, 2,304 Linux price IDs'],
         ['POST','/create-order/linux/{priceId}','Protected hosted payment link creation'],
         ['GET','/confirmation/{paymentId}','Protected payment and SSH-ready verification']
       ].map(([method,url,desc])=><div key={url} className="rounded-xl border border-border bg-card p-4">
@@ -183,14 +183,14 @@ export default function Docs(){
       </details>
     </Section>
 
-    <Section id="price-list" n="02" title="Get the complete Linux price list" description="The standard catalog has 256 price IDs (1–8 GB RAM × 1–8 vCPU × 1/3/6/12 months). Verified and explicitly priced Pro combinations up to 24 GB/24 vCPU appear dynamically when enabled. Always use the returned price list; currency does not change a price ID.">
+    <Section id="price-list" n="02" title="Get the complete Linux price list" description="The catalog lists 2,304 price IDs (1–24 GB RAM × 1–24 vCPU × 1/3/6/12 months). Plans above 8 GB or 8 vCPU can be priced for preview but stay unavailable until provider capacity is verified. India-only higher-tier discounts do not change foreign-market prices. Always use the returned price list; currency does not change a price ID.">
       <div className="grid gap-3 md:grid-cols-2">
         <CodeBox title="India / INR / Razorpay — public cURL" code={'curl -sS "'+BASE+'/linux/price-list?currency=INR"'}/>
         <CodeBox title="United States / USD / PayPal — public cURL" code={'curl -sS "'+BASE+'/linux/price-list?currency=USD&country=US"'}/>
       </div>
       <div className="rounded-xl bg-muted/40 p-4 text-xs leading-6 text-muted-foreground">
         <p>Price ID example: <strong className="text-foreground">linux-r2-c2-m3</strong> = 2 GB RAM, 2 vCPU, 3 months. Fields include <code>priceId</code>, <code>ramGb</code>, <code>vcpu</code>, <code>months</code>, <code>monthlyINR</code>, <code>discountPercent</code>, <code>amountMinor</code>, <code>currency</code> and <code>available</code>.</p>
-        <p className="mt-2">INR amounts are in paise. International amounts use the currency minor unit; JPY/HUF/TWD use whole units. Overseas compute prices apply the current 2× multiplier and FX conversion; list quotes are estimates until order creation locks the final amount. Check <code>checkoutEnabled</code> and the plan's <code>available</code> flag.</p>
+        <p className="mt-2">INR amounts are in paise. International amounts use the currency minor unit; JPY/HUF/TWD use whole units. Overseas compute prices use the unchanged international catalog with the existing 2× multiplier and FX conversion; list quotes are estimates until order creation locks the final amount. Check <code>checkoutEnabled</code> and the plan's <code>available</code> flag.</p>
       </div>
       <JsonBox title="Shortened response example — the real endpoint returns 256 plans" value={{
         category:'linux',currency:'INR',gateway:'razorpay',priceCount:256,checkoutEnabled:true,
