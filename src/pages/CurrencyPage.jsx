@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {ArrowLeft,Globe2,ShieldAlert,Wallet,CheckCircle2} from 'lucide-react';
 import {useLocale} from '@/i18n/LocaleProvider';
 import {CURRENCY_BY_COUNTRY,COUNTRY_OPTIONS,nativeCountryName,paypalCurrencyForCountry} from '@/i18n/config';
+import {computePrice,computeInternationalPrice} from '@/config/plans';
 
 export default function CurrencyPage(){
  const locale=useLocale();
@@ -23,7 +24,7 @@ export default function CurrencyPage(){
    {isInternational&&<div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"><span>PayPal checkout currency</span><strong className="text-lg">{paypalCurrencyForCountry(country)}</strong></div>}
    {isInternational&&paypalCurrencyForCountry(country)!==currency&&<p className="text-sm text-amber-600">{t("PayPal does not support the selected display currency for this merchant.")} {currency}. {t("The checkout will clearly show its USD total before approval.")}</p>}
    <p className="text-sm text-muted-foreground">Exchange rates are indicative only. Source: ExchangeRate-API public exchange-rate feed. The final payment currency and total must be confirmed by the gateway.</p>
-   <p className="text-sm">{t(isInternational?'International plans are priced at 2× the India compute rate. The existing 0%, 7%, 14% and 30% billing-period discounts remain unchanged.':'India plans use their standard INR compute prices.')}</p>
+   <p className="text-sm">{t(isInternational?'International plans retain their original catalog rates; India-only higher-tier reductions do not apply. The 0%, 7%, 14% and 30% billing-period discounts remain unchanged.':'India plans use their standard INR compute prices.')}</p>
    <div className="flex items-start gap-2 rounded-xl border p-3 text-xs leading-5 text-muted-foreground"><ShieldAlert size={17} className="shrink-0 text-amber-500"/> {t("Browser language and country selectors do not verify your legal country of residence. PayPal requires eligible international payers and verified capture; you will see the final amount before approval.")}</div>
   </section>
   <section className="mt-6 rounded-2xl border bg-card p-6">
@@ -34,7 +35,7 @@ export default function CurrencyPage(){
     </select>
    </label>
    <p className="mt-3 text-xs text-muted-foreground">{t("The examples below are before multi-month discounts;")} <Link to="/pricing" className="underline">{t("Pricing")}</Link> {t("shows the exact 7%, 14% and 30% term reductions.")}</p>
-   <div className="mt-4 space-y-3">{[{ram:1,cpu:1,inr:49},{ram:2,cpu:2,inr:99},{ram:4,cpu:4,inr:220},{ram:8,cpu:4,inr:350}].map(x=><div key={x.ram} className="flex flex-wrap items-center justify-between gap-2 rounded-xl border p-4"><span>{x.ram} GB RAM · {x.cpu} vCPU</span><strong>{showPrice(x.inr)}</strong></div>)}</div>
+   <div className="mt-4 space-y-3">{[{ram:1,cpu:1},{ram:2,cpu:2},{ram:4,cpu:4},{ram:8,cpu:4},{ram:12,cpu:12},{ram:24,cpu:24}].map(x=><div key={x.ram} className="flex flex-wrap items-center justify-between gap-2 rounded-xl border p-4"><span>{x.ram} GB RAM · {x.cpu} vCPU</span><strong>{showPrice(isInternational?computeInternationalPrice(x.ram,x.cpu):computePrice(x.ram,x.cpu))}</strong></div>)}</div>
    <p className="mt-4 text-xs text-muted-foreground">{t("Rate status:")} {t(fxStatus)}{fxUpdatedAt?", "+t("published")+" "+new Date(fxUpdatedAt).toLocaleString(language):""}. {t("PayPal checkout availability is verified when you purchase; the final gateway amount is displayed before approval.")}</p>
    <Link to="/pricing" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-emerald-500">View all plans →</Link>
   </section>
