@@ -15,14 +15,16 @@ export const BILLING_TERMS = [
  {months:12,discountPercent:30,label:'12 months'},
 ];
 export const billingTerm = (months) => BILLING_TERMS.find(term=>term.months===Number(months)) || BILLING_TERMS[0];
-export function termQuote(ram,cpu,months){
- const monthlyPriceINR=computePrice(ram,cpu);
+export function termQuoteFromMonthlyPrice(monthlyPriceINR,months){
  const term=billingTerm(months);
- if(monthlyPriceINR==null)return null;
+ if(!Number.isSafeInteger(Number(monthlyPriceINR))||Number(monthlyPriceINR)<=0)return null;
  const subtotalPaise=monthlyPriceINR*term.months*100;
  const discountPaise=Math.floor((subtotalPaise*term.discountPercent+50)/100);
  return {months:term.months,discountPercent:term.discountPercent,monthlyPriceINR,
   subtotalPaise,discountPaise,totalPaise:subtotalPaise-discountPaise};
+}
+export function termQuote(ram,cpu,months){
+ return termQuoteFromMonthlyPrice(computePrice(ram,cpu),months);
 }
 export const priceINR=(paise) => (Number(paise)/100).toLocaleString('en-IN',{
  style:'currency',currency:'INR',minimumFractionDigits:0,
