@@ -279,8 +279,8 @@ function Shell() {
     <Route path="/dashboard" element={<Dashboard/>}/>
     <Route path="/instances" element={<Navigate to="/dashboard" replace/>}/>
     <Route path="*" element={<StatusPage title="Page not found"/>}/>
-  </Routes></SiteMotion><SupportLauncher/><LanguageSelector/><footer className="flex items-center justify-center gap-2 border-t px-5 py-8 pb-20 text-center text-xs text-muted-foreground"><BrandLogo size={26} className="h-7 w-7" />© {new Date().getFullYear()} BabiesIQ Cloud</footer><Toaster position="top-right" richColors/></div>;
+  </Routes></SiteMotion><LanguageSelector/><footer className="flex items-center justify-center gap-2 border-t px-5 py-8 pb-20 text-center text-xs text-muted-foreground"><BrandLogo size={26} className="h-7 w-7" />© {new Date().getFullYear()} BabiesIQ Cloud</footer><Toaster position="top-right" richColors/></div>;
 }
 export default function App() {
-  return <ThemeProvider><LocaleProvider><BrowserRouter><Shell/></BrowserRouter></LocaleProvider></ThemeProvider>;
+  return <ThemeProvider><LocaleProvider><BrowserRouter><Shell/><SupportLauncher/></BrowserRouter></LocaleProvider></ThemeProvider>;
 }
