@@ -1,0 +1,168 @@
+/* BabiesIQ Cloud — responsive floating support launcher */
+.iq-support-dock {
+  position: fixed;
+  z-index: 45;
+  right: max(18px, env(safe-area-inset-right, 0px));
+  bottom: calc(clamp(110px, 23vh, 250px) + env(safe-area-inset-bottom, 0px));
+  width: 70px;
+  height: 70px;
+  isolation: isolate;
+  overflow: visible;
+}
+
+.iq-support-trigger {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: 70px;
+  height: 70px;
+  place-items: center;
+  overflow: visible;
+  border: 1px solid rgba(204, 255, 238, .63);
+  border-radius: 23px;
+  background: linear-gradient(145deg, #16c8a6 0%, #069e98 47%, #06646d 100%);
+  color: white;
+  box-shadow: 0 13px 34px rgba(0, 53, 56, .38), 0 0 0 5px rgba(16, 185, 129, .12),
+    inset 0 2px 2px rgba(255, 255, 255, .28);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .21s ease, box-shadow .21s ease, border-radius .21s ease;
+}
+.iq-support-trigger-shine {
+  position: absolute;
+  top: 4px;
+  left: 9px;
+  right: 9px;
+  height: 23px;
+  border-radius: 22px 22px 16px 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,.27), transparent);
+  pointer-events: none;
+}
+.iq-support-trigger > svg {position:relative; z-index: 1; filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
+.iq-support-trigger:hover {transform:translateY(-3px); box-shadow:0 17px 38px rgba(0,53,56,.42),0 0 0 6px rgba(16,185,129,.16)}
+.iq-support-trigger:active {transform:scale(.95)}
+.iq-support-trigger:focus-visible, .iq-support-bubble:focus-visible {
+  outline: 3px solid #34d399;
+  outline-offset: 4px;
+}
+.iq-support-dock.is-open .iq-support-trigger {border-radius: 50%; background:linear-gradient(145deg,#0e9a88,#075b60)}
+.iq-support-live-dot {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 16px;
+  height: 16px;
+  border: 3px solid var(--background, #081312);
+  border-radius: 50%;
+  background: #66eab3;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.4);
+}
+.iq-support-dock.is-open .iq-support-live-dot {display:none}
+.iq-support-caption {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 10px);
+  padding: 5px 11px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--background);
+  color: var(--foreground);
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: .02em;
+  box-shadow: 0 7px 18px rgba(0,0,0,.14);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.iq-support-channels {position:absolute;inset:0;z-index:1;pointer-events:none}
+.iq-support-bubble {
+  --tx: 0px;
+  --ty: 0px;
+  --delay: 0ms;
+  position:absolute;
+  top: 8px;
+  left: 8px;
+  display:grid;
+  place-items:center;
+  width:54px;
+  height:54px;
+  border: 1.5px solid rgba(255,255,255,.48);
+  border-radius: 19px;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translate3d(0,0,0) scale(.3);
+  box-shadow:0 10px 25px rgba(0,0,0,.27),inset 0 1px 1px rgba(255,255,255,.23);
+  transition: transform .26s cubic-bezier(.22, 1.28, .36, 1),
+              opacity .15s ease, visibility .26s;
+  transition-delay: 0ms;
+  will-change: transform, opacity;
+  -webkit-tap-highlight-color: transparent;
+}
+.iq-support-bubble svg {width: 27px;height:27px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.11))}
+.iq-support-bubble--telegram {--tx:-98px;--ty:-97px;--delay:0ms;background:linear-gradient(145deg,#47c1f6,#178fce);color:#fff}
+.iq-support-bubble--whatsapp {--tx:-2px;--ty:-126px;--delay:24ms;background:linear-gradient(145deg,#40db7e,#099947);color:#fff}
+.iq-support-bubble--instagram {--tx:-127px;--ty:-3px;--delay:48ms;background:linear-gradient(140deg,#7253d7 0%,#cd36a6 42%,#ee643c 74%,#f6bb51 100%);color:#fff}
+.iq-support-dock.is-open .iq-support-bubble {
+  visibility:visible;
+  opacity:1;
+  pointer-events:auto;
+  transform:translate3d(var(--tx),var(--ty),0) scale(1);
+  transition-delay:var(--delay);
+}
+.iq-support-dock.is-open .iq-support-bubble:hover {
+  transform:translate3d(var(--tx),calc(var(--ty) - 5px),0) scale(1.065);
+  box-shadow:0 15px 28px rgba(0,0,0,.3);
+}
+.iq-support-bubble:active {filter:brightness(.95)}
+.iq-support-tip {
+  position:absolute;
+  top:50%;
+  right:calc(100% + 10px);
+  padding:6px 10px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--background);
+  color:var(--foreground);
+  opacity:0;
+  visibility:hidden;
+  transform:translate(5px,-50%);
+  transition:opacity .15s ease,transform .15s ease,visibility .15s;
+  font-size:12px;
+  font-weight:600;
+  white-space:nowrap;
+  box-shadow:0 6px 16px rgba(0,0,0,.18);
+  pointer-events:none;
+}
+.iq-support-bubble:hover .iq-support-tip,
+.iq-support-bubble:focus-visible .iq-support-tip {
+  opacity:1;
+  visibility:visible;
+  transform:translate(0,-50%);
+}
+
+@media (min-width: 768px) {
+  .iq-support-dock {
+    right: 30px;
+    bottom: calc(118px + env(safe-area-inset-bottom, 0px));
+  }
+  .iq-support-trigger {width:74px;height:74px}
+  .iq-support-dock {width:74px;height:74px}
+  .iq-support-bubble {top:10px;left:10px}
+}
+@media (max-width: 420px) {
+  .iq-support-dock {right:max(14px,env(safe-area-inset-right,0px));width:64px;height:64px}
+  .iq-support-trigger {width:64px;height:64px;border-radius:21px}
+  .iq-support-bubble {width:50px;height:50px;top:7px;left:7px;border-radius:17px}
+  .iq-support-bubble svg {width:26px;height:26px}
+  .iq-support-bubble--telegram {--tx:-88px;--ty:-85px}
+  .iq-support-bubble--whatsapp {--tx:0px;--ty:-112px}
+  .iq-support-bubble--instagram {--tx:-109px;--ty:-1px}
+  .iq-support-tip {display:none}
+}
+@media (prefers-reduced-motion: reduce) {
+  .iq-support-trigger, .iq-support-bubble, .iq-support-tip {transition:none !important}
+}
