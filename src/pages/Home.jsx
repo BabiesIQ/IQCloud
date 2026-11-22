@@ -55,7 +55,7 @@ export default function Home() {
           </div>
           <p className="mt-2 text-center text-[11px] leading-4 text-muted-foreground">{t('Payment method availability is confirmed at checkout and depends on your country and gateway activation.')}</p>
         </div>
-        <p className="mt-6 text-xs text-muted-foreground">{isInternational?t('International compute plans use 2× the India price.')+' '+currency+' '+t('figures are estimates. PayPal availability, currency and final amount are confirmed during secure checkout.'):t('Browse plans without paying. Razorpay availability and the final INR payable are confirmed during secure checkout; there is no automatic subscription debit.')}</p>
+        <p className="mt-6 text-xs text-muted-foreground">{isInternational?t('International compute plans retain their original prices. India-only discounts do not apply.')+' '+currency+' '+t('figures are estimates. PayPal availability, currency and final amount are confirmed during secure checkout.'):t('Browse plans without paying. Razorpay availability and the final INR payable are confirmed during secure checkout; there is no automatic subscription debit.')}</p>
       </section>
 
       <section className="mx-auto max-w-5xl px-5 pb-16"><h2 className="mb-5 text-xl font-semibold">Network & storage details</h2><SharedInfrastructure/></section>
