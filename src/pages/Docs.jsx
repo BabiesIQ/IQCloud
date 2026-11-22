@@ -183,7 +183,7 @@ export default function Docs(){
       </details>
     </Section>
 
-    <Section id="price-list" n="02" title="Get the complete Linux price list" description="All 256 price IDs cover 1–8 GB RAM, 1–8 vCPU and 1/3/6/12-month billing durations. The ID does not change with currency.">
+    <Section id="price-list" n="02" title="Get the complete Linux price list" description="The standard catalog has 256 price IDs (1–8 GB RAM × 1–8 vCPU × 1/3/6/12 months). Verified and explicitly priced Pro combinations up to 24 GB/24 vCPU appear dynamically when enabled. Always use the returned price list; currency does not change a price ID.">
       <div className="grid gap-3 md:grid-cols-2">
         <CodeBox title="India / INR / Razorpay — public cURL" code={'curl -sS "'+BASE+'/linux/price-list?currency=INR"'}/>
         <CodeBox title="United States / USD / PayPal — public cURL" code={'curl -sS "'+BASE+'/linux/price-list?currency=USD&country=US"'}/>
