@@ -34,7 +34,7 @@ export default function ServerCheckout(){
  const [paypalReturnProcessing,setPayPalReturnProcessing]=useState(false);
  const paypalReturnClaimed=useRef(false);
  const busy=useRef(false);
- const quote=draft?termQuote(draft.ram,draft.cpu,months):null;
+ const quote=draft?termQuote(draft.ram,draft.cpu,months,isInternational):null;
  const displayedQuote=order?.quote||quote;
  useEffect(()=>{
   let active=true;
@@ -186,7 +186,7 @@ export default function ServerCheckout(){
      <div className="flex justify-between border-t pt-3 text-lg font-bold"><span>Total payable</span><span>{(order?formatINR:formatPaise)(displayedQuote.totalPaise)}</span></div>
     </div>
     {isInternational&&<div className="mt-4 rounded-xl border border-amber-500/40 p-4 text-sm text-muted-foreground">
-      {t('International compute prices are 2× the India rate with the same discount.')} {currency} {t('prices above are estimates')} ({t('Rate status:')} {t(fxStatus)}).
+      {t('International compute prices keep the original international catalog; India-only discounts do not apply.')} {currency} {t('prices above are estimates')} ({t('Rate status:')} {t(fxStatus)}).
       <p className="mt-2 font-semibold">{t('PayPal checkout currency')}: {actualPayPalCurrency}{paypalCurrencyFallback?' ('+t('Local currency unavailable; USD fallback')+')':''}.</p>
       {legacyUSDPaymentOrder&&<p className="mt-2 text-amber-600">An existing unpaid order was created in USD before the currency update. Its price and currency are locked. Please check that order before approving or starting another payment; do not pay twice.</p>}
       {order?.gateway==='paypal'&&<p className="mt-2 font-semibold">{t('Final PayPal total:')} {formatPayPalMinorAmount(order.amount,order.currency)} ({order.currency})</p>}
