@@ -2,6 +2,7 @@ import {useEffect,useState,useCallback} from 'react';
 import {Link,useNavigate} from 'react-router-dom';
 import {apiRequest} from '@/services/apiClient';
 import BrandLogo from '@/components/BrandLogo';
+import AdminVPSManager from '@/components/AdminVPSManager';
 import {Activity,AlertTriangle,ArrowLeft,ArrowRight,BarChart3,CalendarDays,CheckCircle2,ChevronLeft,ChevronRight,Clock3,CreditCard,Eye,EyeOff,FileClock,KeyRound,LoaderCircle,LockKeyhole,LogOut,RefreshCw,Search,Server,ShieldCheck,Trash2,Users,Wallet} from 'lucide-react';
 
 const ADMIN_EMAIL='uk77061@gmail.com';
@@ -93,7 +94,7 @@ export default function AdminDashboard(){
    if(activeTab==='overview'){const r=await apiRequest('/api/v1/admin/overview');setOverview(r.stats||{})}
    else{
     const params=new URLSearchParams({page:String(activePage)});
-    if(activeTab==='users'&&activeQuery)params.set('search',activeQuery);
+    if((activeTab==='users'||activeTab==='servers')&&activeQuery)params.set('search',activeQuery);
     const r=await apiRequest('/api/v1/admin/'+activeTab+'?'+params);
     setRows(Array.isArray(r.items)?r.items:[]);setTotal(r.total||0);
    }
@@ -101,7 +102,7 @@ export default function AdminDashboard(){
  },[onError]);
  useEffect(()=>{let active=true;apiRequest('/api/v1/admin/me').then(r=>{if(active){setAdmin(r);setLoading(false)}}).catch(e=>{if(active){setLoading(false);onError(e)}});return()=>{active=false}},[onError]);
  useEffect(()=>{if(admin)load(tab,page,query)},[admin,tab,page,query,load]);
- function changeTab(id){setTab(id);setPage(0);setSelected(null);setDetail(null);setConfirm(false);setMessage('');setError('')}
+ function changeTab(id){setTab(id);setPage(0);setQuery('');setSearch('');setSelected(null);setDetail(null);setConfirm(false);setMessage('');setError('')}
  async function inspectUser(id){
   setSelected(id);setDetail(null);setDetailBusy(true);setConfirm(false);
   try{setDetail(await apiRequest('/api/v1/admin/users/'+encodeURIComponent(id)))}catch(e){onError(e)}
@@ -135,7 +136,7 @@ export default function AdminDashboard(){
    </aside>
    <main className="min-w-0 space-y-5">
     <div><p className="text-xs font-bold uppercase tracking-[.15em] text-emerald-600 dark:text-emerald-400">Cloud operations</p><h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">{SECTIONS.find(v=>v.id===tab)?.label}</h1>
-     <p className="mt-2 text-sm text-muted-foreground">{tab==='overview'?'Live database metrics for your Cloud platform.':tab==='users'?'Search accounts and manage security without seeing customer passwords.':tab==='servers'?'Review VPS instances and provisioning states.':tab==='orders'?'Review gateway payment records and purchase history.':tab==='logins'?'Successful login history recorded since deployment.':'Operator action history.'}</p>
+     <p className="mt-2 text-sm text-muted-foreground">{tab==='overview'?'Live database metrics for your Cloud platform.':tab==='users'?'Search accounts and manage security without seeing customer passwords.':tab==='servers'?'Create complimentary VPS, inspect customer IDs, and manage validity or deletion.':tab==='orders'?'Review gateway payment records and purchase history.':tab==='logins'?'Successful login history recorded since deployment.':'Operator action history.'}</p>
     </div>
     <Notice error={error} message={message}/>
     {tab==='overview'&&<>
@@ -165,7 +166,7 @@ export default function AdminDashboard(){
         <div><span className="text-muted-foreground">Preferred language</span><p>{detail.user?.preferredLanguage||'en'}</p></div>
        </div>
        <div className="my-4 flex justify-around rounded-xl bg-muted p-3 text-center"><div><p className="text-2xl font-bold">{detail.instances?.length??0}</p><p className="text-xs text-muted-foreground">VPS records</p></div><div><p className="text-2xl font-bold">{detail.orders?.length??0}</p><p className="text-xs text-muted-foreground">Orders</p></div></div>
-       <div className="mb-4 space-y-2">{(detail.instances||[]).slice(0,6).map(v=><div key={v.id} className="flex items-center justify-between gap-2 rounded-lg border border-border p-3 text-xs"><span>{v.ram||'—'} GB · {v.cpu||'—'} vCPU · {v.region}</span><Status value={v.status}/></div>)}</div>
+       <div className="mb-4 space-y-2"><AdminVPSManager customer={detail.user} instances={detail.instances||[]} onRefresh={()=>{inspectUser(selected);load(tab,page,query)}}/></div>
        <div className="mb-4 space-y-2">{(detail.orders||[]).slice(0,6).map(order=><div key={order.id} className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border p-3 text-xs"><span className="min-w-0"><span className="block break-all font-semibold">{orderMoney(order.amount,order.currency)} · {order.kind||'VPS purchase'}</span><span className="text-muted-foreground">{shortID(order.id)} · {when(order.createdAt)}</span></span><Status value={order.status}/></div>)}</div>
        <div className="flex flex-wrap gap-2"><Button kind="ghost" disabled={acting} onClick={()=>action('send-reset')}><KeyRound size={16}/>Send reset link</Button><Button kind="ghost" disabled={acting} onClick={()=>action('revoke-sessions')}><LogOut size={16}/>Revoke sessions</Button><Button kind="danger" disabled={acting||Boolean(detail.user?.accountDisabledAt)} onClick={()=>{setConfirm('deactivate');setPhrase('');setAdminPassword('')}}><Trash2 size={16}/>Deactivate</Button>{(detail.instances||[]).length===0&&(detail.orders||[]).length===0&&detail.user?.email!==ADMIN_EMAIL&&<Button kind="danger" disabled={acting||Boolean(detail.user?.accountDisabledAt)} onClick={()=>{setConfirm('delete');setPhrase('');setAdminPassword('')}}><Trash2 size={16}/>Delete unused account</Button>}</div>
        {confirm&&<div className="mt-4 space-y-3 rounded-xl border border-red-400/35 bg-red-500/5 p-4">
@@ -179,7 +180,8 @@ export default function AdminDashboard(){
        <p className="mt-4 text-xs text-muted-foreground">Passwords and root credentials cannot be viewed. Reset links go only to verified customer email addresses; financial records are retained.</p>
       </>}
     </Card>}
-    {['servers','orders','logins','audit'].includes(tab)&&<Card title={tab==='servers'?'All customer VPS records':tab==='orders'?'Gateway payment orders':tab==='logins'?'Successful logins':'Admin audit events'} info={tab==='logins'?'Older logins cannot be reconstructed; only sign-ins since tracking was enabled are shown.':undefined}>
+    {tab==='servers'&&<Card title="VPS management" info="Create a free VPS for an active customer, or search by VPS ID, record ID, user ID or provider service ID." toolbar={<form onSubmit={e=>{e.preventDefault();setPage(0);setQuery(search.trim())}} className="flex gap-2"><input aria-label="Search VPS" value={search} onChange={e=>setSearch(e.target.value)} placeholder="VPS or user ID" className="min-w-0 w-40 rounded-xl border border-border bg-background px-3 text-xs"/><Button kind="ghost" type="submit">Search</Button></form>}><AdminVPSManager instances={rows} onRefresh={()=>load(tab,page,query)}/><Pagination page={page} total={total} onChange={setPage}/></Card>}
+    {['orders','logins','audit'].includes(tab)&&<Card title={tab==='servers'?'All customer VPS records':tab==='orders'?'Gateway payment orders':tab==='logins'?'Successful logins':'Admin audit events'} info={tab==='logins'?'Older logins cannot be reconstructed; only sign-ins since tracking was enabled are shown.':undefined}>
       {busy?<Spinner/>:<div className="space-y-2">{rows.map(x=><div key={x.id} className="rounded-xl border border-border p-3 text-sm sm:p-4">
        <div className="flex flex-wrap justify-between gap-2"><div className="min-w-0"><p className="break-all font-semibold">{tab==='servers'?String(x.ram||'—')+' GB / '+String(x.cpu||'—')+' vCPU · '+(x.region||'—'):tab==='orders'?shortID(x.id):tab==='logins'?x.email:x.action}</p><p className="mt-1 break-all text-xs text-muted-foreground">{tab==='orders'?orderMoney(x.amount,x.currency):tab==='logins'?x.method+' · '+x.device:tab==='audit'?shortID(x.targetId):shortID(x.id)}</p></div>{tab==='servers'?<Status value={x.status}/>:tab==='orders'?<Status value={x.status}/>:tab==='audit'?<Status value={x.result}/>:<span className="text-xs text-muted-foreground">{x.method}</span>}</div>
        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground"><span>{when(x.createdAt)}</span>{x.userId&&<button className="break-all font-semibold text-emerald-600 dark:text-emerald-400" onClick={()=>{changeTab('users');inspectUser(x.userId)}}>View customer {shortID(x.userId)} →</button>}</div>
